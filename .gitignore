@@ -1,0 +1,31 @@
+# ROMs y binarios con copyright de Nintendo/Rare (NUNCA subir a GitHub)
+*.n64
+*.v64
+*.z64
+baserom.*
+*.bin
+*.rzip
+*.elf
+*.o
+
+# Carpetas de extracción y temporales
+/build/
+/bin/
+/assets/
+/extracted/
+/.cache/
+
+# Entorno de desarrollo
+__pycache__/
+*.py[cod]
+.vscode/
+.vs/
+*.user
+*.suo
+x64/
+Debug/
+Release/
+
+# Logs y volcados
+*.log
+*.dump
