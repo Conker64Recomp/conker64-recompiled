@@ -87,8 +87,7 @@ public:
             std::ostringstream ss;
             ss << "assets" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << i;
             std::string nameStr = ss.str();
-            std::strncpy(pkg.name, nameStr.c_str(), sizeof(pkg.name) - 1);
-            pkg.name[sizeof(pkg.name) - 1] = '\0';
+            strncpy_s(pkg.name, sizeof(pkg.name), nameStr.c_str(), _TRUNCATE);
 
             packages.push_back(pkg);
             loaded++;
