@@ -1,0 +1,148 @@
+sha1: 4cbadd3c4e0729dec46af64ad018050eada4f47a
+
+options:
+  platform: n64
+  basename: conker
+  target_path: baserom.us.z64
+  base_path: .
+  compiler: IDO
+  extensions_path: tools/splat_ext
+
+  create_undefined_funcs_auto: no
+  create_undefined_syms_auto: no
+
+segments:
+  - name:  header.us
+    type:  bin
+    start: 0x00000000
+  - name:  boot.us
+    type:  bin
+    start: 0x00000040
+  - name:  init.us
+    type:  bin
+    start: 0x00001000
+  - [0x0002D4B0, bin] # ucode?
+  - [0x0002DE08, bin] # ucode?
+  - [0x0002e698, bin] # ucode?
+  - [0x0002f520, bin] # ucode?
+  - [0x0002fdb0, bin] # ucode?
+  - [0x00030c38, bin] # ucode? same as 0x0002DE08
+  - [0x000314c8, bin] # ucode?
+  - [0x00031fe8, bin] # ucode?
+  - [0x0003293d, bin] # ucode?
+  - [0x000334f8, bin] # ucode?
+  - [0x00033e4d, bin] # ucode? same as 0x0003293d
+  - [0x00034a08, bin] # ucode? same as 0x00031fe8
+  - [0x0003535d, bin] # ucode?
+  - [0x00035f38, bin] # ucode? same as 0x000334f8
+  - [0x0003688d, bin] # ucode? same as 0x0003535d
+  - [0x00037468, bin] # ucode?
+  - [0x00037dba, bin] # ucode?
+  - [0x00038908, bin] # ucode?
+  - [0x0003925c, bin] # ucode?
+  - [0x00039da8, bin] # ucode?
+  - [0x0003a6fc, bin] # ucode?
+  - [0x0003b248, bin] # ucode? same as 0x00038908
+  - [0x0003bb9c, bin] # ucode?
+  - [0x0003c124, bin] # ucode .data section
+  - name:  game.us.rzip
+    type:  bin
+    start: 0x42450
+  - name:  debugger.us
+    type:  bin
+    start: 0x19EA88
+  ###
+  - [0x1A37E0, bin, compressed] # 7760 files
+  - [0xAB1941, bin, compressed_padding] # 15 bytes 0x0 padding
+  ###
+  - [0xAB1950, bin, assets_offsets_table] # TODO: use to generate this next section
+  - name:  assets00
+    type:  rzip
+    start: 0x00AB1A40
+  - name:  assets01
+    type:  rzip
+    start: 0x00af4918
+  - name:  assets02
+    type:  rzip
+    start: 0x00BB1BA0
+  - name:  assets03
+    type:  rzip
+    start: 0x00F8F278
+  - name:  assets04
+    type:  rzip
+    start: 0x00f9e660
+  - name:  assets05
+    type:  rzip
+    start: 0x011542a8
+  - name:  assets06
+    type:  rzip
+    start: 0x0117fE50
+  - name:  assets07
+    type:  rzip
+    start: 0x12043B0
+  - name:  assets08
+    type:  rzip
+    start: 0x01204400
+  - name:  assets09
+    type:  rzip
+    start: 0x01204780
+  - name:  assets0A
+    type:  rzip
+    start: 0x0125ced0
+  - name:  assets0B
+    type:  rzip
+    start: 0x0129e780
+  - name:  assets0C
+    type:  rzip
+    start: 0x012a1638
+  - name:  assets0D
+    type:  rzip
+    start: 0x012dedf0
+  - name:  assets0E
+    type:  rzip
+    start: 0x012defb8
+  - name:  assets0F
+    type:  rzip
+    start: 0x012e2cf8
+  - name:  assets10
+    type:  rzip
+    start: 0x012f5f40
+  - name:  assets11
+    type:  rzip
+    start: 0x012fbcf0
+  - name:  assets12
+    type:  rzip
+    start: 0x12ff550
+  - name:  assets13
+    type:  rzip
+    start: 0x1300188
+  - name:  assets14
+    type:  rzip
+    start: 0x01304F00
+  - name:  assets15
+    type:  rzip
+    start: 0x0132e698
+  - name:  assets16    # MP3s
+    type:  rzip
+    start: 0x01330478
+  - name:  assets17    # TODO: split out (m64?) files
+    type:  rzip
+    start: 0x029ae9e8
+  - name:  assets18    # another compressed file inside
+    type:  rzip
+    start: 0x03F82170
+  - name:  assets19
+    type:  rzip
+    start: 0x03f82490
+  - name:  assets1A    # "the <LANGUAGE> catapult..."
+    type:  rzip
+    start: 0x03F87F68
+  - name:  assets1B
+    type:  rzip
+    start: 0x03F89640
+  - name:  assets1C    # text, credits etc
+    type:  rzip
+    start: 0x03f8ab18
+  - [0x03F8B770, bin] # TODO: anything interesting here?
+  - [0x03F8b800, bin, trailer] # 0xff to the end
+  - [0x04000000] # the end of the rom

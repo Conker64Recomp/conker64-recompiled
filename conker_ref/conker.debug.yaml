@@ -1,0 +1,120 @@
+options:
+  basename: conker
+  target_path: baserom.debug.z64
+  base_path: .
+  compiler: IDO
+  extensions_path: tools/splat_ext
+segments:
+  - name:  header.debug
+    type:  bin
+    start: 0x00000000
+  - name:  boot.debug
+    type:  bin
+    start: 0x00000040
+  - name:  init.debug
+    type:  bin
+    start: 0x00001000
+  - [0xD2B0, bin] # ucode etc
+  - name:  game.debug.rzip # offsets 1380000 # 0x8039ccca same key, total 1472000 bytes
+    type:  bin
+    start: 0x00022240
+  - name:  debugger.debug
+    type:  bin
+    start: 0x00189840
+  - [0x199BA0, bin, compressed] # 7808 files
+  - [0xABBCFD, bin, compressed_padding] # 3 bytes 0x0 padding
+  ###
+  - [0xABBD00, bin, assets_offsets_table]
+  - name:  assets00
+    type:  rzip
+    start: 0xabbdf8
+  - name:  assets01
+    type:  rzip
+    start: 0xb01c60
+  - name:  assets02
+    type:  rzip
+    start: 0xbc1708
+  - name:  assets03
+    type:  rzip
+    start: 0xfa0578
+  - name:  assets04
+    type:  rzip
+    start: 0xfb0a88
+  - name:  assets05
+    type:  rzip
+    start: 0x11645e8
+  - name:  assets06
+    type:  rzip
+    start: 0x118f850
+  - name:  assets07
+    type:  rzip
+    start: 0x1212fc0
+  - name:  assets08
+    type:  rzip
+    start: 0x1213010
+  - name:  assets09
+    type:  rzip
+    start: 0x1213390
+  - name:  assets0A
+    type:  rzip
+    start: 0x126b740
+  - name:  assets0B
+    type:  rzip
+    start: 0x12acff0
+  - name:  assets0C
+    type:  rzip
+    start: 0x12afd58
+  - name:  assets0D
+    type:  rzip
+    start: 0x12e85c0
+  - name:  assets0E
+    type:  rzip
+    start: 0x12e8788
+  - name:  assets0F
+    type:  rzip
+    start: 0x12ec430
+  - name:  assets10
+    type:  rzip
+    start: 0x1331c88
+  - name:  assets11
+    type:  rzip
+    start: 0x13379c8
+  - name:  assets12
+    type:  rzip
+    start: 0x133b220
+  - name:  assets13
+    type:  rzip
+    start: 0x133be58
+  - name:  assets14
+    type:  rzip
+    start: 0x1340bd0
+  - name:  assets15
+    type:  rzip
+    start: 0x13688e8
+  - name:  assets16
+    type:  rzip
+    start: 0x136a6b8
+  - name:  assets17
+    type:  rzip
+    start: 0x29ff1c8
+  - name:  assets18
+    type:  rzip
+    start: 0x3faa638
+  - name:  assets19
+    type:  rzip
+    start: 0x3fab760
+  - name:  assets1A
+    type:  rzip
+    start: 0x3faba80
+  - name:  assets1B
+    type:  rzip
+    start: 0x3fb1128
+  - name:  assets1C
+    type:  rzip
+    start: 0x3fb2800
+  - name:  assets1D
+    type:  rzip
+    start: 0x3fb3cd8
+  - [0x3fb7338, bin] # junk?
+  - [0x3fb73d0, bin, "trailer"] # 0xff to end
+  - [0x4000000]
