@@ -44,7 +44,8 @@ public:
             uint8_t r = ((raw >> 11) & 0x1F); r = (r << 3) | (r >> 2);
             uint8_t g = ((raw >>  6) & 0x1F); g = (g << 3) | (g >> 2);
             uint8_t b = ((raw >>  1) & 0x1F); b = (b << 3) | (b >> 2);
-            uint8_t a = (raw & 1) ? 255 : 0;
+            // Si el pixel es completamente negro transparente de recorte, darle alfa opaco o color solido
+            uint8_t a = 255; // Forzar opacidad completa para mallas 3D
             argb32[i] = (static_cast<uint32_t>(a) << 24) |
                         (static_cast<uint32_t>(r) << 16) |
                         (static_cast<uint32_t>(g) << 8)  |
@@ -54,7 +55,7 @@ public:
         activeTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
                                           SDL_TEXTUREACCESS_STATIC, width, height);
         if (activeTexture) {
-            SDL_SetTextureBlendMode(activeTexture, SDL_BLENDMODE_BLEND);
+            SDL_SetTextureBlendMode(activeTexture, SDL_BLENDMODE_NONE);
             SDL_UpdateTexture(activeTexture, nullptr, argb32.data(), width * sizeof(uint32_t));
             std::cout << "[RDP] Real Rareware texture mapped to 3D Mesh: " << width << "x" << height << " RGBA16." << std::endl;
         }
