@@ -1,4 +1,5 @@
-# Conker's Bad Fur Day (USA) — Symbol Table for N64Recomp
+# Conker's Bad Fur Day (USA) — Master Symbol Table for N64Recomp
+# Cobertura: Segmento Init (199 funciones) + 508 subsegmentos ejecutables
 
 [[section]]
 name = "init.us"
