@@ -31,15 +31,20 @@ FetchContent_Declare(
 set(ZLIB_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(zlib)
 
+# Rutas a N64ModernRuntime y sus librerías compiladas
+set(RUNTIME_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../tools/N64ModernRuntime")
+set(RUNTIME_BUILD_DIR "${RUNTIME_DIR}/build")
+
 # Ejecutable principal
 add_executable(Conker
     src/main.cpp
     src/ultralib_stubs.cpp
 )
 
-# Inclusiones explícitas para IntelliSense y compilación
+# Inclusiones
 target_include_directories(Conker PUBLIC
     include
+    src
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${sdl2_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include
@@ -47,7 +52,15 @@ target_include_directories(Conker PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include-config-debug/SDL2
     ${zlib_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/_deps/zlib-build
+    ${RUNTIME_DIR}/ultramodern/include
+    ${RUNTIME_DIR}/librecomp/include
+    ${RUNTIME_DIR}/thirdparty
 )
+
+# Librerías estáticas de N64ModernRuntime
+find_library(LIB_ULTRAMODERN ultramodern PATHS "${RUNTIME_BUILD_DIR}/ultramodern/Release" NO_DEFAULT_PATH)
+find_library(LIB_LIBRECOMP librecomp PATHS "${RUNTIME_BUILD_DIR}/librecomp/Release" NO_DEFAULT_PATH)
+find_library(LIB_MINIZ miniz PATHS "${RUNTIME_BUILD_DIR}/librecomp/miniz/Release" NO_DEFAULT_PATH)
 
 target_link_libraries(Conker PRIVATE
     SDL2::SDL2
@@ -55,13 +68,24 @@ target_link_libraries(Conker PRIVATE
     zlibstatic
 )
 
+if (LIB_ULTRAMODERN)
+    target_link_libraries(Conker PRIVATE ${LIB_ULTRAMODERN})
+    message(STATUS "[N64ModernRuntime] Linked ultramodern.lib")
+endif()
+
+if (LIB_LIBRECOMP)
+    target_link_libraries(Conker PRIVATE ${LIB_LIBRECOMP})
+    message(STATUS "[N64ModernRuntime] Linked librecomp.lib")
+endif()
+
+if (LIB_MINIZ)
+    target_link_libraries(Conker PRIVATE ${LIB_MINIZ})
+    message(STATUS "[N64ModernRuntime] Linked miniz.lib")
+endif()
+
 # Copiar SDL2.dll a la carpeta del ejecutable
 add_custom_command(TARGET Conker POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     $<TARGET_FILE:SDL2::SDL2>
     $<TARGET_FILE_DIR:Conker>
 )
-
-if(MSVC)
-    target_compile_options(Conker PRIVATE /W4 /utf-8 /permissive- /wd4100 /wd4244 /wd4996)
-endif()
