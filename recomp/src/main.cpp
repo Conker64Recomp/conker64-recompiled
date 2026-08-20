@@ -172,6 +172,10 @@ int main(int argc, char** argv) {
         }
 
         N64::InputManager::getInstance().poll(pad);
+        
+        // Ejecución de la lógica del hilo principal del juego recompilado
+        N64::MIPSRecompiler::getInstance().updateGameLogic(1.0f / 60.0f);
+
         float rotSpeed = 1.2f;
         if (std::abs(pad.stick_x) > 10) rotSpeed = (pad.stick_x / 80.0f) * 4.0f;
         rotationAngle += rotSpeed;
