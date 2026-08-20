@@ -25,6 +25,7 @@
 #include "asset_decoder.hpp"
 #include "asset_manager.hpp"
 #include "actor_system.hpp"
+#include "intro_sequence.hpp"
 
 std::string openFileDialog() {
 #ifdef _WIN32
@@ -67,6 +68,7 @@ int main(int argc, char** argv) {
     N64::SaveSystem::getInstance().init();
     N64::MIPSRecompiler::getInstance().init();
     N64::ActorManager::getInstance().init();
+    N64::IntroSequence::getInstance().init();
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS) != 0) {
         std::cerr << "[Error] SDL2 init failed: " << SDL_GetError() << std::endl;
@@ -201,13 +203,21 @@ int main(int argc, char** argv) {
             lastFpsUpdate = currentTicks;
         }
 
-        // Fondo azul cielo estilo N64
-        SDL_SetRenderDrawColor(renderer, 70, 130, 200, 255);
-        SDL_RenderClear(renderer);
-
-        int winW, winH;
+        int winW = 960, winH = 540;
         SDL_GetWindowSize(window, &winW, &winH);
-        N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player.posX, player.posY, player.posZ, player.rotY, camInputX, 1.0f / 60.0f);
+
+        // Actualización de la cinemática de Intro oficial
+        N64::IntroSequence::getInstance().update(1.0f / 60.0f);
+
+        if (!N64::IntroSequence::getInstance().isGameplayActive()) {
+            N64::IntroSequence::getInstance().render(renderer, winW, winH);
+        } else {
+            // Fondo azul cielo estilo N64
+            SDL_SetRenderDrawColor(renderer, 70, 130, 200, 255);
+            SDL_RenderClear(renderer);
+
+            N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player.posX, player.posY, player.posZ, player.rotY, camInputX, 1.0f / 60.0f);
+        }
 
         SDL_RenderPresent(renderer);
     }
