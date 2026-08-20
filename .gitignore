@@ -7,15 +7,19 @@ baserom.*
 *.rzip
 *.elf
 *.o
+*.obj
+*.exe
 
-# Carpetas de extracción y temporales
-/build/
-/bin/
-/assets/
-/extracted/
-/.cache/
+# Carpetas de compilacion y dependencias
+build/
+bin/
+out/
+_deps/
+assets/
+extracted/
+.cache/
 
-# Entorno de desarrollo
+# Entorno de desarrollo Visual Studio & VS Code
 __pycache__/
 *.py[cod]
 .vscode/
@@ -25,6 +29,9 @@ __pycache__/
 x64/
 Debug/
 Release/
+CMakeFiles/
+CMakeCache.txt
+*.ninja
 
 # Logs y volcados
 *.log
