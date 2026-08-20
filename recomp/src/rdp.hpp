@@ -14,23 +14,23 @@ namespace N64 {
 
 struct Camera3D {
     float targetX = 0.0f, targetY = 0.0f, targetZ = 0.0f;
-    float posX = 0.0f, posY = 3.2f, posZ = -6.5f;
+    float posX = 0.0f, posY = 2.0f, posZ = -5.0f;
     float rotY = 0.0f;
-    float pitch = 26.0f; // Inclinación cenital idéntica a Conker's Bad Fur Day (N64)
-    float distance = 6.5f;
+    float pitch = 22.0f; // Inclinación suave cenital de N64
+    float distance = 5.5f;
 
     void update(float pX, float pY, float pZ, float camInputX, float dt) {
-        rotY += camInputX * 120.0f * dt;
+        rotY += camInputX * 100.0f * dt;
 
-        // Seguir suavemente a Conker
+        // Seguir al centro de Conker
         targetX += (pX - targetX) * 8.0f * dt;
-        targetY += ((pY + 0.3f) - targetY) * 8.0f * dt;
+        targetY += ((pY - 0.3f) - targetY) * 8.0f * dt;
         targetZ += (pZ - targetZ) * 8.0f * dt;
 
         float radY = rotY * 3.14159265f / 180.0f;
         float radP = pitch * 3.14159265f / 180.0f;
 
-        posX = targetX - std::sin(radY) * std::cos(radP) * distance;
+        posX = targetX + std::sin(radY) * std::cos(radP) * distance;
         posY = targetY + std::sin(radP) * distance;
         posZ = targetZ - std::cos(radY) * std::cos(radP) * distance;
     }
@@ -117,27 +117,27 @@ private:
 
     struct Point2D { float x, y, z; };
 
-    // Proyección de cámara 3D en perspectiva con View Matrix
+    // Proyección de cámara 3D en perspectiva con View Matrix clásica
     Point2D projectCamera(float wx, float wy, float wz, int winW, int winH) {
-        // 1. Traslación respecto a la cámara
+        // Vector relativo del objeto respecto a la cámara
         float dx = wx - camera.posX;
         float dy = wy - camera.posY;
         float dz = wz - camera.posZ;
 
-        // 2. Rotación Y (Yaw de cámara)
-        float radY = -camera.rotY * 3.14159265f / 180.0f;
+        // Rotación Y (Yaw)
+        float radY = camera.rotY * 3.14159265f / 180.0f;
         float cosY = std::cos(radY), sinY = std::sin(radY);
         float x1 = dx * cosY - dz * sinY;
         float z1 = dx * sinY + dz * cosY;
 
-        // 3. Rotación X (Pitch de cámara)
+        // Rotación X (Pitch)
         float radP = camera.pitch * 3.14159265f / 180.0f;
         float cosP = std::cos(radP), sinP = std::sin(radP);
-        float y2 = dy * cosP - z1 * sinP;
-        float z2 = dy * sinP + z1 * cosP;
+        float y2 = dy * cosP + z1 * sinP;
+        float z2 = -dy * sinP + z1 * cosP;
 
         if (z2 < 0.1f) z2 = 0.1f;
-        float fov = 480.0f;
+        float fov = 420.0f;
         float factor = fov / z2;
 
         return {
