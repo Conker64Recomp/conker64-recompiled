@@ -68,10 +68,10 @@ public:
         }
     }
 
-    void processDisplayList(uint32_t dlVaddr, SDL_Renderer* renderer, int winW, int winH, float angle) {
+    void processDisplayList(uint32_t dlVaddr, SDL_Renderer* renderer, int winW, int winH, float posX, float posY, float posZ, float rotY) {
         (void)dlVaddr;
         if (!renderer) return;
-        renderConkerMesh3D(renderer, winW, winH, angle);
+        renderConkerMesh3D(renderer, winW, winH, posX, posY, posZ, rotY);
     }
 
 private:
@@ -92,28 +92,34 @@ private:
         };
     }
 
-    void renderConkerMesh3D(SDL_Renderer* renderer, int winW, int winH, float angle) {
-        float radY = angle * 3.14159265f / 180.0f;
+    void renderConkerMesh3D(SDL_Renderer* renderer, int winW, int winH, float posX, float posY, float posZ, float rotY) {
+        float radY = rotY * 3.14159265f / 180.0f;
         float radX = 15.0f * 3.14159265f / 180.0f; // Ligera inclinación para perspectiva N64
         float cosY = std::cos(radY), sinY = std::sin(radY);
         float cosX = std::cos(radX), sinX = std::sin(radX);
 
-        // 1. Transformar y proyectar todos los vértices del modelo 3D
+        // 1. Transformar y proyectar todos los vértices del modelo 3D con posición del jugador
         std::vector<Point2D> projected(conkerMesh.vertices.size());
         std::vector<float> transformedZ(conkerMesh.vertices.size());
 
         for (size_t i = 0; i < conkerMesh.vertices.size(); ++i) {
             const auto& v = conkerMesh.vertices[i];
             
-            // Rotación eje Y
-            float x1 = v.x * cosY + v.z * sinY;
-            float z1 = -v.x * sinY + v.z * cosY;
-            
-            // Rotación eje X
-            float y2 = v.y * cosX - z1 * sinX;
-            float z2 = v.y * sinX + z1 * cosX;
+            // Rotación local del modelo en eje Y
+            float lx = v.x * cosY + v.z * sinY;
+            float lz = -v.x * sinY + v.z * cosY;
+            float ly = v.y;
 
-            projected[i] = project(x1, y2, z2, winW, winH, 450.0f, 4.5f);
+            // Traslación en el mundo 3D
+            float wx = lx + posX;
+            float wy = ly + posY;
+            float wz = lz + posZ;
+            
+            // Perspectiva de cámara
+            float y2 = wy * cosX - wz * sinX;
+            float z2 = wy * sinX + wz * cosX;
+
+            projected[i] = project(wx, y2, z2, winW, winH, 450.0f, 5.0f);
             transformedZ[i] = z2;
         }
 

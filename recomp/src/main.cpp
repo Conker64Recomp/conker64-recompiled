@@ -24,6 +24,7 @@
 #include "texture_loader.hpp"
 #include "asset_decoder.hpp"
 #include "asset_manager.hpp"
+#include "actor_system.hpp"
 
 std::string openFileDialog() {
 #ifdef _WIN32
@@ -65,6 +66,7 @@ int main(int argc, char** argv) {
     N64::Memory::getInstance().init();
     N64::SaveSystem::getInstance().init();
     N64::MIPSRecompiler::getInstance().init();
+    N64::ActorManager::getInstance().init();
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS) != 0) {
         std::cerr << "[Error] SDL2 init failed: " << SDL_GetError() << std::endl;
@@ -173,14 +175,13 @@ int main(int argc, char** argv) {
 
         N64::InputManager::getInstance().poll(pad);
         
+        // Ejecución de la física y movimiento del jugador (Conker)
+        N64::ActorManager::getInstance().updatePlayer(pad, 1.0f / 60.0f);
+
         // Ejecución de la lógica del hilo principal del juego recompilado
         N64::MIPSRecompiler::getInstance().updateGameLogic(1.0f / 60.0f);
 
-        float rotSpeed = 1.2f;
-        if (std::abs(pad.stick_x) > 10) rotSpeed = (pad.stick_x / 80.0f) * 4.0f;
-        rotationAngle += rotSpeed;
-        if (rotationAngle >= 360.0f) rotationAngle -= 360.0f;
-        if (rotationAngle < 0.0f) rotationAngle += 360.0f;
+        const auto& player = N64::ActorManager::getInstance().getPlayer();
 
         frameCount++;
         uint32_t currentTicks = SDL_GetTicks();
@@ -199,7 +200,7 @@ int main(int argc, char** argv) {
 
         int winW, winH;
         SDL_GetWindowSize(window, &winW, &winH);
-        N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, rotationAngle);
+        N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player.posX, player.posY, player.posZ, player.rotY);
 
         SDL_RenderPresent(renderer);
     }
