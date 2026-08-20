@@ -175,6 +175,12 @@ int main(int argc, char** argv) {
 
         N64::InputManager::getInstance().poll(pad);
         
+        // Control de rotación orbital de cámara con C-Buttons / Teclas Q y E
+        float camInputX = 0.0f;
+        const Uint8* keyState = SDL_GetKeyboardState(nullptr);
+        if (keyState[SDL_SCANCODE_Q] || (pad.button & N64::Buttons::CONT_C)) camInputX -= 1.0f;
+        if (keyState[SDL_SCANCODE_E] || (pad.button & N64::Buttons::CONT_F)) camInputX += 1.0f;
+
         // Ejecución de la física y movimiento del jugador (Conker)
         N64::ActorManager::getInstance().updatePlayer(pad, 1.0f / 60.0f);
 
@@ -188,19 +194,20 @@ int main(int argc, char** argv) {
         if (currentTicks - lastFpsUpdate >= 500) {
             currentFps = (frameCount * 1000.0f) / (currentTicks - lastFpsUpdate);
             std::string title = romLoaded
-                ? "Conker64: Recompiled | [" + std::to_string(currentTextureIdx + 1) + "/9] " + currentTextureName + " | FPS: " + std::to_string(static_cast<int>(currentFps))
+                ? "Conker64: Recompiled | [" + std::to_string(currentTextureIdx + 1) + "/9] " + currentTextureName + " | Cam: Q/E | FPS: " + std::to_string(static_cast<int>(currentFps))
                 : "Conker64: Recompiled | ESPERANDO ROM (Arrastra tu .z64 o presiona O)";
             SDL_SetWindowTitle(window, title.c_str());
             frameCount = 0;
             lastFpsUpdate = currentTicks;
         }
 
-        SDL_SetRenderDrawColor(renderer, 15, 18, 24, 255);
+        // Fondo azul cielo estilo N64
+        SDL_SetRenderDrawColor(renderer, 70, 130, 200, 255);
         SDL_RenderClear(renderer);
 
         int winW, winH;
         SDL_GetWindowSize(window, &winW, &winH);
-        N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player.posX, player.posY, player.posZ, player.rotY);
+        N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player.posX, player.posY, player.posZ, player.rotY, camInputX, 1.0f / 60.0f);
 
         SDL_RenderPresent(renderer);
     }
