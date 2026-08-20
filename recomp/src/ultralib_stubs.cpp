@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdint>
 #include "save_system.hpp"
+#include "audio.hpp"
 
 extern "C" {
 
@@ -20,7 +21,25 @@ void osViSwapBuffer(void* vaddr) {
     (void)vaddr;
 }
 
-// --- HOOKS DE GUARDADO NATIVO OFICIAL DE NINTENDO 64 / RAREWARE ---
+// --- HOOKS DE AUDIO N64 (osAi) ---
+
+int32_t osAiSetFrequency(uint32_t frequency) {
+    std::cout << "[N64 OS] osAiSetFrequency: Setting playback sample rate to " << frequency << " Hz" << std::endl;
+    N64::AudioManager::getInstance().setFrequency(frequency);
+    return frequency;
+}
+
+int32_t osAiSetNextBuffer(void* vaddr, uint32_t size) {
+    uint32_t bufferVaddr = reinterpret_cast<uintptr_t>(vaddr);
+    N64::AudioManager::getInstance().queueAudioBuffer(bufferVaddr, size);
+    return 0; // SUCCESS
+}
+
+uint32_t osAiGetLength(void) {
+    return 0;
+}
+
+// --- HOOKS DE GUARDADO NATIVO OFICIAL (osEeprom) ---
 
 int32_t osEepromProbe(void* mq) {
     (void)mq;
@@ -41,7 +60,7 @@ int32_t osEepromWrite(void* mq, uint8_t address, const uint8_t* buffer) {
 int32_t osEepromLongRead(void* mq, uint8_t address, uint8_t* buffer, int32_t length) {
     (void)mq;
     for (int i = 0; i < length / 8; ++i) {
-        if (N64::SaveSystem::getInstance().osEepromRead(address + i, buffer + (i * 8)) != 0) {
+        if (N64::SaveSystem::getInstance().osEepromRead(static_cast<uint8_t>(address + i), buffer + (i * 8)) != 0) {
             return -1;
         }
     }
@@ -51,7 +70,7 @@ int32_t osEepromLongRead(void* mq, uint8_t address, uint8_t* buffer, int32_t len
 int32_t osEepromLongWrite(void* mq, uint8_t address, const uint8_t* buffer, int32_t length) {
     (void)mq;
     for (int i = 0; i < length / 8; ++i) {
-        if (N64::SaveSystem::getInstance().osEepromWrite(address + i, buffer + (i * 8)) != 0) {
+        if (N64::SaveSystem::getInstance().osEepromWrite(static_cast<uint8_t>(address + i), buffer + (i * 8)) != 0) {
             return -1;
         }
     }
