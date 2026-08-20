@@ -34,6 +34,10 @@ public:
         std::cout << "[AssetDecoder] ROM buffer cached internally (" << romSize / (1024*1024) << " MB)" << std::endl;
     }
 
+    // Acceso directo al buffer de la ROM (para decodificadores externos como audio_rom.hpp)
+    const uint8_t* getROMBuffer() const { return romBuffer.empty() ? nullptr : romBuffer.data(); }
+    size_t         getROMSize()   const { return romBuffer.size(); }
+
     // Parse the subsegment table of a package — mirrors rzip.py get_files_from_offsets() exactly
     std::vector<SubSegment> parsePackage(const uint8_t* romData, size_t romSize,
                                           uint32_t pkgRomStart, uint32_t pkgRomEnd) {
