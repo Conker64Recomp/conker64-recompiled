@@ -26,6 +26,7 @@
 #include "asset_manager.hpp"
 #include "actor_system.hpp"
 #include "intro_sequence.hpp"
+#include "audio_rom.hpp"
 
 std::string openFileDialog() {
 #ifdef _WIN32
@@ -94,6 +95,20 @@ int main(int argc, char** argv) {
 
     N64::RDPProcessor::getInstance().init(renderer);
 
+    // Abrir un dispositivo de audio SDL2 dedicado para la reproducción de MP3 de la ROM
+    SDL_AudioSpec want{}, got{};
+    want.freq     = 44100;
+    want.format   = AUDIO_S16SYS;
+    want.channels = 2;
+    want.samples  = 2048;
+    want.callback = nullptr; // Usaremos SDL_QueueAudio en vez de callback
+    SDL_AudioDeviceID romAudioDev = SDL_OpenAudioDevice(nullptr, 0, &want, &got, 0);
+    if (romAudioDev > 0) {
+        N64::ROMaudioPlayer::getInstance().init(romAudioDev);
+        SDL_PauseAudioDevice(romAudioDev, 0);
+        std::cout << "[ROM Audio] SDL Audio Device " << romAudioDev << " opened for ROM MP3 playback." << std::endl;
+    }
+
     // Carga de ROM automática
     bool romLoaded = false;
     std::string loadedRomPath;
@@ -107,6 +122,18 @@ int main(int argc, char** argv) {
             if (N64::ROMLoader::loadROM(path)) {
                 romLoaded = true;
                 loadedRomPath = path;
+
+                // Inicializar decodificador de audio de la ROM real
+                const uint8_t* romBuf = N64::AssetDecoder::getInstance().getROMBuffer();
+                size_t romBufSize     = N64::AssetDecoder::getInstance().getROMSize();
+                if (romBuf && romBufSize > 0) {
+                    N64::ROMaudioDecoder::getInstance().init(romBuf, romBufSize);
+                    std::cout << "[ROM Audio] Indexed " << N64::ROMaudioDecoder::getInstance().trackCount()
+                              << " real MP3 tracks from assets16." << std::endl;
+                    // Reproducir Track 0: Música de la intro de Conker's Bad Fur Day
+                    N64::ROMaudioPlayer::getInstance().playTrack(0);
+                }
+
                 N64::MIPSRecompiler::getInstance().executeBootFunction();
                 loadRealTextureFromROM(renderer);
                 break;
