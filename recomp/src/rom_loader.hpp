@@ -8,6 +8,7 @@
 #include "memory.hpp"
 #include "rzip.hpp"
 #include "asset_manager.hpp"
+#include "asset_decoder.hpp"
 
 namespace N64 {
 
@@ -79,6 +80,9 @@ public:
 
         // Inicializar y cargar los paquetes de assets de Rareware (Texturas, 3D, Audio)
         AssetManager::getInstance().initFromROM(buffer.data(), size);
+
+        // Cachear el buffer de ROM en AssetDecoder para descompresión de texturas
+        AssetDecoder::getInstance().storeROM(buffer.data(), size);
 
         return true;
     }
