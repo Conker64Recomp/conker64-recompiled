@@ -1,0 +1,42 @@
+# ==============================================================================
+# Conker's Bad Fur Day: Recompilation Configuration (N64Recomp)
+# ==============================================================================
+
+[game]
+name = "Conker's Bad Fur Day"
+version = "US"
+rom_sha1 = "4cbadd3c4e0729dec46af64ad018050eada4f47a"
+entrypoint = 0x80000400
+
+# Secciones de memoria mapeadas
+[[section]]
+name = "init"
+ram_address = 0x80000400
+size = 0x0002C4B0
+binary_path = "../conker_ref/assets/init.us.bin"
+
+[[section]]
+name = "game_code"
+ram_address = 0x80025C2C
+size = 0x00144700
+binary_path = "../conker_ref/assets/game/rzip/code/code.bin"
+
+# Funciones del sistema N64 a interceptar y reemplazar por llamadas nativas de PC
+[hooks]
+replace = [
+    # Controladores de pantalla y framebuffer
+    "osViSetMode",
+    "osViBlack",
+    "osViSwapBuffer",
+    "osViSetSpecialFeatures",
+    
+    # Audio del sistema
+    "osAiSetFrequency",
+    "osAiSetNextBuffer",
+    "osAiGetLength",
+    
+    # Entradas y mandos (SDL2)
+    "osContInit",
+    "osContStartReadData",
+    "osContGetReadData"
+]
