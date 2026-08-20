@@ -6,6 +6,7 @@
 #include <string>
 #include <cstdint>
 #include "memory.hpp"
+#include "rzip.hpp"
 
 namespace N64 {
 
@@ -63,7 +64,6 @@ public:
         // Cargar el segmento de arranque IPL3 e init.us.bin (0x1000 a 0x25C2C) en RDRAM (0x80000400)
         uint8_t* rdram = Memory::getInstance().getRDRAM();
         if (size >= 0x25C2C) {
-            // El IPL3 de N64 copia desde ROM 0x1000 a RDRAM 0x80000400
             uint32_t destPaddr = 0x00000400;
             uint32_t srcRomOffset = 0x1000;
             uint32_t copySize = 0x25C2C - 0x1000;
@@ -72,6 +72,9 @@ public:
             std::cout << "[Memory] Boot code (IPL3/Init) DMA transferred to RDRAM [0x80000400 - 0x80025C2C] ("
                       << (copySize / 1024) << " KB)" << std::endl;
         }
+
+        // Desencriptar y cargar el ejecutable principal de Conker (game.us.rzip)
+        RZIP::loadMainGameCode(buffer.data(), size);
 
         return true;
     }
