@@ -4,3 +4,6 @@
 [submodule "tools/N64ModernRuntime"]
 	path = tools/N64ModernRuntime
 	url = https://github.com/N64Recomp/N64ModernRuntime.git
+[submodule "tools/rt64"]
+	path = tools/rt64
+	url = https://github.com/rt64/rt64.git
