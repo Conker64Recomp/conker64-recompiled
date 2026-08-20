@@ -6,12 +6,14 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
+#include "paths.hpp"
 #include "memory.hpp"
+#include "save_system.hpp"
 #include "vi.hpp"
 #include "input.hpp"
 #include "rom_loader.hpp"
 
-// Dibuja el patrón dinámico + la mira controlada con el mando / WASD
+// Dibuja el patrón dinámico + la mira interactiva controlada con mando o WASD
 void drawInteractiveFrame(uint32_t fbVaddr, int width, int height, uint32_t tick, int cursorX, int cursorY, bool buttonA, bool buttonB) {
     uint8_t* rdram = N64::Memory::getInstance().getRDRAM();
     uint32_t paddr = fbVaddr & 0x1FFFFFFF;
@@ -23,7 +25,6 @@ void drawInteractiveFrame(uint32_t fbVaddr, int width, int height, uint32_t tick
             uint8_t g = ((y + tick / 20) & 0x1F);
             uint8_t b = (((x + y) / 2) & 0x1F);
 
-            // Si se presiona A se ilumina en rojo, si se presiona B en azul
             if (buttonA) r = 0x1F;
             if (buttonB) b = 0x1F;
 
@@ -32,7 +33,7 @@ void drawInteractiveFrame(uint32_t fbVaddr, int width, int height, uint32_t tick
         }
     }
 
-    // Dibujar la mira interactiva (Conker Crosshair) en el framebuffer
+    // Mira interactiva
     int cx = width / 2 + cursorX;
     int cy = height / 2 - cursorY;
 
@@ -59,28 +60,34 @@ int main(int argc, char** argv) {
     std::cout << " Version: Native Windows x64 Build" << std::endl;
     std::cout << "========================================" << std::endl;
 
-    // 1. Memoria RDRAM
+    // 1. Mostrar ubicaciones seguras de AppData y Cache
+    std::cout << "[Paths] Saves: " << N64::PathManager::getAppDataPath() << std::endl;
+    std::cout << "[Paths] Cache: " << N64::PathManager::getCachePath() << std::endl;
+
+    // 2. Memoria RDRAM
     N64::Memory::getInstance().init();
 
-    // 2. Cargar ROM original de Nintendo 64
+    // 3. Sistema de Guardado Nativo (EEPROM 16Kbit persistente del juego)
+    N64::SaveSystem::getInstance().init();
+
+    // 4. Cargar ROM original de Nintendo 64
     std::string romPath = "../baserom.us.z64";
     if (!N64::ROMLoader::loadROM(romPath)) {
-        // Probar ruta alternativa
         romPath = "../../baserom.us.z64";
         N64::ROMLoader::loadROM(romPath);
     }
 
-    // 3. SDL2
+    // 5. SDL2
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) {
         std::cerr << "[Error] Failed to initialize SDL2: " << SDL_GetError() << std::endl;
         return 1;
     }
     std::cout << "[Init] SDL2 Initialized... OK" << std::endl;
 
-    // 4. Input Manager
+    // 6. Input Manager
     N64::InputManager::getInstance().init();
 
-    // 5. Crear Ventana Nativa
+    // 7. Crear Ventana Nativa
     int windowWidth = 1280;
     int windowHeight = 720;
 
@@ -99,7 +106,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // 6. Renderizador con V-Sync
+    // 8. Renderizador con V-Sync
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer) {
         std::cerr << "[Error] Could not create renderer: " << SDL_GetError() << std::endl;
@@ -108,7 +115,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // 7. Video Interface (VI)
+    // 9. Video Interface (VI)
     uint32_t fbVaddr = 0x80100000;
     N64::VideoInterface vi;
     vi.setWidth(320);
@@ -135,7 +142,7 @@ int main(int argc, char** argv) {
     int crosshairX = 0;
     int crosshairY = 0;
 
-    // 8. Bucle Principal
+    // 10. Bucle Principal
     bool isRunning = true;
     SDL_Event event;
 
@@ -210,6 +217,9 @@ int main(int argc, char** argv) {
         SDL_RenderCopy(renderer, viTexture, nullptr, &dstRect);
         SDL_RenderPresent(renderer);
     }
+
+    // Guardar estado del chip EEPROM al salir del juego
+    N64::SaveSystem::getInstance().saveEEPROM();
 
     // Limpieza
     N64::InputManager::getInstance().shutdown();
