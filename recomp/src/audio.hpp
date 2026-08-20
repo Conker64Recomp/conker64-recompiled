@@ -58,6 +58,12 @@ public:
         }
     }
 
+    void setFrequency(uint32_t freq) { frequency = freq; }
+
+    void queueAudioBuffer(uint32_t bufferVaddr, uint32_t size) {
+        queueAIDMA(bufferVaddr, size, frequency);
+    }
+
     // Procesa una transferencia DMA de audio desde RDRAM al hardware AI de N64 (osAiSetNextBuffer)
     void queueAIDMA(uint32_t rdramVaddr, size_t lengthInBytes, uint32_t freq = 44100) {
         if (lengthInBytes == 0 || audioDevice == 0) return;
