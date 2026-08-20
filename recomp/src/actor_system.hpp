@@ -43,9 +43,8 @@ public:
         std::cout << "[ActorManager] Player Actor (Conker) initialized at (0, 0, 0)." << std::endl;
     }
 
-    // Actualiza físicas, gravedad y movimiento del jugador a 60 FPS
+    // Actualiza físicas, gravedad y movimiento del jugador a 60 FPS relativo a la cámara
     void updatePlayer(const OSContPad& pad, float dt) {
-        // 1. Controles analógicos (WASD / Stick)
         float inputX = pad.stick_x / 80.0f;
         float inputY = pad.stick_y / 80.0f;
 
@@ -53,35 +52,35 @@ public:
         if (std::abs(inputX) < 0.15f) inputX = 0.0f;
         if (std::abs(inputY) < 0.15f) inputY = 0.0f;
 
-        float moveSpeed = 3.5f;
+        float moveSpeed = 4.0f;
+        
+        // W/Up = Avanzar hacia adelante (+Z), S/Down = Retroceder hacia la cámara (-Z)
         player.velX = inputX * moveSpeed;
-        player.velZ = -inputY * moveSpeed;
+        player.velZ = inputY * moveSpeed;
 
-        // Rotación del personaje hacia donde camina
+        // Rotación del personaje hacia donde camina (0° = de espaldas a la cámara mirando hacia adelante, 180° = de frente)
         if (std::abs(inputX) > 0.1f || std::abs(inputY) > 0.1f) {
             player.rotY = std::atan2(inputX, inputY) * 180.0f / 3.14159265f;
-            player.animFrame += dt * 12.0f; // Animación de trote
+            player.animFrame += dt * 12.0f;
         } else {
-            player.animFrame = 0.0f; // Idle
+            player.animFrame = 0.0f;
         }
 
         // 2. Salto con botón A (Espacio / Botón A del Mando)
         if ((pad.button & Buttons::CONT_A) && player.isGrounded) {
-            player.velY = 5.5f;
+            player.velY = 6.0f;
             player.isGrounded = false;
         }
 
         // 3. Gravedad y suelo
         if (!player.isGrounded) {
-            player.velY -= 12.0f * dt; // Gravedad
+            player.velY -= 14.0f * dt;
         }
 
-        // Aplicar velocidades
         player.posX += player.velX * dt;
         player.posY += player.velY * dt;
         player.posZ += player.velZ * dt;
 
-        // Colisión simple con el suelo
         if (player.posY <= 0.0f) {
             player.posY = 0.0f;
             player.velY = 0.0f;
