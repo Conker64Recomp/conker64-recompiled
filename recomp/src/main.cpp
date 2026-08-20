@@ -21,6 +21,7 @@
 #include "rdp.hpp"
 #include "audio.hpp"
 #include "mips_recomp.hpp"
+#include "texture_loader.hpp"
 
 // Diálogo de explorador de archivos nativo de Windows
 std::string openFileDialog() {
@@ -49,7 +50,7 @@ int main(int argc, char** argv) {
 
     std::cout << "========================================" << std::endl;
     std::cout << " CONKER64: RECOMPILED (NATIVE PC PORT)" << std::endl;
-    std::cout << " Engine: SDL2 + Audio + MIPS Core" << std::endl;
+    std::cout << " Engine: SDL2 + Textures + 3D UV Engine" << std::endl;
     std::cout << "========================================" << std::endl;
 
     // 1. AppData Paths
@@ -59,7 +60,6 @@ int main(int argc, char** argv) {
     // 2. Hardware Cores
     N64::Memory::getInstance().init();
     N64::SaveSystem::getInstance().init();
-    N64::RDPProcessor::getInstance().init();
     N64::MIPSRecompiler::getInstance().init();
 
     // 3. Inicializar SDL2
@@ -106,7 +106,10 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // 8. Carga de la ROM
+    // 8. Inicializar RDP con soporte de textura
+    N64::RDPProcessor::getInstance().init(renderer);
+
+    // 9. Carga de la ROM
     bool romLoaded = false;
     std::vector<std::string> searchPaths = {
         "baserom.us.z64",
@@ -132,7 +135,7 @@ int main(int argc, char** argv) {
 
     N64::OSContPad pad{};
 
-    // 9. Bucle Principal
+    // 10. Bucle Principal
     bool isRunning = true;
     SDL_Event event;
 
@@ -163,7 +166,6 @@ int main(int argc, char** argv) {
                         }
                     }
                 }
-                // Presionar la tecla 'T' para reproducir el tono de prueba de audio
                 else if (event.key.keysym.sym == SDLK_t) {
                     N64::AudioManager::getInstance().playBootJingle();
                 }
@@ -189,7 +191,7 @@ int main(int argc, char** argv) {
             currentFps = (frameCount * 1000.0f) / (currentTicks - lastFpsUpdate);
             std::string title = "";
             if (romLoaded) {
-                title = "Conker64: Recompiled | MIPS Core + Audio Test | FPS: " + 
+                title = "Conker64: Recompiled | 3D Textures & UV Engine Active | FPS: " + 
                         std::to_string(static_cast<int>(currentFps)) + " | 60Hz";
             } else {
                 title = "Conker64: Recompiled | ESPERANDO ROM (Arrastra tu .z64 o presiona O)";
@@ -206,13 +208,14 @@ int main(int argc, char** argv) {
         int winW, winH;
         SDL_GetWindowSize(window, &winW, &winH);
 
-        // Renderizado 3D
+        // Renderizado 3D con Texturas Mapeadas
         N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, rotationAngle);
 
         SDL_RenderPresent(renderer);
     }
 
     // Limpieza
+    N64::RDPProcessor::getInstance().shutdown();
     N64::SaveSystem::getInstance().saveEEPROM();
     N64::AudioManager::getInstance().shutdown();
     N64::InputManager::getInstance().shutdown();
