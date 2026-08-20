@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD 11)
 
 include(FetchContent)
 
-# Descargar e integrar SDL3 / SDL2 automáticamente vía CMake
+# Descargar e integrar SDL2
 FetchContent_Declare(
     SDL2
     GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
@@ -27,10 +27,15 @@ add_executable(Conker
     src/ultralib_stubs.cpp
 )
 
-# Inclusiones y Enlaces
-target_include_directories(Conker PRIVATE
+# Inclusiones explícitas para IntelliSense y compilación
+target_include_directories(Conker PUBLIC
     include
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${sdl2_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include
+    ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include/SDL2
+    ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include-config-release/SDL2
+    ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include-config-debug/SDL2
 )
 
 target_link_libraries(Conker PRIVATE
@@ -38,7 +43,7 @@ target_link_libraries(Conker PRIVATE
     SDL2::SDL2main
 )
 
-# Copiar SDL2.dll a la carpeta de salida automáticamente
+# Copiar SDL2.dll a la carpeta del ejecutable
 add_custom_command(TARGET Conker POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     $<TARGET_FILE:SDL2::SDL2>

@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Proyectos/decompiler/Conker's Bad Fur Day/recomp/build/cmake_install.cmake",
-		"C:/Proyectos/decompiler/Conker's Bad Fur Day/recomp/build/_deps/sdl2-build/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
