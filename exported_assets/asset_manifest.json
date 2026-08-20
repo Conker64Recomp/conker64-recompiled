@@ -1,0 +1,5846 @@
+{
+  "game": "Conker's Bad Fur Day (USA)",
+  "rom_sha1": "4cbadd3c4e0729dec46af64ad018050eada4f47a",
+  "exporter": "Conker64-Recompiled Asset Exporter v1.0",
+  "packages": [
+    {
+      "name": "assets00",
+      "start": "0xab1a40",
+      "end": "0xaf4918",
+      "description": "Sprites & Logos (Vegetation, HUD)"
+    },
+    {
+      "name": "assets01",
+      "start": "0xaf4918",
+      "end": "0xbb1ba0",
+      "description": "Interface & HUD Icons"
+    },
+    {
+      "name": "assets02",
+      "start": "0xbb1ba0",
+      "end": "0xf8f278",
+      "description": "Level Textures & Props"
+    },
+    {
+      "name": "assets03",
+      "start": "0xf8f278",
+      "end": "0xf9e660",
+      "description": "Conker Character Textures"
+    },
+    {
+      "name": "assets04",
+      "start": "0xf9e660",
+      "end": "0x11542a8",
+      "description": "World Environment Textures"
+    },
+    {
+      "name": "assets05",
+      "start": "0x11542a8",
+      "end": "0x117fe50",
+      "description": "Enemy Textures"
+    },
+    {
+      "name": "assets06",
+      "start": "0x117fe50",
+      "end": "0x12043b0",
+      "description": "Cutscene Assets"
+    },
+    {
+      "name": "assets07",
+      "start": "0x12043b0",
+      "end": "0x1204400",
+      "description": "Unknown Small Package"
+    },
+    {
+      "name": "assets08",
+      "start": "0x1204400",
+      "end": "0x1204780",
+      "description": "Unknown Small Package 2"
+    },
+    {
+      "name": "assets09",
+      "start": "0x1204780",
+      "end": "0x125ced0",
+      "description": "Multiplayer Assets"
+    },
+    {
+      "name": "assets0A",
+      "start": "0x125ced0",
+      "end": "0x129e780",
+      "description": "Bat's Tower Textures"
+    },
+    {
+      "name": "assets0B",
+      "start": "0x129e780",
+      "end": "0x12a1638",
+      "description": "Windy & Co Level"
+    },
+    {
+      "name": "assets0C",
+      "start": "0x12a1638",
+      "end": "0x12dedf0",
+      "description": "It's War Level"
+    },
+    {
+      "name": "assets0D",
+      "start": "0x12dedf0",
+      "end": "0x12defb8",
+      "description": "Unknown Small"
+    },
+    {
+      "name": "assets0E",
+      "start": "0x12defb8",
+      "end": "0x12e2cf8",
+      "description": "Sloprano Level"
+    },
+    {
+      "name": "assets0F",
+      "start": "0x12e2cf8",
+      "end": "0x12f5f40",
+      "description": "Uga Buga Level"
+    },
+    {
+      "name": "assets10",
+      "start": "0x12f5f40",
+      "end": "0x12fbcf0",
+      "description": "Spooky Level"
+    },
+    {
+      "name": "assets11",
+      "start": "0x12fbcf0",
+      "end": "0x12ff550",
+      "description": "Heist Level"
+    },
+    {
+      "name": "assets12",
+      "start": "0x12ff550",
+      "end": "0x1300188",
+      "description": "Unknown Small 3"
+    },
+    {
+      "name": "assets13",
+      "start": "0x1300188",
+      "end": "0x1304f00",
+      "description": "Unknown Small 4"
+    },
+    {
+      "name": "assets14",
+      "start": "0x1304f00",
+      "end": "0x132e698",
+      "description": "Cutscene Video Data"
+    },
+    {
+      "name": "assets15",
+      "start": "0x132e698",
+      "end": "0x1330478",
+      "description": "Misc Assets"
+    },
+    {
+      "name": "assets16",
+      "start": "0x1330478",
+      "end": "0x29ae9e8",
+      "description": "Audio Tracks (256 MP3 streams)"
+    },
+    {
+      "name": "assets17",
+      "start": "0x29ae9e8",
+      "end": "0x3f82170",
+      "description": "Music Sequences (M64/MIDI)"
+    },
+    {
+      "name": "assets18",
+      "start": "0x3f82170",
+      "end": "0x3f82490",
+      "description": "Compressed Sub-package"
+    },
+    {
+      "name": "assets19",
+      "start": "0x3f82490",
+      "end": "0x3f87f68",
+      "description": "Voice Lines"
+    },
+    {
+      "name": "assets1A",
+      "start": "0x3f87f68",
+      "end": "0x3f89640",
+      "description": "Localized Voice Lines (EN)"
+    },
+    {
+      "name": "assets1B",
+      "start": "0x3f89640",
+      "end": "0x3f8ab18",
+      "description": "Extra Misc"
+    },
+    {
+      "name": "assets1C",
+      "start": "0x3f8ab18",
+      "end": "0x3f8b770",
+      "description": "Text & Credits"
+    }
+  ],
+  "audio_tracks": [
+    {
+      "index": 0,
+      "name": "sfx_conker_grunt",
+      "size_kb": 91.3,
+      "file": "audio/sfx_conker_grunt.mp3"
+    },
+    {
+      "index": 1,
+      "name": "sfx_footstep_grass",
+      "size_kb": 19.9,
+      "file": "audio/sfx_footstep_grass.mp3"
+    },
+    {
+      "index": 2,
+      "name": "sfx_footstep_stone",
+      "size_kb": 22.8,
+      "file": "audio/sfx_footstep_stone.mp3"
+    },
+    {
+      "index": 3,
+      "name": "sfx_jump",
+      "size_kb": 5.1,
+      "file": "audio/sfx_jump.mp3"
+    },
+    {
+      "index": 4,
+      "name": "sfx_land",
+      "size_kb": 6.0,
+      "file": "audio/sfx_land.mp3"
+    },
+    {
+      "index": 5,
+      "name": "music_windy_theme",
+      "size_kb": 111.6,
+      "file": "audio/music_windy_theme.mp3"
+    },
+    {
+      "index": 6,
+      "name": "sfx_coin_collect",
+      "size_kb": 8.0,
+      "file": "audio/sfx_coin_collect.mp3"
+    },
+    {
+      "index": 7,
+      "name": "music_bat_tower",
+      "size_kb": 90.9,
+      "file": "audio/music_bat_tower.mp3"
+    },
+    {
+      "index": 8,
+      "name": "track_008",
+      "size_kb": 10.9,
+      "file": "audio/track_008.mp3"
+    },
+    {
+      "index": 9,
+      "name": "track_009",
+      "size_kb": 12.6,
+      "file": "audio/track_009.mp3"
+    },
+    {
+      "index": 10,
+      "name": "track_010",
+      "size_kb": 14.6,
+      "file": "audio/track_010.mp3"
+    },
+    {
+      "index": 11,
+      "name": "track_011",
+      "size_kb": 14.9,
+      "file": "audio/track_011.mp3"
+    },
+    {
+      "index": 12,
+      "name": "track_012",
+      "size_kb": 36.0,
+      "file": "audio/track_012.mp3"
+    },
+    {
+      "index": 13,
+      "name": "music_hungover_theme",
+      "size_kb": 94.8,
+      "file": "audio/music_hungover_theme.mp3"
+    },
+    {
+      "index": 14,
+      "name": "track_014",
+      "size_kb": 19.9,
+      "file": "audio/track_014.mp3"
+    },
+    {
+      "index": 15,
+      "name": "track_015",
+      "size_kb": 35.9,
+      "file": "audio/track_015.mp3"
+    },
+    {
+      "index": 16,
+      "name": "track_016",
+      "size_kb": 27.4,
+      "file": "audio/track_016.mp3"
+    },
+    {
+      "index": 17,
+      "name": "track_017",
+      "size_kb": 6.5,
+      "file": "audio/track_017.mp3"
+    },
+    {
+      "index": 18,
+      "name": "track_018",
+      "size_kb": 54.9,
+      "file": "audio/track_018.mp3"
+    },
+    {
+      "index": 19,
+      "name": "music_title_screen",
+      "size_kb": 107.6,
+      "file": "audio/music_title_screen.mp3"
+    },
+    {
+      "index": 20,
+      "name": "music_it_is_war",
+      "size_kb": 116.0,
+      "file": "audio/music_it_is_war.mp3"
+    },
+    {
+      "index": 21,
+      "name": "track_021",
+      "size_kb": 85.4,
+      "file": "audio/track_021.mp3"
+    },
+    {
+      "index": 22,
+      "name": "track_022",
+      "size_kb": 93.6,
+      "file": "audio/track_022.mp3"
+    },
+    {
+      "index": 23,
+      "name": "track_023",
+      "size_kb": 118.8,
+      "file": "audio/track_023.mp3"
+    },
+    {
+      "index": 24,
+      "name": "track_024",
+      "size_kb": 92.6,
+      "file": "audio/track_024.mp3"
+    },
+    {
+      "index": 25,
+      "name": "track_025",
+      "size_kb": 7.1,
+      "file": "audio/track_025.mp3"
+    },
+    {
+      "index": 26,
+      "name": "track_026",
+      "size_kb": 8.1,
+      "file": "audio/track_026.mp3"
+    },
+    {
+      "index": 27,
+      "name": "track_027",
+      "size_kb": 43.3,
+      "file": "audio/track_027.mp3"
+    },
+    {
+      "index": 28,
+      "name": "track_028",
+      "size_kb": 26.6,
+      "file": "audio/track_028.mp3"
+    },
+    {
+      "index": 29,
+      "name": "track_029",
+      "size_kb": 125.7,
+      "file": "audio/track_029.mp3"
+    },
+    {
+      "index": 30,
+      "name": "track_030",
+      "size_kb": 48.8,
+      "file": "audio/track_030.mp3"
+    },
+    {
+      "index": 31,
+      "name": "track_031",
+      "size_kb": 18.9,
+      "file": "audio/track_031.mp3"
+    },
+    {
+      "index": 32,
+      "name": "track_032",
+      "size_kb": 59.3,
+      "file": "audio/track_032.mp3"
+    },
+    {
+      "index": 33,
+      "name": "music_poo_mountain",
+      "size_kb": 302.8,
+      "file": "audio/music_poo_mountain.mp3"
+    },
+    {
+      "index": 34,
+      "name": "track_034",
+      "size_kb": 47.3,
+      "file": "audio/track_034.mp3"
+    },
+    {
+      "index": 35,
+      "name": "track_035",
+      "size_kb": 109.4,
+      "file": "audio/track_035.mp3"
+    },
+    {
+      "index": 36,
+      "name": "track_036",
+      "size_kb": 61.7,
+      "file": "audio/track_036.mp3"
+    },
+    {
+      "index": 37,
+      "name": "track_037",
+      "size_kb": 100.4,
+      "file": "audio/track_037.mp3"
+    },
+    {
+      "index": 38,
+      "name": "track_038",
+      "size_kb": 33.7,
+      "file": "audio/track_038.mp3"
+    },
+    {
+      "index": 39,
+      "name": "track_039",
+      "size_kb": 18.1,
+      "file": "audio/track_039.mp3"
+    },
+    {
+      "index": 40,
+      "name": "track_040",
+      "size_kb": 36.4,
+      "file": "audio/track_040.mp3"
+    },
+    {
+      "index": 41,
+      "name": "track_041",
+      "size_kb": 48.3,
+      "file": "audio/track_041.mp3"
+    },
+    {
+      "index": 42,
+      "name": "track_042",
+      "size_kb": 37.2,
+      "file": "audio/track_042.mp3"
+    },
+    {
+      "index": 43,
+      "name": "track_043",
+      "size_kb": 41.4,
+      "file": "audio/track_043.mp3"
+    },
+    {
+      "index": 44,
+      "name": "track_044",
+      "size_kb": 21.3,
+      "file": "audio/track_044.mp3"
+    },
+    {
+      "index": 45,
+      "name": "track_045",
+      "size_kb": 65.1,
+      "file": "audio/track_045.mp3"
+    },
+    {
+      "index": 46,
+      "name": "track_046",
+      "size_kb": 11.6,
+      "file": "audio/track_046.mp3"
+    },
+    {
+      "index": 47,
+      "name": "track_047",
+      "size_kb": 68.7,
+      "file": "audio/track_047.mp3"
+    },
+    {
+      "index": 48,
+      "name": "track_048",
+      "size_kb": 84.9,
+      "file": "audio/track_048.mp3"
+    },
+    {
+      "index": 49,
+      "name": "track_049",
+      "size_kb": 30.9,
+      "file": "audio/track_049.mp3"
+    },
+    {
+      "index": 50,
+      "name": "track_050",
+      "size_kb": 188.7,
+      "file": "audio/track_050.mp3"
+    },
+    {
+      "index": 51,
+      "name": "track_051",
+      "size_kb": 34.2,
+      "file": "audio/track_051.mp3"
+    },
+    {
+      "index": 52,
+      "name": "track_052",
+      "size_kb": 16.2,
+      "file": "audio/track_052.mp3"
+    },
+    {
+      "index": 53,
+      "name": "track_053",
+      "size_kb": 8.1,
+      "file": "audio/track_053.mp3"
+    },
+    {
+      "index": 54,
+      "name": "track_054",
+      "size_kb": 17.9,
+      "file": "audio/track_054.mp3"
+    },
+    {
+      "index": 55,
+      "name": "track_055",
+      "size_kb": 8.7,
+      "file": "audio/track_055.mp3"
+    },
+    {
+      "index": 56,
+      "name": "track_056",
+      "size_kb": 119.5,
+      "file": "audio/track_056.mp3"
+    },
+    {
+      "index": 57,
+      "name": "track_057",
+      "size_kb": 38.2,
+      "file": "audio/track_057.mp3"
+    },
+    {
+      "index": 58,
+      "name": "track_058",
+      "size_kb": 6.5,
+      "file": "audio/track_058.mp3"
+    },
+    {
+      "index": 59,
+      "name": "track_059",
+      "size_kb": 17.9,
+      "file": "audio/track_059.mp3"
+    },
+    {
+      "index": 60,
+      "name": "track_060",
+      "size_kb": 6.6,
+      "file": "audio/track_060.mp3"
+    },
+    {
+      "index": 61,
+      "name": "track_061",
+      "size_kb": 22.9,
+      "file": "audio/track_061.mp3"
+    },
+    {
+      "index": 62,
+      "name": "track_062",
+      "size_kb": 14.9,
+      "file": "audio/track_062.mp3"
+    },
+    {
+      "index": 63,
+      "name": "track_063",
+      "size_kb": 36.6,
+      "file": "audio/track_063.mp3"
+    },
+    {
+      "index": 64,
+      "name": "track_064",
+      "size_kb": 9.7,
+      "file": "audio/track_064.mp3"
+    },
+    {
+      "index": 65,
+      "name": "track_065",
+      "size_kb": 9.9,
+      "file": "audio/track_065.mp3"
+    },
+    {
+      "index": 66,
+      "name": "track_066",
+      "size_kb": 14.9,
+      "file": "audio/track_066.mp3"
+    },
+    {
+      "index": 67,
+      "name": "track_067",
+      "size_kb": 32.5,
+      "file": "audio/track_067.mp3"
+    },
+    {
+      "index": 68,
+      "name": "track_068",
+      "size_kb": 27.8,
+      "file": "audio/track_068.mp3"
+    },
+    {
+      "index": 69,
+      "name": "track_069",
+      "size_kb": 8.0,
+      "file": "audio/track_069.mp3"
+    },
+    {
+      "index": 70,
+      "name": "track_070",
+      "size_kb": 10.0,
+      "file": "audio/track_070.mp3"
+    },
+    {
+      "index": 71,
+      "name": "track_071",
+      "size_kb": 93.6,
+      "file": "audio/track_071.mp3"
+    },
+    {
+      "index": 72,
+      "name": "track_072",
+      "size_kb": 19.9,
+      "file": "audio/track_072.mp3"
+    },
+    {
+      "index": 73,
+      "name": "track_073",
+      "size_kb": 37.4,
+      "file": "audio/track_073.mp3"
+    },
+    {
+      "index": 74,
+      "name": "track_074",
+      "size_kb": 75.2,
+      "file": "audio/track_074.mp3"
+    },
+    {
+      "index": 75,
+      "name": "track_075",
+      "size_kb": 38.4,
+      "file": "audio/track_075.mp3"
+    },
+    {
+      "index": 76,
+      "name": "track_076",
+      "size_kb": 31.3,
+      "file": "audio/track_076.mp3"
+    },
+    {
+      "index": 77,
+      "name": "track_077",
+      "size_kb": 19.3,
+      "file": "audio/track_077.mp3"
+    },
+    {
+      "index": 78,
+      "name": "track_078",
+      "size_kb": 13.4,
+      "file": "audio/track_078.mp3"
+    },
+    {
+      "index": 79,
+      "name": "track_079",
+      "size_kb": 9.8,
+      "file": "audio/track_079.mp3"
+    },
+    {
+      "index": 80,
+      "name": "track_080",
+      "size_kb": 9.0,
+      "file": "audio/track_080.mp3"
+    },
+    {
+      "index": 82,
+      "name": "track_082",
+      "size_kb": 11.2,
+      "file": "audio/track_082.mp3"
+    },
+    {
+      "index": 83,
+      "name": "music_uga_buga",
+      "size_kb": 11.1,
+      "file": "audio/music_uga_buga.mp3"
+    },
+    {
+      "index": 84,
+      "name": "track_084",
+      "size_kb": 246.6,
+      "file": "audio/track_084.mp3"
+    },
+    {
+      "index": 85,
+      "name": "track_085",
+      "size_kb": 12.9,
+      "file": "audio/track_085.mp3"
+    },
+    {
+      "index": 86,
+      "name": "track_086",
+      "size_kb": 4.3,
+      "file": "audio/track_086.mp3"
+    },
+    {
+      "index": 87,
+      "name": "track_087",
+      "size_kb": 14.0,
+      "file": "audio/track_087.mp3"
+    },
+    {
+      "index": 88,
+      "name": "track_088",
+      "size_kb": 20.8,
+      "file": "audio/track_088.mp3"
+    },
+    {
+      "index": 89,
+      "name": "track_089",
+      "size_kb": 16.3,
+      "file": "audio/track_089.mp3"
+    },
+    {
+      "index": 90,
+      "name": "track_090",
+      "size_kb": 48.5,
+      "file": "audio/track_090.mp3"
+    },
+    {
+      "index": 91,
+      "name": "track_091",
+      "size_kb": 47.2,
+      "file": "audio/track_091.mp3"
+    },
+    {
+      "index": 92,
+      "name": "track_092",
+      "size_kb": 38.9,
+      "file": "audio/track_092.mp3"
+    },
+    {
+      "index": 93,
+      "name": "track_093",
+      "size_kb": 19.9,
+      "file": "audio/track_093.mp3"
+    },
+    {
+      "index": 94,
+      "name": "track_094",
+      "size_kb": 11.3,
+      "file": "audio/track_094.mp3"
+    },
+    {
+      "index": 95,
+      "name": "track_095",
+      "size_kb": 16.9,
+      "file": "audio/track_095.mp3"
+    },
+    {
+      "index": 96,
+      "name": "track_096",
+      "size_kb": 12.0,
+      "file": "audio/track_096.mp3"
+    },
+    {
+      "index": 97,
+      "name": "track_097",
+      "size_kb": 9.6,
+      "file": "audio/track_097.mp3"
+    },
+    {
+      "index": 98,
+      "name": "track_098",
+      "size_kb": 14.0,
+      "file": "audio/track_098.mp3"
+    },
+    {
+      "index": 99,
+      "name": "track_099",
+      "size_kb": 54.9,
+      "file": "audio/track_099.mp3"
+    },
+    {
+      "index": 100,
+      "name": "track_100",
+      "size_kb": 91.2,
+      "file": "audio/track_100.mp3"
+    },
+    {
+      "index": 101,
+      "name": "track_101",
+      "size_kb": 67.0,
+      "file": "audio/track_101.mp3"
+    },
+    {
+      "index": 102,
+      "name": "track_102",
+      "size_kb": 29.8,
+      "file": "audio/track_102.mp3"
+    },
+    {
+      "index": 103,
+      "name": "track_103",
+      "size_kb": 17.9,
+      "file": "audio/track_103.mp3"
+    },
+    {
+      "index": 104,
+      "name": "track_104",
+      "size_kb": 6.0,
+      "file": "audio/track_104.mp3"
+    },
+    {
+      "index": 105,
+      "name": "track_105",
+      "size_kb": 2.8,
+      "file": "audio/track_105.mp3"
+    },
+    {
+      "index": 106,
+      "name": "track_106",
+      "size_kb": 2.6,
+      "file": "audio/track_106.mp3"
+    },
+    {
+      "index": 107,
+      "name": "track_107",
+      "size_kb": 4.5,
+      "file": "audio/track_107.mp3"
+    },
+    {
+      "index": 108,
+      "name": "track_108",
+      "size_kb": 4.9,
+      "file": "audio/track_108.mp3"
+    },
+    {
+      "index": 110,
+      "name": "track_110",
+      "size_kb": 6.0,
+      "file": "audio/track_110.mp3"
+    },
+    {
+      "index": 111,
+      "name": "track_111",
+      "size_kb": 6.3,
+      "file": "audio/track_111.mp3"
+    },
+    {
+      "index": 112,
+      "name": "track_112",
+      "size_kb": 1.2,
+      "file": "audio/track_112.mp3"
+    },
+    {
+      "index": 113,
+      "name": "track_113",
+      "size_kb": 1.8,
+      "file": "audio/track_113.mp3"
+    },
+    {
+      "index": 114,
+      "name": "track_114",
+      "size_kb": 5.4,
+      "file": "audio/track_114.mp3"
+    },
+    {
+      "index": 115,
+      "name": "track_115",
+      "size_kb": 7.0,
+      "file": "audio/track_115.mp3"
+    },
+    {
+      "index": 116,
+      "name": "track_116",
+      "size_kb": 4.0,
+      "file": "audio/track_116.mp3"
+    },
+    {
+      "index": 117,
+      "name": "music_great_mighty_poo",
+      "size_kb": 4.0,
+      "file": "audio/music_great_mighty_poo.mp3"
+    },
+    {
+      "index": 118,
+      "name": "track_118",
+      "size_kb": 65.7,
+      "file": "audio/track_118.mp3"
+    },
+    {
+      "index": 119,
+      "name": "track_119",
+      "size_kb": 351.5,
+      "file": "audio/track_119.mp3"
+    },
+    {
+      "index": 121,
+      "name": "track_121",
+      "size_kb": 26.9,
+      "file": "audio/track_121.mp3"
+    },
+    {
+      "index": 122,
+      "name": "track_122",
+      "size_kb": 91.0,
+      "file": "audio/track_122.mp3"
+    },
+    {
+      "index": 123,
+      "name": "track_123",
+      "size_kb": 19.7,
+      "file": "audio/track_123.mp3"
+    },
+    {
+      "index": 124,
+      "name": "track_124",
+      "size_kb": 57.5,
+      "file": "audio/track_124.mp3"
+    },
+    {
+      "index": 125,
+      "name": "track_125",
+      "size_kb": 3.4,
+      "file": "audio/track_125.mp3"
+    },
+    {
+      "index": 126,
+      "name": "track_126",
+      "size_kb": 5.8,
+      "file": "audio/track_126.mp3"
+    },
+    {
+      "index": 127,
+      "name": "track_127",
+      "size_kb": 8.7,
+      "file": "audio/track_127.mp3"
+    },
+    {
+      "index": 128,
+      "name": "track_128",
+      "size_kb": 4.0,
+      "file": "audio/track_128.mp3"
+    },
+    {
+      "index": 129,
+      "name": "track_129",
+      "size_kb": 190.0,
+      "file": "audio/track_129.mp3"
+    },
+    {
+      "index": 130,
+      "name": "track_130",
+      "size_kb": 90.8,
+      "file": "audio/track_130.mp3"
+    },
+    {
+      "index": 131,
+      "name": "track_131",
+      "size_kb": 77.5,
+      "file": "audio/track_131.mp3"
+    },
+    {
+      "index": 132,
+      "name": "track_132",
+      "size_kb": 81.2,
+      "file": "audio/track_132.mp3"
+    },
+    {
+      "index": 133,
+      "name": "track_133",
+      "size_kb": 17.2,
+      "file": "audio/track_133.mp3"
+    },
+    {
+      "index": 134,
+      "name": "track_134",
+      "size_kb": 67.6,
+      "file": "audio/track_134.mp3"
+    },
+    {
+      "index": 135,
+      "name": "track_135",
+      "size_kb": 15.9,
+      "file": "audio/track_135.mp3"
+    },
+    {
+      "index": 136,
+      "name": "track_136",
+      "size_kb": 18.0,
+      "file": "audio/track_136.mp3"
+    },
+    {
+      "index": 137,
+      "name": "track_137",
+      "size_kb": 7.1,
+      "file": "audio/track_137.mp3"
+    },
+    {
+      "index": 138,
+      "name": "track_138",
+      "size_kb": 45.8,
+      "file": "audio/track_138.mp3"
+    },
+    {
+      "index": 139,
+      "name": "track_139",
+      "size_kb": 22.2,
+      "file": "audio/track_139.mp3"
+    },
+    {
+      "index": 140,
+      "name": "track_140",
+      "size_kb": 164.1,
+      "file": "audio/track_140.mp3"
+    },
+    {
+      "index": 141,
+      "name": "track_141",
+      "size_kb": 32.3,
+      "file": "audio/track_141.mp3"
+    },
+    {
+      "index": 142,
+      "name": "track_142",
+      "size_kb": 27.7,
+      "file": "audio/track_142.mp3"
+    },
+    {
+      "index": 143,
+      "name": "track_143",
+      "size_kb": 27.0,
+      "file": "audio/track_143.mp3"
+    },
+    {
+      "index": 144,
+      "name": "track_144",
+      "size_kb": 9.1,
+      "file": "audio/track_144.mp3"
+    },
+    {
+      "index": 145,
+      "name": "track_145",
+      "size_kb": 5.8,
+      "file": "audio/track_145.mp3"
+    },
+    {
+      "index": 146,
+      "name": "track_146",
+      "size_kb": 33.9,
+      "file": "audio/track_146.mp3"
+    },
+    {
+      "index": 147,
+      "name": "track_147",
+      "size_kb": 7.5,
+      "file": "audio/track_147.mp3"
+    },
+    {
+      "index": 148,
+      "name": "track_148",
+      "size_kb": 27.9,
+      "file": "audio/track_148.mp3"
+    },
+    {
+      "index": 149,
+      "name": "track_149",
+      "size_kb": 41.1,
+      "file": "audio/track_149.mp3"
+    },
+    {
+      "index": 150,
+      "name": "track_150",
+      "size_kb": 9.1,
+      "file": "audio/track_150.mp3"
+    },
+    {
+      "index": 151,
+      "name": "track_151",
+      "size_kb": 13.9,
+      "file": "audio/track_151.mp3"
+    },
+    {
+      "index": 152,
+      "name": "track_152",
+      "size_kb": 25.5,
+      "file": "audio/track_152.mp3"
+    },
+    {
+      "index": 153,
+      "name": "track_153",
+      "size_kb": 15.2,
+      "file": "audio/track_153.mp3"
+    },
+    {
+      "index": 154,
+      "name": "track_154",
+      "size_kb": 48.8,
+      "file": "audio/track_154.mp3"
+    },
+    {
+      "index": 155,
+      "name": "track_155",
+      "size_kb": 25.9,
+      "file": "audio/track_155.mp3"
+    },
+    {
+      "index": 156,
+      "name": "track_156",
+      "size_kb": 38.9,
+      "file": "audio/track_156.mp3"
+    },
+    {
+      "index": 158,
+      "name": "track_158",
+      "size_kb": 50.4,
+      "file": "audio/track_158.mp3"
+    },
+    {
+      "index": 160,
+      "name": "track_160",
+      "size_kb": 31.8,
+      "file": "audio/track_160.mp3"
+    },
+    {
+      "index": 161,
+      "name": "track_161",
+      "size_kb": 51.4,
+      "file": "audio/track_161.mp3"
+    },
+    {
+      "index": 162,
+      "name": "track_162",
+      "size_kb": 13.7,
+      "file": "audio/track_162.mp3"
+    },
+    {
+      "index": 163,
+      "name": "track_163",
+      "size_kb": 49.3,
+      "file": "audio/track_163.mp3"
+    },
+    {
+      "index": 164,
+      "name": "track_164",
+      "size_kb": 56.3,
+      "file": "audio/track_164.mp3"
+    },
+    {
+      "index": 165,
+      "name": "track_165",
+      "size_kb": 24.1,
+      "file": "audio/track_165.mp3"
+    },
+    {
+      "index": 166,
+      "name": "track_166",
+      "size_kb": 11.0,
+      "file": "audio/track_166.mp3"
+    },
+    {
+      "index": 167,
+      "name": "track_167",
+      "size_kb": 12.7,
+      "file": "audio/track_167.mp3"
+    },
+    {
+      "index": 168,
+      "name": "track_168",
+      "size_kb": 13.0,
+      "file": "audio/track_168.mp3"
+    },
+    {
+      "index": 169,
+      "name": "track_169",
+      "size_kb": 15.9,
+      "file": "audio/track_169.mp3"
+    },
+    {
+      "index": 170,
+      "name": "track_170",
+      "size_kb": 9.0,
+      "file": "audio/track_170.mp3"
+    },
+    {
+      "index": 171,
+      "name": "track_171",
+      "size_kb": 5.0,
+      "file": "audio/track_171.mp3"
+    },
+    {
+      "index": 172,
+      "name": "track_172",
+      "size_kb": 12.0,
+      "file": "audio/track_172.mp3"
+    },
+    {
+      "index": 173,
+      "name": "track_173",
+      "size_kb": 8.9,
+      "file": "audio/track_173.mp3"
+    },
+    {
+      "index": 174,
+      "name": "track_174",
+      "size_kb": 10.0,
+      "file": "audio/track_174.mp3"
+    },
+    {
+      "index": 175,
+      "name": "track_175",
+      "size_kb": 109.4,
+      "file": "audio/track_175.mp3"
+    },
+    {
+      "index": 176,
+      "name": "track_176",
+      "size_kb": 106.1,
+      "file": "audio/track_176.mp3"
+    },
+    {
+      "index": 177,
+      "name": "track_177",
+      "size_kb": 25.8,
+      "file": "audio/track_177.mp3"
+    },
+    {
+      "index": 178,
+      "name": "track_178",
+      "size_kb": 54.8,
+      "file": "audio/track_178.mp3"
+    },
+    {
+      "index": 179,
+      "name": "track_179",
+      "size_kb": 35.9,
+      "file": "audio/track_179.mp3"
+    },
+    {
+      "index": 180,
+      "name": "track_180",
+      "size_kb": 157.3,
+      "file": "audio/track_180.mp3"
+    },
+    {
+      "index": 181,
+      "name": "track_181",
+      "size_kb": 18.9,
+      "file": "audio/track_181.mp3"
+    },
+    {
+      "index": 182,
+      "name": "track_182",
+      "size_kb": 117.5,
+      "file": "audio/track_182.mp3"
+    },
+    {
+      "index": 183,
+      "name": "track_183",
+      "size_kb": 46.8,
+      "file": "audio/track_183.mp3"
+    },
+    {
+      "index": 184,
+      "name": "track_184",
+      "size_kb": 15.1,
+      "file": "audio/track_184.mp3"
+    },
+    {
+      "index": 185,
+      "name": "track_185",
+      "size_kb": 10.9,
+      "file": "audio/track_185.mp3"
+    },
+    {
+      "index": 186,
+      "name": "track_186",
+      "size_kb": 5.0,
+      "file": "audio/track_186.mp3"
+    },
+    {
+      "index": 187,
+      "name": "track_187",
+      "size_kb": 39.0,
+      "file": "audio/track_187.mp3"
+    },
+    {
+      "index": 188,
+      "name": "track_188",
+      "size_kb": 18.7,
+      "file": "audio/track_188.mp3"
+    },
+    {
+      "index": 189,
+      "name": "track_189",
+      "size_kb": 36.9,
+      "file": "audio/track_189.mp3"
+    },
+    {
+      "index": 190,
+      "name": "track_190",
+      "size_kb": 7.0,
+      "file": "audio/track_190.mp3"
+    },
+    {
+      "index": 191,
+      "name": "track_191",
+      "size_kb": 4.7,
+      "file": "audio/track_191.mp3"
+    },
+    {
+      "index": 192,
+      "name": "track_192",
+      "size_kb": 5.0,
+      "file": "audio/track_192.mp3"
+    },
+    {
+      "index": 193,
+      "name": "track_193",
+      "size_kb": 5.3,
+      "file": "audio/track_193.mp3"
+    },
+    {
+      "index": 194,
+      "name": "track_194",
+      "size_kb": 7.0,
+      "file": "audio/track_194.mp3"
+    },
+    {
+      "index": 195,
+      "name": "track_195",
+      "size_kb": 4.0,
+      "file": "audio/track_195.mp3"
+    },
+    {
+      "index": 196,
+      "name": "track_196",
+      "size_kb": 2.6,
+      "file": "audio/track_196.mp3"
+    },
+    {
+      "index": 197,
+      "name": "track_197",
+      "size_kb": 1.5,
+      "file": "audio/track_197.mp3"
+    },
+    {
+      "index": 198,
+      "name": "track_198",
+      "size_kb": 6.0,
+      "file": "audio/track_198.mp3"
+    },
+    {
+      "index": 199,
+      "name": "track_199",
+      "size_kb": 10.0,
+      "file": "audio/track_199.mp3"
+    },
+    {
+      "index": 200,
+      "name": "track_200",
+      "size_kb": 2.9,
+      "file": "audio/track_200.mp3"
+    },
+    {
+      "index": 201,
+      "name": "track_201",
+      "size_kb": 5.0,
+      "file": "audio/track_201.mp3"
+    },
+    {
+      "index": 202,
+      "name": "track_202",
+      "size_kb": 7.9,
+      "file": "audio/track_202.mp3"
+    },
+    {
+      "index": 203,
+      "name": "track_203",
+      "size_kb": 13.1,
+      "file": "audio/track_203.mp3"
+    },
+    {
+      "index": 204,
+      "name": "music_heist",
+      "size_kb": 21.9,
+      "file": "audio/music_heist.mp3"
+    },
+    {
+      "index": 205,
+      "name": "music_spooky",
+      "size_kb": 74.7,
+      "file": "audio/music_spooky.mp3"
+    },
+    {
+      "index": 206,
+      "name": "track_206",
+      "size_kb": 71.7,
+      "file": "audio/track_206.mp3"
+    },
+    {
+      "index": 208,
+      "name": "track_208",
+      "size_kb": 33.9,
+      "file": "audio/track_208.mp3"
+    },
+    {
+      "index": 209,
+      "name": "track_209",
+      "size_kb": 28.8,
+      "file": "audio/track_209.mp3"
+    },
+    {
+      "index": 210,
+      "name": "track_210",
+      "size_kb": 226.9,
+      "file": "audio/track_210.mp3"
+    },
+    {
+      "index": 211,
+      "name": "track_211",
+      "size_kb": 239.1,
+      "file": "audio/track_211.mp3"
+    },
+    {
+      "index": 212,
+      "name": "track_212",
+      "size_kb": 106.5,
+      "file": "audio/track_212.mp3"
+    },
+    {
+      "index": 213,
+      "name": "track_213",
+      "size_kb": 122.7,
+      "file": "audio/track_213.mp3"
+    },
+    {
+      "index": 214,
+      "name": "track_214",
+      "size_kb": 86.8,
+      "file": "audio/track_214.mp3"
+    },
+    {
+      "index": 215,
+      "name": "track_215",
+      "size_kb": 88.4,
+      "file": "audio/track_215.mp3"
+    },
+    {
+      "index": 216,
+      "name": "track_216",
+      "size_kb": 156.6,
+      "file": "audio/track_216.mp3"
+    },
+    {
+      "index": 217,
+      "name": "track_217",
+      "size_kb": 87.9,
+      "file": "audio/track_217.mp3"
+    },
+    {
+      "index": 218,
+      "name": "track_218",
+      "size_kb": 70.6,
+      "file": "audio/track_218.mp3"
+    },
+    {
+      "index": 219,
+      "name": "track_219",
+      "size_kb": 16.6,
+      "file": "audio/track_219.mp3"
+    },
+    {
+      "index": 220,
+      "name": "track_220",
+      "size_kb": 27.8,
+      "file": "audio/track_220.mp3"
+    },
+    {
+      "index": 221,
+      "name": "track_221",
+      "size_kb": 58.2,
+      "file": "audio/track_221.mp3"
+    },
+    {
+      "index": 222,
+      "name": "track_222",
+      "size_kb": 105.7,
+      "file": "audio/track_222.mp3"
+    },
+    {
+      "index": 223,
+      "name": "track_223",
+      "size_kb": 20.5,
+      "file": "audio/track_223.mp3"
+    },
+    {
+      "index": 224,
+      "name": "track_224",
+      "size_kb": 39.0,
+      "file": "audio/track_224.mp3"
+    },
+    {
+      "index": 225,
+      "name": "track_225",
+      "size_kb": 20.7,
+      "file": "audio/track_225.mp3"
+    },
+    {
+      "index": 226,
+      "name": "track_226",
+      "size_kb": 18.9,
+      "file": "audio/track_226.mp3"
+    },
+    {
+      "index": 227,
+      "name": "track_227",
+      "size_kb": 20.9,
+      "file": "audio/track_227.mp3"
+    },
+    {
+      "index": 228,
+      "name": "track_228",
+      "size_kb": 28.8,
+      "file": "audio/track_228.mp3"
+    },
+    {
+      "index": 229,
+      "name": "track_229",
+      "size_kb": 8.9,
+      "file": "audio/track_229.mp3"
+    },
+    {
+      "index": 230,
+      "name": "track_230",
+      "size_kb": 33.9,
+      "file": "audio/track_230.mp3"
+    },
+    {
+      "index": 231,
+      "name": "track_231",
+      "size_kb": 13.6,
+      "file": "audio/track_231.mp3"
+    },
+    {
+      "index": 232,
+      "name": "track_232",
+      "size_kb": 4.0,
+      "file": "audio/track_232.mp3"
+    },
+    {
+      "index": 233,
+      "name": "track_233",
+      "size_kb": 106.3,
+      "file": "audio/track_233.mp3"
+    },
+    {
+      "index": 234,
+      "name": "track_234",
+      "size_kb": 75.8,
+      "file": "audio/track_234.mp3"
+    },
+    {
+      "index": 235,
+      "name": "track_235",
+      "size_kb": 10.1,
+      "file": "audio/track_235.mp3"
+    },
+    {
+      "index": 236,
+      "name": "track_236",
+      "size_kb": 159.3,
+      "file": "audio/track_236.mp3"
+    },
+    {
+      "index": 237,
+      "name": "track_237",
+      "size_kb": 12.0,
+      "file": "audio/track_237.mp3"
+    },
+    {
+      "index": 238,
+      "name": "track_238",
+      "size_kb": 59.7,
+      "file": "audio/track_238.mp3"
+    },
+    {
+      "index": 239,
+      "name": "track_239",
+      "size_kb": 92.6,
+      "file": "audio/track_239.mp3"
+    },
+    {
+      "index": 240,
+      "name": "track_240",
+      "size_kb": 46.4,
+      "file": "audio/track_240.mp3"
+    },
+    {
+      "index": 241,
+      "name": "track_241",
+      "size_kb": 46.8,
+      "file": "audio/track_241.mp3"
+    },
+    {
+      "index": 242,
+      "name": "track_242",
+      "size_kb": 99.5,
+      "file": "audio/track_242.mp3"
+    },
+    {
+      "index": 243,
+      "name": "track_243",
+      "size_kb": 55.0,
+      "file": "audio/track_243.mp3"
+    },
+    {
+      "index": 244,
+      "name": "track_244",
+      "size_kb": 21.4,
+      "file": "audio/track_244.mp3"
+    },
+    {
+      "index": 245,
+      "name": "track_245",
+      "size_kb": 30.1,
+      "file": "audio/track_245.mp3"
+    },
+    {
+      "index": 246,
+      "name": "track_246",
+      "size_kb": 24.7,
+      "file": "audio/track_246.mp3"
+    },
+    {
+      "index": 247,
+      "name": "track_247",
+      "size_kb": 18.5,
+      "file": "audio/track_247.mp3"
+    },
+    {
+      "index": 248,
+      "name": "track_248",
+      "size_kb": 23.9,
+      "file": "audio/track_248.mp3"
+    },
+    {
+      "index": 249,
+      "name": "track_249",
+      "size_kb": 17.7,
+      "file": "audio/track_249.mp3"
+    },
+    {
+      "index": 250,
+      "name": "track_250",
+      "size_kb": 12.0,
+      "file": "audio/track_250.mp3"
+    },
+    {
+      "index": 251,
+      "name": "track_251",
+      "size_kb": 47.5,
+      "file": "audio/track_251.mp3"
+    },
+    {
+      "index": 252,
+      "name": "track_252",
+      "size_kb": 161.4,
+      "file": "audio/track_252.mp3"
+    },
+    {
+      "index": 253,
+      "name": "track_253",
+      "size_kb": 18.3,
+      "file": "audio/track_253.mp3"
+    },
+    {
+      "index": 254,
+      "name": "track_254",
+      "size_kb": 5.1,
+      "file": "audio/track_254.mp3"
+    },
+    {
+      "index": 255,
+      "name": "track_255",
+      "size_kb": 22.1,
+      "file": "audio/track_255.mp3"
+    },
+    {
+      "index": 256,
+      "name": "track_256",
+      "size_kb": 112.1,
+      "file": "audio/track_256.mp3"
+    },
+    {
+      "index": 257,
+      "name": "track_257",
+      "size_kb": 193.2,
+      "file": "audio/track_257.mp3"
+    },
+    {
+      "index": 258,
+      "name": "track_258",
+      "size_kb": 11.7,
+      "file": "audio/track_258.mp3"
+    },
+    {
+      "index": 259,
+      "name": "track_259",
+      "size_kb": 13.0,
+      "file": "audio/track_259.mp3"
+    },
+    {
+      "index": 260,
+      "name": "track_260",
+      "size_kb": 28.9,
+      "file": "audio/track_260.mp3"
+    },
+    {
+      "index": 261,
+      "name": "track_261",
+      "size_kb": 81.5,
+      "file": "audio/track_261.mp3"
+    },
+    {
+      "index": 262,
+      "name": "track_262",
+      "size_kb": 42.1,
+      "file": "audio/track_262.mp3"
+    },
+    {
+      "index": 263,
+      "name": "track_263",
+      "size_kb": 54.1,
+      "file": "audio/track_263.mp3"
+    },
+    {
+      "index": 264,
+      "name": "track_264",
+      "size_kb": 22.5,
+      "file": "audio/track_264.mp3"
+    },
+    {
+      "index": 265,
+      "name": "track_265",
+      "size_kb": 26.0,
+      "file": "audio/track_265.mp3"
+    },
+    {
+      "index": 266,
+      "name": "track_266",
+      "size_kb": 122.0,
+      "file": "audio/track_266.mp3"
+    },
+    {
+      "index": 267,
+      "name": "track_267",
+      "size_kb": 39.8,
+      "file": "audio/track_267.mp3"
+    },
+    {
+      "index": 268,
+      "name": "track_268",
+      "size_kb": 11.1,
+      "file": "audio/track_268.mp3"
+    },
+    {
+      "index": 269,
+      "name": "track_269",
+      "size_kb": 17.2,
+      "file": "audio/track_269.mp3"
+    },
+    {
+      "index": 270,
+      "name": "track_270",
+      "size_kb": 23.9,
+      "file": "audio/track_270.mp3"
+    },
+    {
+      "index": 271,
+      "name": "track_271",
+      "size_kb": 75.0,
+      "file": "audio/track_271.mp3"
+    },
+    {
+      "index": 272,
+      "name": "track_272",
+      "size_kb": 10.2,
+      "file": "audio/track_272.mp3"
+    },
+    {
+      "index": 273,
+      "name": "track_273",
+      "size_kb": 18.8,
+      "file": "audio/track_273.mp3"
+    },
+    {
+      "index": 274,
+      "name": "track_274",
+      "size_kb": 11.9,
+      "file": "audio/track_274.mp3"
+    },
+    {
+      "index": 275,
+      "name": "track_275",
+      "size_kb": 15.5,
+      "file": "audio/track_275.mp3"
+    },
+    {
+      "index": 276,
+      "name": "track_276",
+      "size_kb": 7.6,
+      "file": "audio/track_276.mp3"
+    },
+    {
+      "index": 277,
+      "name": "track_277",
+      "size_kb": 127.3,
+      "file": "audio/track_277.mp3"
+    },
+    {
+      "index": 278,
+      "name": "track_278",
+      "size_kb": 112.6,
+      "file": "audio/track_278.mp3"
+    },
+    {
+      "index": 279,
+      "name": "track_279",
+      "size_kb": 164.9,
+      "file": "audio/track_279.mp3"
+    },
+    {
+      "index": 280,
+      "name": "track_280",
+      "size_kb": 74.7,
+      "file": "audio/track_280.mp3"
+    },
+    {
+      "index": 281,
+      "name": "track_281",
+      "size_kb": 55.8,
+      "file": "audio/track_281.mp3"
+    },
+    {
+      "index": 282,
+      "name": "track_282",
+      "size_kb": 34.9,
+      "file": "audio/track_282.mp3"
+    },
+    {
+      "index": 283,
+      "name": "track_283",
+      "size_kb": 29.6,
+      "file": "audio/track_283.mp3"
+    },
+    {
+      "index": 284,
+      "name": "music_windy_and_co_full",
+      "size_kb": 5.0,
+      "file": "audio/music_windy_and_co_full.mp3"
+    },
+    {
+      "index": 285,
+      "name": "track_285",
+      "size_kb": 4.9,
+      "file": "audio/track_285.mp3"
+    },
+    {
+      "index": 286,
+      "name": "music_overworld_full",
+      "size_kb": 7.5,
+      "file": "audio/music_overworld_full.mp3"
+    },
+    {
+      "index": 287,
+      "name": "track_287",
+      "size_kb": 39.8,
+      "file": "audio/track_287.mp3"
+    },
+    {
+      "index": 288,
+      "name": "track_288",
+      "size_kb": 41.3,
+      "file": "audio/track_288.mp3"
+    },
+    {
+      "index": 289,
+      "name": "music_conker_theme",
+      "size_kb": 17.9,
+      "file": "audio/music_conker_theme.mp3"
+    },
+    {
+      "index": 290,
+      "name": "track_290",
+      "size_kb": 325.7,
+      "file": "audio/track_290.mp3"
+    },
+    {
+      "index": 291,
+      "name": "track_291",
+      "size_kb": 107.6,
+      "file": "audio/track_291.mp3"
+    },
+    {
+      "index": 292,
+      "name": "track_292",
+      "size_kb": 622.6,
+      "file": "audio/track_292.mp3"
+    },
+    {
+      "index": 293,
+      "name": "track_293",
+      "size_kb": 129.8,
+      "file": "audio/track_293.mp3"
+    },
+    {
+      "index": 294,
+      "name": "track_294",
+      "size_kb": 182.3,
+      "file": "audio/track_294.mp3"
+    },
+    {
+      "index": 295,
+      "name": "track_295",
+      "size_kb": 336.4,
+      "file": "audio/track_295.mp3"
+    },
+    {
+      "index": 296,
+      "name": "track_296",
+      "size_kb": 24.2,
+      "file": "audio/track_296.mp3"
+    },
+    {
+      "index": 297,
+      "name": "track_297",
+      "size_kb": 64.9,
+      "file": "audio/track_297.mp3"
+    },
+    {
+      "index": 298,
+      "name": "track_298",
+      "size_kb": 10.2,
+      "file": "audio/track_298.mp3"
+    },
+    {
+      "index": 299,
+      "name": "track_299",
+      "size_kb": 37.1,
+      "file": "audio/track_299.mp3"
+    },
+    {
+      "index": 300,
+      "name": "track_300",
+      "size_kb": 161.6,
+      "file": "audio/track_300.mp3"
+    },
+    {
+      "index": 301,
+      "name": "track_301",
+      "size_kb": 15.8,
+      "file": "audio/track_301.mp3"
+    },
+    {
+      "index": 302,
+      "name": "music_bats_tower_full",
+      "size_kb": 46.9,
+      "file": "audio/music_bats_tower_full.mp3"
+    },
+    {
+      "index": 303,
+      "name": "track_303",
+      "size_kb": 50.4,
+      "file": "audio/track_303.mp3"
+    },
+    {
+      "index": 305,
+      "name": "track_305",
+      "size_kb": 98.8,
+      "file": "audio/track_305.mp3"
+    },
+    {
+      "index": 306,
+      "name": "track_306",
+      "size_kb": 31.9,
+      "file": "audio/track_306.mp3"
+    },
+    {
+      "index": 307,
+      "name": "track_307",
+      "size_kb": 15.1,
+      "file": "audio/track_307.mp3"
+    },
+    {
+      "index": 308,
+      "name": "track_308",
+      "size_kb": 29.8,
+      "file": "audio/track_308.mp3"
+    },
+    {
+      "index": 309,
+      "name": "track_309",
+      "size_kb": 246.0,
+      "file": "audio/track_309.mp3"
+    },
+    {
+      "index": 310,
+      "name": "track_310",
+      "size_kb": 45.6,
+      "file": "audio/track_310.mp3"
+    },
+    {
+      "index": 311,
+      "name": "track_311",
+      "size_kb": 43.0,
+      "file": "audio/track_311.mp3"
+    },
+    {
+      "index": 312,
+      "name": "track_312",
+      "size_kb": 71.9,
+      "file": "audio/track_312.mp3"
+    },
+    {
+      "index": 313,
+      "name": "track_313",
+      "size_kb": 31.4,
+      "file": "audio/track_313.mp3"
+    },
+    {
+      "index": 314,
+      "name": "track_314",
+      "size_kb": 21.3,
+      "file": "audio/track_314.mp3"
+    },
+    {
+      "index": 315,
+      "name": "music_its_war_full",
+      "size_kb": 24.3,
+      "file": "audio/music_its_war_full.mp3"
+    },
+    {
+      "index": 316,
+      "name": "track_316",
+      "size_kb": 51.2,
+      "file": "audio/track_316.mp3"
+    },
+    {
+      "index": 317,
+      "name": "track_317",
+      "size_kb": 21.6,
+      "file": "audio/track_317.mp3"
+    },
+    {
+      "index": 318,
+      "name": "track_318",
+      "size_kb": 17.9,
+      "file": "audio/track_318.mp3"
+    },
+    {
+      "index": 319,
+      "name": "track_319",
+      "size_kb": 144.7,
+      "file": "audio/track_319.mp3"
+    },
+    {
+      "index": 320,
+      "name": "track_320",
+      "size_kb": 46.7,
+      "file": "audio/track_320.mp3"
+    },
+    {
+      "index": 321,
+      "name": "track_321",
+      "size_kb": 55.8,
+      "file": "audio/track_321.mp3"
+    },
+    {
+      "index": 322,
+      "name": "track_322",
+      "size_kb": 280.7,
+      "file": "audio/track_322.mp3"
+    },
+    {
+      "index": 323,
+      "name": "track_323",
+      "size_kb": 111.4,
+      "file": "audio/track_323.mp3"
+    },
+    {
+      "index": 324,
+      "name": "track_324",
+      "size_kb": 155.6,
+      "file": "audio/track_324.mp3"
+    },
+    {
+      "index": 325,
+      "name": "track_325",
+      "size_kb": 9.9,
+      "file": "audio/track_325.mp3"
+    },
+    {
+      "index": 326,
+      "name": "track_326",
+      "size_kb": 40.7,
+      "file": "audio/track_326.mp3"
+    },
+    {
+      "index": 327,
+      "name": "track_327",
+      "size_kb": 7.6,
+      "file": "audio/track_327.mp3"
+    },
+    {
+      "index": 328,
+      "name": "track_328",
+      "size_kb": 5.7,
+      "file": "audio/track_328.mp3"
+    },
+    {
+      "index": 329,
+      "name": "track_329",
+      "size_kb": 18.9,
+      "file": "audio/track_329.mp3"
+    },
+    {
+      "index": 330,
+      "name": "track_330",
+      "size_kb": 39.6,
+      "file": "audio/track_330.mp3"
+    },
+    {
+      "index": 331,
+      "name": "track_331",
+      "size_kb": 22.9,
+      "file": "audio/track_331.mp3"
+    },
+    {
+      "index": 332,
+      "name": "track_332",
+      "size_kb": 53.8,
+      "file": "audio/track_332.mp3"
+    },
+    {
+      "index": 333,
+      "name": "track_333",
+      "size_kb": 61.6,
+      "file": "audio/track_333.mp3"
+    },
+    {
+      "index": 334,
+      "name": "track_334",
+      "size_kb": 47.8,
+      "file": "audio/track_334.mp3"
+    },
+    {
+      "index": 335,
+      "name": "track_335",
+      "size_kb": 90.9,
+      "file": "audio/track_335.mp3"
+    },
+    {
+      "index": 336,
+      "name": "track_336",
+      "size_kb": 5.6,
+      "file": "audio/track_336.mp3"
+    },
+    {
+      "index": 337,
+      "name": "track_337",
+      "size_kb": 65.2,
+      "file": "audio/track_337.mp3"
+    },
+    {
+      "index": 338,
+      "name": "music_uga_buga_full",
+      "size_kb": 54.5,
+      "file": "audio/music_uga_buga_full.mp3"
+    },
+    {
+      "index": 339,
+      "name": "track_339",
+      "size_kb": 99.0,
+      "file": "audio/track_339.mp3"
+    },
+    {
+      "index": 340,
+      "name": "track_340",
+      "size_kb": 9.6,
+      "file": "audio/track_340.mp3"
+    },
+    {
+      "index": 341,
+      "name": "track_341",
+      "size_kb": 29.9,
+      "file": "audio/track_341.mp3"
+    },
+    {
+      "index": 342,
+      "name": "track_342",
+      "size_kb": 26.9,
+      "file": "audio/track_342.mp3"
+    },
+    {
+      "index": 343,
+      "name": "music_sloprano",
+      "size_kb": 6.0,
+      "file": "audio/music_sloprano.mp3"
+    },
+    {
+      "index": 344,
+      "name": "track_344",
+      "size_kb": 187.1,
+      "file": "audio/track_344.mp3"
+    },
+    {
+      "index": 345,
+      "name": "track_345",
+      "size_kb": 220.8,
+      "file": "audio/track_345.mp3"
+    },
+    {
+      "index": 346,
+      "name": "track_346",
+      "size_kb": 124.1,
+      "file": "audio/track_346.mp3"
+    },
+    {
+      "index": 347,
+      "name": "track_347",
+      "size_kb": 67.2,
+      "file": "audio/track_347.mp3"
+    },
+    {
+      "index": 348,
+      "name": "track_348",
+      "size_kb": 29.6,
+      "file": "audio/track_348.mp3"
+    },
+    {
+      "index": 349,
+      "name": "track_349",
+      "size_kb": 71.7,
+      "file": "audio/track_349.mp3"
+    },
+    {
+      "index": 350,
+      "name": "track_350",
+      "size_kb": 278.3,
+      "file": "audio/track_350.mp3"
+    },
+    {
+      "index": 351,
+      "name": "track_351",
+      "size_kb": 185.0,
+      "file": "audio/track_351.mp3"
+    },
+    {
+      "index": 352,
+      "name": "track_352",
+      "size_kb": 29.4,
+      "file": "audio/track_352.mp3"
+    },
+    {
+      "index": 353,
+      "name": "track_353",
+      "size_kb": 50.7,
+      "file": "audio/track_353.mp3"
+    },
+    {
+      "index": 354,
+      "name": "track_354",
+      "size_kb": 144.4,
+      "file": "audio/track_354.mp3"
+    },
+    {
+      "index": 355,
+      "name": "track_355",
+      "size_kb": 16.8,
+      "file": "audio/track_355.mp3"
+    },
+    {
+      "index": 356,
+      "name": "track_356",
+      "size_kb": 82.7,
+      "file": "audio/track_356.mp3"
+    },
+    {
+      "index": 357,
+      "name": "track_357",
+      "size_kb": 54.1,
+      "file": "audio/track_357.mp3"
+    },
+    {
+      "index": 358,
+      "name": "track_358",
+      "size_kb": 41.2,
+      "file": "audio/track_358.mp3"
+    },
+    {
+      "index": 359,
+      "name": "track_359",
+      "size_kb": 31.5,
+      "file": "audio/track_359.mp3"
+    },
+    {
+      "index": 360,
+      "name": "track_360",
+      "size_kb": 108.7,
+      "file": "audio/track_360.mp3"
+    },
+    {
+      "index": 361,
+      "name": "track_361",
+      "size_kb": 42.7,
+      "file": "audio/track_361.mp3"
+    },
+    {
+      "index": 362,
+      "name": "track_362",
+      "size_kb": 36.6,
+      "file": "audio/track_362.mp3"
+    },
+    {
+      "index": 363,
+      "name": "track_363",
+      "size_kb": 32.3,
+      "file": "audio/track_363.mp3"
+    },
+    {
+      "index": 364,
+      "name": "track_364",
+      "size_kb": 49.3,
+      "file": "audio/track_364.mp3"
+    },
+    {
+      "index": 365,
+      "name": "track_365",
+      "size_kb": 42.8,
+      "file": "audio/track_365.mp3"
+    },
+    {
+      "index": 366,
+      "name": "track_366",
+      "size_kb": 35.6,
+      "file": "audio/track_366.mp3"
+    },
+    {
+      "index": 367,
+      "name": "track_367",
+      "size_kb": 59.7,
+      "file": "audio/track_367.mp3"
+    },
+    {
+      "index": 368,
+      "name": "track_368",
+      "size_kb": 16.4,
+      "file": "audio/track_368.mp3"
+    },
+    {
+      "index": 369,
+      "name": "track_369",
+      "size_kb": 28.4,
+      "file": "audio/track_369.mp3"
+    },
+    {
+      "index": 370,
+      "name": "track_370",
+      "size_kb": 9.9,
+      "file": "audio/track_370.mp3"
+    },
+    {
+      "index": 371,
+      "name": "track_371",
+      "size_kb": 12.5,
+      "file": "audio/track_371.mp3"
+    },
+    {
+      "index": 372,
+      "name": "track_372",
+      "size_kb": 16.2,
+      "file": "audio/track_372.mp3"
+    },
+    {
+      "index": 373,
+      "name": "track_373",
+      "size_kb": 38.3,
+      "file": "audio/track_373.mp3"
+    },
+    {
+      "index": 374,
+      "name": "track_374",
+      "size_kb": 48.2,
+      "file": "audio/track_374.mp3"
+    },
+    {
+      "index": 375,
+      "name": "track_375",
+      "size_kb": 28.9,
+      "file": "audio/track_375.mp3"
+    },
+    {
+      "index": 376,
+      "name": "track_376",
+      "size_kb": 52.3,
+      "file": "audio/track_376.mp3"
+    },
+    {
+      "index": 377,
+      "name": "track_377",
+      "size_kb": 19.4,
+      "file": "audio/track_377.mp3"
+    },
+    {
+      "index": 378,
+      "name": "track_378",
+      "size_kb": 15.2,
+      "file": "audio/track_378.mp3"
+    },
+    {
+      "index": 379,
+      "name": "track_379",
+      "size_kb": 42.3,
+      "file": "audio/track_379.mp3"
+    },
+    {
+      "index": 380,
+      "name": "track_380",
+      "size_kb": 78.1,
+      "file": "audio/track_380.mp3"
+    },
+    {
+      "index": 381,
+      "name": "track_381",
+      "size_kb": 62.7,
+      "file": "audio/track_381.mp3"
+    },
+    {
+      "index": 382,
+      "name": "track_382",
+      "size_kb": 160.8,
+      "file": "audio/track_382.mp3"
+    },
+    {
+      "index": 383,
+      "name": "track_383",
+      "size_kb": 64.8,
+      "file": "audio/track_383.mp3"
+    },
+    {
+      "index": 384,
+      "name": "track_384",
+      "size_kb": 76.2,
+      "file": "audio/track_384.mp3"
+    },
+    {
+      "index": 385,
+      "name": "track_385",
+      "size_kb": 64.7,
+      "file": "audio/track_385.mp3"
+    },
+    {
+      "index": 386,
+      "name": "track_386",
+      "size_kb": 193.6,
+      "file": "audio/track_386.mp3"
+    },
+    {
+      "index": 387,
+      "name": "track_387",
+      "size_kb": 212.3,
+      "file": "audio/track_387.mp3"
+    },
+    {
+      "index": 388,
+      "name": "track_388",
+      "size_kb": 20.9,
+      "file": "audio/track_388.mp3"
+    },
+    {
+      "index": 389,
+      "name": "track_389",
+      "size_kb": 153.5,
+      "file": "audio/track_389.mp3"
+    },
+    {
+      "index": 390,
+      "name": "track_390",
+      "size_kb": 149.4,
+      "file": "audio/track_390.mp3"
+    },
+    {
+      "index": 391,
+      "name": "track_391",
+      "size_kb": 99.7,
+      "file": "audio/track_391.mp3"
+    },
+    {
+      "index": 392,
+      "name": "track_392",
+      "size_kb": 13.0,
+      "file": "audio/track_392.mp3"
+    },
+    {
+      "index": 393,
+      "name": "track_393",
+      "size_kb": 45.3,
+      "file": "audio/track_393.mp3"
+    },
+    {
+      "index": 395,
+      "name": "track_395",
+      "size_kb": 74.1,
+      "file": "audio/track_395.mp3"
+    },
+    {
+      "index": 397,
+      "name": "track_397",
+      "size_kb": 61.8,
+      "file": "audio/track_397.mp3"
+    },
+    {
+      "index": 398,
+      "name": "track_398",
+      "size_kb": 42.4,
+      "file": "audio/track_398.mp3"
+    },
+    {
+      "index": 399,
+      "name": "music_title_rareware",
+      "size_kb": 21.7,
+      "file": "audio/music_title_rareware.mp3"
+    },
+    {
+      "index": 400,
+      "name": "track_400",
+      "size_kb": 7.2,
+      "file": "audio/track_400.mp3"
+    },
+    {
+      "index": 401,
+      "name": "track_401",
+      "size_kb": 48.7,
+      "file": "audio/track_401.mp3"
+    },
+    {
+      "index": 402,
+      "name": "track_402",
+      "size_kb": 16.2,
+      "file": "audio/track_402.mp3"
+    },
+    {
+      "index": 403,
+      "name": "track_403",
+      "size_kb": 116.9,
+      "file": "audio/track_403.mp3"
+    },
+    {
+      "index": 404,
+      "name": "track_404",
+      "size_kb": 77.6,
+      "file": "audio/track_404.mp3"
+    },
+    {
+      "index": 405,
+      "name": "track_405",
+      "size_kb": 149.2,
+      "file": "audio/track_405.mp3"
+    },
+    {
+      "index": 406,
+      "name": "track_406",
+      "size_kb": 164.9,
+      "file": "audio/track_406.mp3"
+    },
+    {
+      "index": 407,
+      "name": "track_407",
+      "size_kb": 68.1,
+      "file": "audio/track_407.mp3"
+    },
+    {
+      "index": 408,
+      "name": "track_408",
+      "size_kb": 367.1,
+      "file": "audio/track_408.mp3"
+    },
+    {
+      "index": 409,
+      "name": "track_409",
+      "size_kb": 9.1,
+      "file": "audio/track_409.mp3"
+    },
+    {
+      "index": 410,
+      "name": "track_410",
+      "size_kb": 12.2,
+      "file": "audio/track_410.mp3"
+    },
+    {
+      "index": 411,
+      "name": "track_411",
+      "size_kb": 12.9,
+      "file": "audio/track_411.mp3"
+    },
+    {
+      "index": 412,
+      "name": "track_412",
+      "size_kb": 19.9,
+      "file": "audio/track_412.mp3"
+    },
+    {
+      "index": 413,
+      "name": "track_413",
+      "size_kb": 10.9,
+      "file": "audio/track_413.mp3"
+    },
+    {
+      "index": 414,
+      "name": "track_414",
+      "size_kb": 10.9,
+      "file": "audio/track_414.mp3"
+    },
+    {
+      "index": 415,
+      "name": "track_415",
+      "size_kb": 6.1,
+      "file": "audio/track_415.mp3"
+    },
+    {
+      "index": 416,
+      "name": "track_416",
+      "size_kb": 21.1,
+      "file": "audio/track_416.mp3"
+    },
+    {
+      "index": 417,
+      "name": "track_417",
+      "size_kb": 10.4,
+      "file": "audio/track_417.mp3"
+    },
+    {
+      "index": 418,
+      "name": "track_418",
+      "size_kb": 5.6,
+      "file": "audio/track_418.mp3"
+    },
+    {
+      "index": 419,
+      "name": "track_419",
+      "size_kb": 100.6,
+      "file": "audio/track_419.mp3"
+    },
+    {
+      "index": 420,
+      "name": "track_420",
+      "size_kb": 18.9,
+      "file": "audio/track_420.mp3"
+    },
+    {
+      "index": 421,
+      "name": "track_421",
+      "size_kb": 52.8,
+      "file": "audio/track_421.mp3"
+    },
+    {
+      "index": 422,
+      "name": "track_422",
+      "size_kb": 72.7,
+      "file": "audio/track_422.mp3"
+    },
+    {
+      "index": 423,
+      "name": "track_423",
+      "size_kb": 19.7,
+      "file": "audio/track_423.mp3"
+    },
+    {
+      "index": 424,
+      "name": "track_424",
+      "size_kb": 21.9,
+      "file": "audio/track_424.mp3"
+    },
+    {
+      "index": 425,
+      "name": "track_425",
+      "size_kb": 163.1,
+      "file": "audio/track_425.mp3"
+    },
+    {
+      "index": 426,
+      "name": "track_426",
+      "size_kb": 11.0,
+      "file": "audio/track_426.mp3"
+    },
+    {
+      "index": 427,
+      "name": "track_427",
+      "size_kb": 9.9,
+      "file": "audio/track_427.mp3"
+    },
+    {
+      "index": 428,
+      "name": "track_428",
+      "size_kb": 47.1,
+      "file": "audio/track_428.mp3"
+    },
+    {
+      "index": 429,
+      "name": "track_429",
+      "size_kb": 20.3,
+      "file": "audio/track_429.mp3"
+    },
+    {
+      "index": 430,
+      "name": "track_430",
+      "size_kb": 58.1,
+      "file": "audio/track_430.mp3"
+    },
+    {
+      "index": 431,
+      "name": "track_431",
+      "size_kb": 12.1,
+      "file": "audio/track_431.mp3"
+    },
+    {
+      "index": 432,
+      "name": "track_432",
+      "size_kb": 10.0,
+      "file": "audio/track_432.mp3"
+    },
+    {
+      "index": 433,
+      "name": "track_433",
+      "size_kb": 8.8,
+      "file": "audio/track_433.mp3"
+    },
+    {
+      "index": 434,
+      "name": "track_434",
+      "size_kb": 10.0,
+      "file": "audio/track_434.mp3"
+    },
+    {
+      "index": 435,
+      "name": "track_435",
+      "size_kb": 8.4,
+      "file": "audio/track_435.mp3"
+    },
+    {
+      "index": 436,
+      "name": "track_436",
+      "size_kb": 8.7,
+      "file": "audio/track_436.mp3"
+    },
+    {
+      "index": 437,
+      "name": "track_437",
+      "size_kb": 6.9,
+      "file": "audio/track_437.mp3"
+    },
+    {
+      "index": 438,
+      "name": "track_438",
+      "size_kb": 23.9,
+      "file": "audio/track_438.mp3"
+    },
+    {
+      "index": 439,
+      "name": "track_439",
+      "size_kb": 13.9,
+      "file": "audio/track_439.mp3"
+    },
+    {
+      "index": 440,
+      "name": "track_440",
+      "size_kb": 13.0,
+      "file": "audio/track_440.mp3"
+    },
+    {
+      "index": 441,
+      "name": "track_441",
+      "size_kb": 13.9,
+      "file": "audio/track_441.mp3"
+    },
+    {
+      "index": 442,
+      "name": "track_442",
+      "size_kb": 20.4,
+      "file": "audio/track_442.mp3"
+    },
+    {
+      "index": 443,
+      "name": "track_443",
+      "size_kb": 27.6,
+      "file": "audio/track_443.mp3"
+    },
+    {
+      "index": 444,
+      "name": "track_444",
+      "size_kb": 27.9,
+      "file": "audio/track_444.mp3"
+    },
+    {
+      "index": 445,
+      "name": "track_445",
+      "size_kb": 11.0,
+      "file": "audio/track_445.mp3"
+    },
+    {
+      "index": 446,
+      "name": "track_446",
+      "size_kb": 5.5,
+      "file": "audio/track_446.mp3"
+    },
+    {
+      "index": 447,
+      "name": "track_447",
+      "size_kb": 4.0,
+      "file": "audio/track_447.mp3"
+    },
+    {
+      "index": 448,
+      "name": "track_448",
+      "size_kb": 7.0,
+      "file": "audio/track_448.mp3"
+    },
+    {
+      "index": 449,
+      "name": "track_449",
+      "size_kb": 14.8,
+      "file": "audio/track_449.mp3"
+    },
+    {
+      "index": 450,
+      "name": "track_450",
+      "size_kb": 30.0,
+      "file": "audio/track_450.mp3"
+    },
+    {
+      "index": 451,
+      "name": "track_451",
+      "size_kb": 13.3,
+      "file": "audio/track_451.mp3"
+    },
+    {
+      "index": 452,
+      "name": "track_452",
+      "size_kb": 87.7,
+      "file": "audio/track_452.mp3"
+    },
+    {
+      "index": 453,
+      "name": "track_453",
+      "size_kb": 69.6,
+      "file": "audio/track_453.mp3"
+    },
+    {
+      "index": 454,
+      "name": "track_454",
+      "size_kb": 44.5,
+      "file": "audio/track_454.mp3"
+    },
+    {
+      "index": 455,
+      "name": "track_455",
+      "size_kb": 26.1,
+      "file": "audio/track_455.mp3"
+    },
+    {
+      "index": 456,
+      "name": "track_456",
+      "size_kb": 25.8,
+      "file": "audio/track_456.mp3"
+    },
+    {
+      "index": 457,
+      "name": "track_457",
+      "size_kb": 22.7,
+      "file": "audio/track_457.mp3"
+    },
+    {
+      "index": 458,
+      "name": "track_458",
+      "size_kb": 17.2,
+      "file": "audio/track_458.mp3"
+    },
+    {
+      "index": 459,
+      "name": "track_459",
+      "size_kb": 11.8,
+      "file": "audio/track_459.mp3"
+    },
+    {
+      "index": 460,
+      "name": "track_460",
+      "size_kb": 25.9,
+      "file": "audio/track_460.mp3"
+    },
+    {
+      "index": 461,
+      "name": "track_461",
+      "size_kb": 18.9,
+      "file": "audio/track_461.mp3"
+    }
+  ],
+  "textures": [
+    {
+      "package": "assets00",
+      "segment": 0,
+      "width": 96,
+      "height": 110,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg00_96x110.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 1,
+      "width": 80,
+      "height": 80,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg01_80x80.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 2,
+      "width": 80,
+      "height": 80,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg02_80x80.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 3,
+      "width": 80,
+      "height": 80,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg03_80x80.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 4,
+      "width": 96,
+      "height": 110,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg04_96x110.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 5,
+      "width": 93,
+      "height": 93,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg05_93x93.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 6,
+      "width": 93,
+      "height": 93,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg06_93x93.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 7,
+      "width": 93,
+      "height": 93,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg07_93x93.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 8,
+      "width": 93,
+      "height": 93,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg08_93x93.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 9,
+      "width": 93,
+      "height": 93,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg09_93x93.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 10,
+      "width": 93,
+      "height": 93,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg10_93x93.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 11,
+      "width": 93,
+      "height": 93,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg11_93x93.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 12,
+      "width": 96,
+      "height": 110,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg12_96x110.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 13,
+      "width": 118,
+      "height": 118,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg13_118x118.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 14,
+      "width": 101,
+      "height": 101,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg14_101x101.png"
+    },
+    {
+      "package": "assets00",
+      "segment": 15,
+      "width": 41,
+      "height": 41,
+      "description": "Sprites & Logos (Vegetation, HUD)",
+      "compressed": true,
+      "file": "textures/assets00_seg15_41x41.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 0,
+      "width": 109,
+      "height": 109,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg00_109x109.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 1,
+      "width": 103,
+      "height": 103,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg01_103x103.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 2,
+      "width": 84,
+      "height": 84,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg02_84x84.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 3,
+      "width": 78,
+      "height": 78,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg03_78x78.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 4,
+      "width": 69,
+      "height": 69,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg04_69x69.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 5,
+      "width": 61,
+      "height": 61,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg05_61x61.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 6,
+      "width": 52,
+      "height": 52,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg06_52x52.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 7,
+      "width": 59,
+      "height": 59,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg07_59x59.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 8,
+      "width": 85,
+      "height": 85,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg08_85x85.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 9,
+      "width": 54,
+      "height": 54,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg09_54x54.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 10,
+      "width": 66,
+      "height": 66,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg10_66x66.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 11,
+      "width": 7,
+      "height": 7,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg11_7x7.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 12,
+      "width": 52,
+      "height": 52,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg12_52x52.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 13,
+      "width": 44,
+      "height": 44,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg13_44x44.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 14,
+      "width": 46,
+      "height": 46,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg14_46x46.png"
+    },
+    {
+      "package": "assets01",
+      "segment": 15,
+      "width": 63,
+      "height": 63,
+      "description": "Interface & HUD Icons",
+      "compressed": true,
+      "file": "textures/assets01_seg15_63x63.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 0,
+      "width": 671,
+      "height": 671,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg00_671x671.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 1,
+      "width": 60,
+      "height": 60,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg01_60x60.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 2,
+      "width": 15,
+      "height": 15,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg02_15x15.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 3,
+      "width": 13,
+      "height": 13,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg03_13x13.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 4,
+      "width": 64,
+      "height": 64,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg04_64x64.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 5,
+      "width": 6,
+      "height": 6,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg05_6x6.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 6,
+      "width": 60,
+      "height": 60,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg06_60x60.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 7,
+      "width": 63,
+      "height": 63,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg07_63x63.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 8,
+      "width": 17,
+      "height": 17,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg08_17x17.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 9,
+      "width": 29,
+      "height": 29,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg09_29x29.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 10,
+      "width": 35,
+      "height": 35,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg10_35x35.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 11,
+      "width": 125,
+      "height": 125,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg11_125x125.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 12,
+      "width": 192,
+      "height": 192,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg12_192x192.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 13,
+      "width": 10,
+      "height": 10,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg13_10x10.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 14,
+      "width": 5,
+      "height": 5,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg14_5x5.png"
+    },
+    {
+      "package": "assets02",
+      "segment": 15,
+      "width": 111,
+      "height": 111,
+      "description": "Level Textures & Props",
+      "compressed": false,
+      "file": "textures/assets02_seg15_111x111.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 0,
+      "width": 18,
+      "height": 18,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg00_18x18.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 1,
+      "width": 36,
+      "height": 36,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg01_36x36.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 2,
+      "width": 15,
+      "height": 15,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg02_15x15.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 3,
+      "width": 16,
+      "height": 16,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg03_16x16.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 4,
+      "width": 27,
+      "height": 27,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg04_27x27.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 5,
+      "width": 23,
+      "height": 23,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg05_23x23.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 6,
+      "width": 30,
+      "height": 30,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg06_30x30.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 7,
+      "width": 46,
+      "height": 46,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg07_46x46.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 8,
+      "width": 45,
+      "height": 45,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg08_45x45.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 9,
+      "width": 16,
+      "height": 16,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg09_16x16.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 10,
+      "width": 35,
+      "height": 35,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg10_35x35.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 11,
+      "width": 38,
+      "height": 38,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg11_38x38.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 12,
+      "width": 19,
+      "height": 19,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg12_19x19.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 13,
+      "width": 45,
+      "height": 45,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg13_45x45.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 14,
+      "width": 9,
+      "height": 9,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg14_9x9.png"
+    },
+    {
+      "package": "assets03",
+      "segment": 15,
+      "width": 27,
+      "height": 27,
+      "description": "Conker Character Textures",
+      "compressed": true,
+      "file": "textures/assets03_seg15_27x27.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 0,
+      "width": 184,
+      "height": 184,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg00_184x184.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 1,
+      "width": 200,
+      "height": 200,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg01_200x200.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 2,
+      "width": 262,
+      "height": 262,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg02_262x262.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 3,
+      "width": 199,
+      "height": 199,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg03_199x199.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 4,
+      "width": 20,
+      "height": 20,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg04_20x20.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 5,
+      "width": 303,
+      "height": 303,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg05_303x303.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 6,
+      "width": 166,
+      "height": 166,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg06_166x166.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 7,
+      "width": 20,
+      "height": 20,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg07_20x20.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 8,
+      "width": 210,
+      "height": 210,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg08_210x210.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 9,
+      "width": 211,
+      "height": 211,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg09_211x211.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 10,
+      "width": 257,
+      "height": 257,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg10_257x257.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 11,
+      "width": 209,
+      "height": 209,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg11_209x209.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 12,
+      "width": 199,
+      "height": 199,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg12_199x199.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 13,
+      "width": 117,
+      "height": 117,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg13_117x117.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 14,
+      "width": 272,
+      "height": 272,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg14_272x272.png"
+    },
+    {
+      "package": "assets04",
+      "segment": 15,
+      "width": 163,
+      "height": 163,
+      "description": "World Environment Textures",
+      "compressed": true,
+      "file": "textures/assets04_seg15_163x163.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 0,
+      "width": 83,
+      "height": 83,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg00_83x83.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 1,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg01_32x32.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 2,
+      "width": 142,
+      "height": 142,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg02_142x142.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 3,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg03_32x32.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 4,
+      "width": 37,
+      "height": 37,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg04_37x37.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 5,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg05_32x32.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 6,
+      "width": 24,
+      "height": 24,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg06_24x24.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 7,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg07_32x32.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 8,
+      "width": 82,
+      "height": 82,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg08_82x82.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 9,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg09_32x32.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 10,
+      "width": 76,
+      "height": 76,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg10_76x76.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 11,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg11_32x32.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 12,
+      "width": 44,
+      "height": 44,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg12_44x44.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 13,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg13_32x32.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 14,
+      "width": 86,
+      "height": 86,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg14_86x86.png"
+    },
+    {
+      "package": "assets05",
+      "segment": 15,
+      "width": 32,
+      "height": 32,
+      "description": "Enemy Textures",
+      "compressed": true,
+      "file": "textures/assets05_seg15_32x32.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 0,
+      "width": 81,
+      "height": 81,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg00_81x81.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 1,
+      "width": 112,
+      "height": 112,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg01_112x112.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 2,
+      "width": 99,
+      "height": 99,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg02_99x99.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 3,
+      "width": 111,
+      "height": 111,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg03_111x111.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 4,
+      "width": 149,
+      "height": 149,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg04_149x149.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 5,
+      "width": 101,
+      "height": 101,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg05_101x101.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 6,
+      "width": 86,
+      "height": 86,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg06_86x86.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 7,
+      "width": 75,
+      "height": 75,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg07_75x75.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 8,
+      "width": 113,
+      "height": 113,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg08_113x113.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 9,
+      "width": 38,
+      "height": 38,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg09_38x38.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 10,
+      "width": 82,
+      "height": 82,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg10_82x82.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 11,
+      "width": 35,
+      "height": 35,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg11_35x35.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 12,
+      "width": 98,
+      "height": 98,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg12_98x98.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 13,
+      "width": 125,
+      "height": 125,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg13_125x125.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 14,
+      "width": 124,
+      "height": 124,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg14_124x124.png"
+    },
+    {
+      "package": "assets06",
+      "segment": 15,
+      "width": 23,
+      "height": 23,
+      "description": "Cutscene Assets",
+      "compressed": false,
+      "file": "textures/assets06_seg15_23x23.png"
+    },
+    {
+      "package": "assets07",
+      "segment": 0,
+      "width": 5,
+      "height": 5,
+      "description": "Unknown Small Package",
+      "compressed": false,
+      "file": "textures/assets07_seg00_5x5.png"
+    },
+    {
+      "package": "assets07",
+      "segment": 1,
+      "width": 19,
+      "height": 19,
+      "description": "Unknown Small Package",
+      "compressed": true,
+      "file": "textures/assets07_seg01_19x19.png"
+    },
+    {
+      "package": "assets07",
+      "segment": 2,
+      "width": 572,
+      "height": 572,
+      "description": "Unknown Small Package",
+      "compressed": false,
+      "file": "textures/assets07_seg02_572x572.png"
+    },
+    {
+      "package": "assets07",
+      "segment": 3,
+      "width": 543,
+      "height": 543,
+      "description": "Unknown Small Package",
+      "compressed": false,
+      "file": "textures/assets07_seg03_543x543.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 0,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small Package 2",
+      "compressed": false,
+      "file": "textures/assets08_seg00_20x20.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 1,
+      "width": 5,
+      "height": 5,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg01_5x5.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 2,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg02_6x6.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 3,
+      "width": 7,
+      "height": 7,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg03_7x7.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 4,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg04_6x6.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 5,
+      "width": 5,
+      "height": 5,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg05_5x5.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 6,
+      "width": 7,
+      "height": 7,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg06_7x7.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 7,
+      "width": 5,
+      "height": 5,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg07_5x5.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 8,
+      "width": 7,
+      "height": 7,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg08_7x7.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 9,
+      "width": 5,
+      "height": 5,
+      "description": "Unknown Small Package 2",
+      "compressed": true,
+      "file": "textures/assets08_seg09_5x5.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 10,
+      "width": 1777,
+      "height": 1777,
+      "description": "Unknown Small Package 2",
+      "compressed": false,
+      "file": "textures/assets08_seg10_1777x1777.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 11,
+      "width": 1777,
+      "height": 1777,
+      "description": "Unknown Small Package 2",
+      "compressed": false,
+      "file": "textures/assets08_seg11_1777x1777.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 12,
+      "width": 1777,
+      "height": 1777,
+      "description": "Unknown Small Package 2",
+      "compressed": false,
+      "file": "textures/assets08_seg12_1777x1777.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 13,
+      "width": 1777,
+      "height": 1777,
+      "description": "Unknown Small Package 2",
+      "compressed": false,
+      "file": "textures/assets08_seg13_1777x1777.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 14,
+      "width": 1777,
+      "height": 1777,
+      "description": "Unknown Small Package 2",
+      "compressed": false,
+      "file": "textures/assets08_seg14_1777x1777.png"
+    },
+    {
+      "package": "assets08",
+      "segment": 15,
+      "width": 1777,
+      "height": 1777,
+      "description": "Unknown Small Package 2",
+      "compressed": false,
+      "file": "textures/assets08_seg15_1777x1777.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 0,
+      "width": 10,
+      "height": 10,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg00_10x10.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 1,
+      "width": 20,
+      "height": 20,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg01_20x20.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 2,
+      "width": 16,
+      "height": 16,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg02_16x16.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 3,
+      "width": 15,
+      "height": 15,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg03_15x15.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 4,
+      "width": 17,
+      "height": 17,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg04_17x17.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 5,
+      "width": 18,
+      "height": 18,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg05_18x18.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 6,
+      "width": 17,
+      "height": 17,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg06_17x17.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 7,
+      "width": 18,
+      "height": 18,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg07_18x18.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 8,
+      "width": 17,
+      "height": 17,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg08_17x17.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 9,
+      "width": 17,
+      "height": 17,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg09_17x17.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 10,
+      "width": 16,
+      "height": 16,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg10_16x16.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 11,
+      "width": 14,
+      "height": 14,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg11_14x14.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 12,
+      "width": 15,
+      "height": 15,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg12_15x15.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 13,
+      "width": 38,
+      "height": 38,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg13_38x38.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 14,
+      "width": 26,
+      "height": 26,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg14_26x26.png"
+    },
+    {
+      "package": "assets09",
+      "segment": 15,
+      "width": 14,
+      "height": 14,
+      "description": "Multiplayer Assets",
+      "compressed": true,
+      "file": "textures/assets09_seg15_14x14.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 0,
+      "width": 66,
+      "height": 66,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg00_66x66.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 1,
+      "width": 11,
+      "height": 11,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg01_11x11.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 2,
+      "width": 41,
+      "height": 41,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg02_41x41.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 3,
+      "width": 11,
+      "height": 11,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg03_11x11.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 4,
+      "width": 21,
+      "height": 21,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg04_21x21.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 5,
+      "width": 27,
+      "height": 27,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg05_27x27.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 6,
+      "width": 25,
+      "height": 25,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg06_25x25.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 7,
+      "width": 43,
+      "height": 43,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg07_43x43.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 8,
+      "width": 7,
+      "height": 7,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg08_7x7.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 9,
+      "width": 27,
+      "height": 27,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg09_27x27.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 10,
+      "width": 21,
+      "height": 21,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg10_21x21.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 11,
+      "width": 5,
+      "height": 5,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg11_5x5.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 12,
+      "width": 34,
+      "height": 34,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg12_34x34.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 13,
+      "width": 236,
+      "height": 236,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg13_236x236.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 14,
+      "width": 234,
+      "height": 234,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg14_234x234.png"
+    },
+    {
+      "package": "assets0A",
+      "segment": 15,
+      "width": 18,
+      "height": 18,
+      "description": "Bat's Tower Textures",
+      "compressed": false,
+      "file": "textures/assets0A_seg15_18x18.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 0,
+      "width": 21,
+      "height": 21,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg00_21x21.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 1,
+      "width": 27,
+      "height": 27,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg01_27x27.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 2,
+      "width": 34,
+      "height": 34,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg02_34x34.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 3,
+      "width": 28,
+      "height": 28,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg03_28x28.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 4,
+      "width": 29,
+      "height": 29,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg04_29x29.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 5,
+      "width": 20,
+      "height": 20,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg05_20x20.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 6,
+      "width": 26,
+      "height": 26,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg06_26x26.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 7,
+      "width": 21,
+      "height": 21,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg07_21x21.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 8,
+      "width": 32,
+      "height": 32,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg08_32x32.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 9,
+      "width": 24,
+      "height": 24,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg09_24x24.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 10,
+      "width": 22,
+      "height": 22,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg10_22x22.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 11,
+      "width": 8,
+      "height": 8,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg11_8x8.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 12,
+      "width": 17,
+      "height": 17,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg12_17x17.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 13,
+      "width": 24,
+      "height": 24,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg13_24x24.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 14,
+      "width": 15,
+      "height": 15,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg14_15x15.png"
+    },
+    {
+      "package": "assets0B",
+      "segment": 15,
+      "width": 24,
+      "height": 24,
+      "description": "Windy & Co Level",
+      "compressed": true,
+      "file": "textures/assets0B_seg15_24x24.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 0,
+      "width": 45,
+      "height": 45,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg00_45x45.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 1,
+      "width": 55,
+      "height": 55,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg01_55x55.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 2,
+      "width": 66,
+      "height": 66,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg02_66x66.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 3,
+      "width": 10,
+      "height": 10,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg03_10x10.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 4,
+      "width": 51,
+      "height": 51,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg04_51x51.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 5,
+      "width": 75,
+      "height": 75,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg05_75x75.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 6,
+      "width": 53,
+      "height": 53,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg06_53x53.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 7,
+      "width": 11,
+      "height": 11,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg07_11x11.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 8,
+      "width": 46,
+      "height": 46,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg08_46x46.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 9,
+      "width": 65,
+      "height": 65,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg09_65x65.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 10,
+      "width": 59,
+      "height": 59,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg10_59x59.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 11,
+      "width": 10,
+      "height": 10,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg11_10x10.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 12,
+      "width": 56,
+      "height": 56,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg12_56x56.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 13,
+      "width": 9,
+      "height": 9,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg13_9x9.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 14,
+      "width": 45,
+      "height": 45,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg14_45x45.png"
+    },
+    {
+      "package": "assets0C",
+      "segment": 15,
+      "width": 12,
+      "height": 12,
+      "description": "It's War Level",
+      "compressed": false,
+      "file": "textures/assets0C_seg15_12x12.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 0,
+      "width": 13,
+      "height": 13,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg00_13x13.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 1,
+      "width": 13,
+      "height": 13,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg01_13x13.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 2,
+      "width": 13,
+      "height": 13,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg02_13x13.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 3,
+      "width": 13,
+      "height": 13,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg03_13x13.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 4,
+      "width": 13,
+      "height": 13,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg04_13x13.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 5,
+      "width": 13,
+      "height": 13,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg05_13x13.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 6,
+      "width": 13,
+      "height": 13,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg06_13x13.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 7,
+      "width": 1813,
+      "height": 1813,
+      "description": "Unknown Small",
+      "compressed": false,
+      "file": "textures/assets0D_seg07_1813x1813.png"
+    },
+    {
+      "package": "assets0D",
+      "segment": 8,
+      "width": 2004,
+      "height": 2004,
+      "description": "Unknown Small",
+      "compressed": true,
+      "file": "textures/assets0D_seg08_2004x2004.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 0,
+      "width": 13,
+      "height": 13,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg00_13x13.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 1,
+      "width": 22,
+      "height": 22,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg01_22x22.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 2,
+      "width": 31,
+      "height": 31,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg02_31x31.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 3,
+      "width": 12,
+      "height": 12,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg03_12x12.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 4,
+      "width": 31,
+      "height": 31,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg04_31x31.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 6,
+      "width": 33,
+      "height": 33,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg06_33x33.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 7,
+      "width": 21,
+      "height": 21,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg07_21x21.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 10,
+      "width": 17,
+      "height": 17,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg10_17x17.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 11,
+      "width": 18,
+      "height": 18,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg11_18x18.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 12,
+      "width": 29,
+      "height": 29,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg12_29x29.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 13,
+      "width": 4,
+      "height": 4,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg13_4x4.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 14,
+      "width": 24,
+      "height": 24,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg14_24x24.png"
+    },
+    {
+      "package": "assets0E",
+      "segment": 15,
+      "width": 18,
+      "height": 18,
+      "description": "Sloprano Level",
+      "compressed": true,
+      "file": "textures/assets0E_seg15_18x18.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 0,
+      "width": 126,
+      "height": 126,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg00_126x126.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 1,
+      "width": 30,
+      "height": 30,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg01_30x30.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 2,
+      "width": 4,
+      "height": 4,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg02_4x4.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 3,
+      "width": 8,
+      "height": 8,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg03_8x8.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 4,
+      "width": 24,
+      "height": 24,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg04_24x24.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 5,
+      "width": 4,
+      "height": 4,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg05_4x4.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 6,
+      "width": 14,
+      "height": 14,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg06_14x14.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 7,
+      "width": 31,
+      "height": 31,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg07_31x31.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 8,
+      "width": 13,
+      "height": 13,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg08_13x13.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 9,
+      "width": 15,
+      "height": 15,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg09_15x15.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 10,
+      "width": 21,
+      "height": 21,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg10_21x21.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 11,
+      "width": 40,
+      "height": 40,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg11_40x40.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 12,
+      "width": 13,
+      "height": 13,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg12_13x13.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 13,
+      "width": 12,
+      "height": 12,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg13_12x12.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 14,
+      "width": 8,
+      "height": 8,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg14_8x8.png"
+    },
+    {
+      "package": "assets0F",
+      "segment": 15,
+      "width": 12,
+      "height": 12,
+      "description": "Uga Buga Level",
+      "compressed": true,
+      "file": "textures/assets0F_seg15_12x12.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 0,
+      "width": 16,
+      "height": 16,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg00_16x16.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 1,
+      "width": 22,
+      "height": 22,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg01_22x22.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 2,
+      "width": 23,
+      "height": 23,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg02_23x23.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 3,
+      "width": 8,
+      "height": 8,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg03_8x8.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 4,
+      "width": 28,
+      "height": 28,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg04_28x28.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 6,
+      "width": 33,
+      "height": 33,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg06_33x33.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 7,
+      "width": 16,
+      "height": 16,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg07_16x16.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 10,
+      "width": 15,
+      "height": 15,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg10_15x15.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 11,
+      "width": 23,
+      "height": 23,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg11_23x23.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 12,
+      "width": 29,
+      "height": 29,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg12_29x29.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 13,
+      "width": 11,
+      "height": 11,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg13_11x11.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 14,
+      "width": 18,
+      "height": 18,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg14_18x18.png"
+    },
+    {
+      "package": "assets10",
+      "segment": 15,
+      "width": 12,
+      "height": 12,
+      "description": "Spooky Level",
+      "compressed": true,
+      "file": "textures/assets10_seg15_12x12.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 0,
+      "width": 22,
+      "height": 22,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg00_22x22.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 1,
+      "width": 13,
+      "height": 13,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg01_13x13.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 2,
+      "width": 13,
+      "height": 13,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg02_13x13.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 3,
+      "width": 13,
+      "height": 13,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg03_13x13.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 4,
+      "width": 13,
+      "height": 13,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg04_13x13.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 5,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg05_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 6,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg06_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 7,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg07_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 8,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg08_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 9,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg09_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 10,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg10_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 11,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg11_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 12,
+      "width": 7,
+      "height": 7,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg12_7x7.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 13,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg13_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 14,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg14_6x6.png"
+    },
+    {
+      "package": "assets11",
+      "segment": 15,
+      "width": 6,
+      "height": 6,
+      "description": "Heist Level",
+      "compressed": true,
+      "file": "textures/assets11_seg15_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 0,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg00_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 1,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg01_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 2,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg02_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 3,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg03_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 4,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg04_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 5,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg05_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 6,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg06_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 7,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg07_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 8,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg08_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 9,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg09_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 10,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg10_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 11,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg11_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 12,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg12_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 13,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg13_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 14,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg14_6x6.png"
+    },
+    {
+      "package": "assets12",
+      "segment": 15,
+      "width": 6,
+      "height": 6,
+      "description": "Unknown Small 3",
+      "compressed": false,
+      "file": "textures/assets12_seg15_6x6.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 0,
+      "width": 89,
+      "height": 89,
+      "description": "Unknown Small 4",
+      "compressed": false,
+      "file": "textures/assets13_seg00_89x89.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 1,
+      "width": 44,
+      "height": 44,
+      "description": "Unknown Small 4",
+      "compressed": false,
+      "file": "textures/assets13_seg01_44x44.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 2,
+      "width": 81,
+      "height": 81,
+      "description": "Unknown Small 4",
+      "compressed": false,
+      "file": "textures/assets13_seg02_81x81.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 3,
+      "width": 25,
+      "height": 25,
+      "description": "Unknown Small 4",
+      "compressed": false,
+      "file": "textures/assets13_seg03_25x25.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 4,
+      "width": 25,
+      "height": 25,
+      "description": "Unknown Small 4",
+      "compressed": false,
+      "file": "textures/assets13_seg04_25x25.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 5,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg05_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 6,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg06_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 7,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg07_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 8,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg08_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 9,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg09_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 10,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg10_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 11,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg11_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 12,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg12_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 13,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg13_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 14,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg14_20x20.png"
+    },
+    {
+      "package": "assets13",
+      "segment": 15,
+      "width": 20,
+      "height": 20,
+      "description": "Unknown Small 4",
+      "compressed": true,
+      "file": "textures/assets13_seg15_20x20.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 0,
+      "width": 21,
+      "height": 21,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg00_21x21.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 1,
+      "width": 13,
+      "height": 13,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg01_13x13.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 2,
+      "width": 15,
+      "height": 15,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg02_15x15.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 3,
+      "width": 17,
+      "height": 17,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg03_17x17.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 4,
+      "width": 9,
+      "height": 9,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg04_9x9.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 5,
+      "width": 23,
+      "height": 23,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg05_23x23.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 6,
+      "width": 10,
+      "height": 10,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg06_10x10.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 7,
+      "width": 19,
+      "height": 19,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg07_19x19.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 8,
+      "width": 17,
+      "height": 17,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg08_17x17.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 9,
+      "width": 16,
+      "height": 16,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg09_16x16.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 10,
+      "width": 41,
+      "height": 41,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg10_41x41.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 11,
+      "width": 14,
+      "height": 14,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg11_14x14.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 12,
+      "width": 9,
+      "height": 9,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg12_9x9.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 13,
+      "width": 17,
+      "height": 17,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg13_17x17.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 14,
+      "width": 8,
+      "height": 8,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg14_8x8.png"
+    },
+    {
+      "package": "assets14",
+      "segment": 15,
+      "width": 15,
+      "height": 15,
+      "description": "Cutscene Video Data",
+      "compressed": true,
+      "file": "textures/assets14_seg15_15x15.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 0,
+      "width": 7,
+      "height": 7,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg00_7x7.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 1,
+      "width": 7,
+      "height": 7,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg01_7x7.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 2,
+      "width": 8,
+      "height": 8,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg02_8x8.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 3,
+      "width": 6,
+      "height": 6,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg03_6x6.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 4,
+      "width": 7,
+      "height": 7,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg04_7x7.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 5,
+      "width": 6,
+      "height": 6,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg05_6x6.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 6,
+      "width": 9,
+      "height": 9,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg06_9x9.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 7,
+      "width": 7,
+      "height": 7,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg07_7x7.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 8,
+      "width": 6,
+      "height": 6,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg08_6x6.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 9,
+      "width": 6,
+      "height": 6,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg09_6x6.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 10,
+      "width": 7,
+      "height": 7,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg10_7x7.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 11,
+      "width": 7,
+      "height": 7,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg11_7x7.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 12,
+      "width": 8,
+      "height": 8,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg12_8x8.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 13,
+      "width": 6,
+      "height": 6,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg13_6x6.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 14,
+      "width": 7,
+      "height": 7,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg14_7x7.png"
+    },
+    {
+      "package": "assets15",
+      "segment": 15,
+      "width": 6,
+      "height": 6,
+      "description": "Misc Assets",
+      "compressed": false,
+      "file": "textures/assets15_seg15_6x6.png"
+    }
+  ]
+}
