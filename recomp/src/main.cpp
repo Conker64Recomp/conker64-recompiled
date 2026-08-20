@@ -49,20 +49,20 @@ int main(int argc, char** argv) {
 
     std::cout << "========================================" << std::endl;
     std::cout << " CONKER64: RECOMPILED (NATIVE PC PORT)" << std::endl;
-    std::cout << " Engine: SDL2 + Audio AI + MIPS Core" << std::endl;
+    std::cout << " Engine: SDL2 + Audio + MIPS Core" << std::endl;
     std::cout << "========================================" << std::endl;
 
     // 1. AppData Paths
     std::cout << "[Paths] Saves: " << N64::PathManager::getAppDataPath() << std::endl;
     std::cout << "[Paths] Cache: " << N64::PathManager::getCachePath() << std::endl;
 
-    // 2. Hardware Cores (RDRAM, Saves, 3D RDP, MIPS Context)
+    // 2. Hardware Cores
     N64::Memory::getInstance().init();
     N64::SaveSystem::getInstance().init();
     N64::RDPProcessor::getInstance().init();
     N64::MIPSRecompiler::getInstance().init();
 
-    // 3. Inicializar SDL2 con Video y Audio
+    // 3. Inicializar SDL2
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS) != 0) {
         std::cerr << "[Error] Failed to initialize SDL2: " << SDL_GetError() << std::endl;
         return 1;
@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
     SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
     std::cout << "[Init] SDL2 Video & Audio Systems Initialized... OK" << std::endl;
 
-    // 4. Inicializar Motor de Audio Nativo N64
+    // 4. Inicializar Audio
     N64::AudioManager::getInstance().init(44100);
 
     // 5. Input Manager
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // 8. Carga y Ejecución de la ROM
+    // 8. Carga de la ROM
     bool romLoaded = false;
     std::vector<std::string> searchPaths = {
         "baserom.us.z64",
@@ -119,7 +119,6 @@ int main(int argc, char** argv) {
         if (std::filesystem::exists(path)) {
             if (N64::ROMLoader::loadROM(path)) {
                 romLoaded = true;
-                // Ejecutar función de arranque recompilada MIPS (IPL3 Boot)
                 N64::MIPSRecompiler::getInstance().executeBootFunction();
                 break;
             }
@@ -164,6 +163,10 @@ int main(int argc, char** argv) {
                         }
                     }
                 }
+                // Presionar la tecla 'T' para reproducir el tono de prueba de audio
+                else if (event.key.keysym.sym == SDLK_t) {
+                    N64::AudioManager::getInstance().playBootJingle();
+                }
             }
         }
 
@@ -186,7 +189,7 @@ int main(int argc, char** argv) {
             currentFps = (frameCount * 1000.0f) / (currentTicks - lastFpsUpdate);
             std::string title = "";
             if (romLoaded) {
-                title = "Conker64: Recompiled | MIPS Core + Audio AI [44.1kHz] | FPS: " + 
+                title = "Conker64: Recompiled | MIPS Core + Audio Test | FPS: " + 
                         std::to_string(static_cast<int>(currentFps)) + " | 60Hz";
             } else {
                 title = "Conker64: Recompiled | ESPERANDO ROM (Arrastra tu .z64 o presiona O)";
