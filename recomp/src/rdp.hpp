@@ -131,10 +131,10 @@ private:
         }
 
         std::sort(drawList.begin(), drawList.end(), [](const RenderTri& a, const RenderTri& b) {
-            return a.avgZ < b.avgZ; // Renderizar primero los más lejanos
+            return b.avgZ < a.avgZ; // Renderizar primero los triángulos más lejanos (mayor Z)
         });
 
-        // 3. Dibujar triángulos con texturas UV e iluminación por sombreado de vértices
+        // 3. Dibujar triángulos sólidos con texturas UV e iluminación por sombreado de vértices
         for (const auto& tri : drawList) {
             const auto& v0_raw = conkerMesh.vertices[tri.v0];
             const auto& v1_raw = conkerMesh.vertices[tri.v1];
@@ -144,8 +144,8 @@ private:
             const auto& p1 = projected[tri.v1];
             const auto& p2 = projected[tri.v2];
 
-            // Shading simple (luz direccional desde arriba a la derecha)
-            float light = 0.85f;
+            // Shading simple (luz direccional limpia)
+            float light = 1.0f;
             SDL_Color c0 = { static_cast<Uint8>(v0_raw.r * 255 * light), static_cast<Uint8>(v0_raw.g * 255 * light), static_cast<Uint8>(v0_raw.b * 255 * light), 255 };
             SDL_Color c1 = { static_cast<Uint8>(v1_raw.r * 255 * light), static_cast<Uint8>(v1_raw.g * 255 * light), static_cast<Uint8>(v1_raw.b * 255 * light), 255 };
             SDL_Color c2 = { static_cast<Uint8>(v2_raw.r * 255 * light), static_cast<Uint8>(v2_raw.g * 255 * light), static_cast<Uint8>(v2_raw.b * 255 * light), 255 };
@@ -157,14 +157,9 @@ private:
             };
 
             SDL_RenderGeometry(renderer, activeTexture, vertices, 3, nullptr, 0);
-
-            // Malla alámbrica sutil estilo N64
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 30);
-            SDL_RenderDrawLineF(renderer, p0.x, p0.y, p1.x, p1.y);
-            SDL_RenderDrawLineF(renderer, p1.x, p1.y, p2.x, p2.y);
-            SDL_RenderDrawLineF(renderer, p2.x, p2.y, p0.x, p0.y);
         }
     }
 };
 
 } // namespace N64
+
