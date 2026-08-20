@@ -116,6 +116,9 @@ int main(int argc, char** argv) {
     float rotationAngle = 0.0f;
     N64::OSContPad pad{};
 
+    int currentTextureIdx = 0;
+    std::string currentTextureName = "Hojas y Vegetacion (assets00:0)";
+
     bool isRunning = true;
     SDL_Event event;
 
@@ -134,7 +137,9 @@ int main(int argc, char** argv) {
                 SDL_free(droppedFile);
             }
             else if (event.type == SDL_KEYDOWN) {
-                if (event.key.keysym.sym == SDLK_ESCAPE) isRunning = false;
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    isRunning = false;
+                }
                 else if (event.key.keysym.sym == SDLK_o) {
                     std::string selected = openFileDialog();
                     if (!selected.empty() && N64::ROMLoader::loadROM(selected)) {
@@ -146,6 +151,22 @@ int main(int argc, char** argv) {
                 }
                 else if (event.key.keysym.sym == SDLK_t) {
                     N64::AudioManager::getInstance().playBootJingle();
+                }
+                else if (event.key.keysym.sym == SDLK_SPACE) {
+                    currentTextureIdx = (currentTextureIdx + 1) % 9;
+                    int tw = 64, th = 64;
+                    auto texData = N64::AssetDecoder::getInstance().loadTextureByIndex(currentTextureIdx, tw, th, currentTextureName);
+                    if (!texData.empty()) {
+                        N64::RDPProcessor::getInstance().loadRealTexture(renderer, texData.data(), tw, th);
+                    }
+                }
+                else if (event.key.keysym.sym >= SDLK_1 && event.key.keysym.sym <= SDLK_9) {
+                    currentTextureIdx = event.key.keysym.sym - SDLK_1;
+                    int tw = 64, th = 64;
+                    auto texData = N64::AssetDecoder::getInstance().loadTextureByIndex(currentTextureIdx, tw, th, currentTextureName);
+                    if (!texData.empty()) {
+                        N64::RDPProcessor::getInstance().loadRealTexture(renderer, texData.data(), tw, th);
+                    }
                 }
             }
         }
@@ -162,7 +183,7 @@ int main(int argc, char** argv) {
         if (currentTicks - lastFpsUpdate >= 500) {
             currentFps = (frameCount * 1000.0f) / (currentTicks - lastFpsUpdate);
             std::string title = romLoaded
-                ? "Conker64: Recompiled | Rareware Assets Active | FPS: " + std::to_string(static_cast<int>(currentFps))
+                ? "Conker64: Recompiled | [" + std::to_string(currentTextureIdx + 1) + "/9] " + currentTextureName + " | FPS: " + std::to_string(static_cast<int>(currentFps))
                 : "Conker64: Recompiled | ESPERANDO ROM (Arrastra tu .z64 o presiona O)";
             SDL_SetWindowTitle(window, title.c_str());
             frameCount = 0;
