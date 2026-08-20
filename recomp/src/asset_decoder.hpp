@@ -170,6 +170,64 @@ public:
         return {};
     }
 
+    // Carga cualquier textura de cualquier subsegmento por índice (0 a 8)
+    std::vector<uint8_t> loadTextureByIndex(int index, int& outWidth, int& outHeight, std::string& outName) {
+        if (romBuffer.empty()) return {};
+
+        // Lista de paquetes de assets principales a explorar
+        static const struct {
+            uint32_t start;
+            uint32_t end;
+            const char* name;
+            int subIdx;
+        } TEXTURE_TARGETS[] = {
+            { 0x00AB1A40, 0x00AF4918, "Hojas y Vegetacion (assets00:0)", 0 },
+            { 0x00AB1A40, 0x00AF4918, "Sprite de Follaje 2 (assets00:1)", 1 },
+            { 0x00AB1A40, 0x00AF4918, "Sprite de Follaje 3 (assets00:2)", 2 },
+            { 0x00AB1A40, 0x00AF4918, "Sprite de Terreno (assets00:3)", 3 },
+            { 0x00AB1A40, 0x00AF4918, "Mascara de Sombra (assets00:4)", 4 },
+            { 0x00AF4918, 0x00BB1BA0, "Interfaz & HUD (assets01:0)", 0 },
+            { 0x00AF4918, 0x00BB1BA0, "Iconos de Conker (assets01:1)", 1 },
+            { 0x00BB1BA0, 0x00F8F278, "Texturas de Nivel (assets02:0)", 0 },
+            { 0x00BB1BA0, 0x00F8F278, "Textura de Personaje (assets02:1)", 1 }
+        };
+
+        int count = sizeof(TEXTURE_TARGETS) / sizeof(TEXTURE_TARGETS[0]);
+        index = index % count;
+        if (index < 0) index += count;
+
+        auto target = TEXTURE_TARGETS[index];
+        outName = target.name;
+
+        auto segments = parsePackage(romBuffer.data(), romBuffer.size(), target.start, target.end);
+        if (target.subIdx < static_cast<int>(segments.size())) {
+            auto data = decompress(romBuffer.data(), romBuffer.size(), segments[target.subIdx]);
+            if (!data.empty()) {
+                static const int WIDTHS[]  = { 96, 80, 64, 32, 16 };
+                static const int HEIGHTS[] = { 110, 80, 64, 32, 16 };
+                for (int k = 0; k < 5; ++k) {
+                    uint32_t expected = static_cast<uint32_t>(WIDTHS[k]) * static_cast<uint32_t>(HEIGHTS[k]) * 2;
+                    if (data.size() >= expected) {
+                        outWidth = WIDTHS[k];
+                        outHeight = HEIGHTS[k];
+                        data.resize(expected);
+                        std::cout << "[AssetDecoder] Switched to Texture [" << (index + 1) << "/9]: " 
+                                  << outName << " (" << outWidth << "x" << outHeight << " RGBA16)" << std::endl;
+                        return data;
+                    }
+                }
+                // Si el tamaño no es estándar, adaptar a 64x64 o 32x32 seguro
+                outWidth = 64; outHeight = 64;
+                if (data.size() < 64 * 64 * 2) { outWidth = 32; outHeight = 32; }
+                data.resize(outWidth * outHeight * 2);
+                return data;
+            }
+        }
+
+        // Fallback
+        return loadFirstTexture(outWidth, outHeight);
+    }
+
     // Usa el buffer interno para cargar la primera textura real de assets00
     std::vector<uint8_t> loadFirstTexture(int& outWidth, int& outHeight) {
         if (romBuffer.empty()) {
