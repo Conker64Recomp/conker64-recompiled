@@ -7,6 +7,7 @@
 #include <cstdint>
 #include "memory.hpp"
 #include "rzip.hpp"
+#include "asset_manager.hpp"
 
 namespace N64 {
 
@@ -75,6 +76,9 @@ public:
 
         // Desencriptar y cargar el ejecutable principal de Conker (game.us.rzip)
         RZIP::loadMainGameCode(buffer.data(), size);
+
+        // Inicializar y cargar los paquetes de assets de Rareware (Texturas, 3D, Audio)
+        AssetManager::getInstance().initFromROM(buffer.data(), size);
 
         return true;
     }
