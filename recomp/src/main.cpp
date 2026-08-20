@@ -19,8 +19,10 @@
 #include "input.hpp"
 #include "rom_loader.hpp"
 #include "rdp.hpp"
+#include "audio.hpp"
+#include "mips_recomp.hpp"
 
-// Abre la ventana nativa de explorador de archivos de Windows para seleccionar la ROM
+// Diálogo de explorador de archivos nativo de Windows
 std::string openFileDialog() {
 #ifdef _WIN32
     char filename[MAX_PATH] = { 0 };
@@ -47,30 +49,34 @@ int main(int argc, char** argv) {
 
     std::cout << "========================================" << std::endl;
     std::cout << " CONKER64: RECOMPILED (NATIVE PC PORT)" << std::endl;
-    std::cout << " Clean Launcher & Hardware 3D Engine" << std::endl;
+    std::cout << " Engine: SDL2 + Audio AI + MIPS Core" << std::endl;
     std::cout << "========================================" << std::endl;
 
-    // 1. Mostrar ubicaciones seguras de AppData y Cache
+    // 1. AppData Paths
     std::cout << "[Paths] Saves: " << N64::PathManager::getAppDataPath() << std::endl;
     std::cout << "[Paths] Cache: " << N64::PathManager::getCachePath() << std::endl;
 
-    // 2. Memoria RDRAM & Save System
+    // 2. Hardware Cores (RDRAM, Saves, 3D RDP, MIPS Context)
     N64::Memory::getInstance().init();
     N64::SaveSystem::getInstance().init();
     N64::RDPProcessor::getInstance().init();
+    N64::MIPSRecompiler::getInstance().init();
 
-    // 3. Inicializar SDL2 con soporte para Drag & Drop de archivos
+    // 3. Inicializar SDL2 con Video y Audio
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS) != 0) {
         std::cerr << "[Error] Failed to initialize SDL2: " << SDL_GetError() << std::endl;
         return 1;
     }
     SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
-    std::cout << "[Init] SDL2 Initialized with Drag & Drop support... OK" << std::endl;
+    std::cout << "[Init] SDL2 Video & Audio Systems Initialized... OK" << std::endl;
 
-    // 4. Input Manager
+    // 4. Inicializar Motor de Audio Nativo N64
+    N64::AudioManager::getInstance().init(44100);
+
+    // 5. Input Manager
     N64::InputManager::getInstance().init();
 
-    // 5. Crear Ventana Nativa de PC
+    // 6. Crear Ventana Nativa
     int windowWidth = 1280;
     int windowHeight = 720;
 
@@ -85,36 +91,36 @@ int main(int argc, char** argv) {
 
     if (!window) {
         std::cerr << "[Error] Could not create window: " << SDL_GetError() << std::endl;
+        N64::AudioManager::getInstance().shutdown();
         SDL_Quit();
         return 1;
     }
 
-    // 6. Renderizador Acelerado por GPU
+    // 7. Renderizador Acelerado por GPU
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer) {
         std::cerr << "[Error] Could not create renderer: " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
+        N64::AudioManager::getInstance().shutdown();
         SDL_Quit();
         return 1;
     }
 
-    // 7. Auto-detectar si ya existe la ROM en la carpeta o iniciar en modo espera
+    // 8. Carga y Ejecución de la ROM
     bool romLoaded = false;
-    std::string loadedRomName = "";
-
     std::vector<std::string> searchPaths = {
         "baserom.us.z64",
         "../baserom.us.z64",
         "../../baserom.us.z64",
-        "Conker's Bad Fur Day (USA).z64",
-        "../Conker's Bad Fur Day (USA).z64"
+        "Conker's Bad Fur Day (USA).z64"
     };
 
     for (const auto& path : searchPaths) {
         if (std::filesystem::exists(path)) {
             if (N64::ROMLoader::loadROM(path)) {
                 romLoaded = true;
-                loadedRomName = path;
+                // Ejecutar función de arranque recompilada MIPS (IPL3 Boot)
+                N64::MIPSRecompiler::getInstance().executeBootFunction();
                 break;
             }
         }
@@ -127,7 +133,7 @@ int main(int argc, char** argv) {
 
     N64::OSContPad pad{};
 
-    // 8. Bucle Principal de la Aplicación
+    // 9. Bucle Principal
     bool isRunning = true;
     SDL_Event event;
 
@@ -136,13 +142,12 @@ int main(int argc, char** argv) {
             if (event.type == SDL_QUIT) {
                 isRunning = false;
             }
-            // Evento: Arrastrar y soltar archivo ROM sobre la ventana (Drag & Drop)
             else if (event.type == SDL_DROPFILE) {
                 char* droppedFile = event.drop.file;
-                std::cout << "[Launcher] ROM Arrastrada a la ventana: " << droppedFile << std::endl;
+                std::cout << "[Launcher] ROM Arrastrada: " << droppedFile << std::endl;
                 if (N64::ROMLoader::loadROM(droppedFile)) {
                     romLoaded = true;
-                    loadedRomName = droppedFile;
+                    N64::MIPSRecompiler::getInstance().executeBootFunction();
                 }
                 SDL_free(droppedFile);
             }
@@ -150,24 +155,22 @@ int main(int argc, char** argv) {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     isRunning = false;
                 }
-                // Presionar tecla 'O' para abrir explorador de archivos y elegir ROM
                 else if (event.key.keysym.sym == SDLK_o) {
                     std::string selected = openFileDialog();
                     if (!selected.empty()) {
-                        std::cout << "[Launcher] ROM Seleccionada: " << selected << std::endl;
                         if (N64::ROMLoader::loadROM(selected)) {
                             romLoaded = true;
-                            loadedRomName = selected;
+                            N64::MIPSRecompiler::getInstance().executeBootFunction();
                         }
                     }
                 }
             }
         }
 
-        // Leer mandos / teclado
+        // Mandos / Teclado
         N64::InputManager::getInstance().poll(pad);
 
-        // Controlar velocidad de giro 3D con el stick analógico o botones
+        // Control 3D
         float rotSpeed = 1.2f;
         if (std::abs(pad.stick_x) > 10) {
             rotSpeed = (pad.stick_x / 80.0f) * 4.0f;
@@ -176,17 +179,17 @@ int main(int argc, char** argv) {
         if (rotationAngle >= 360.0f) rotationAngle -= 360.0f;
         if (rotationAngle < 0.0f) rotationAngle += 360.0f;
 
-        // Medidor de FPS en tiempo real y estado del Launcher en el título
+        // Medidor de FPS y Estado en Título
         frameCount++;
         uint32_t currentTicks = SDL_GetTicks();
         if (currentTicks - lastFpsUpdate >= 500) {
             currentFps = (frameCount * 1000.0f) / (currentTicks - lastFpsUpdate);
             std::string title = "";
             if (romLoaded) {
-                title = "Conker64: Recompiled | ROM: CONKER BFD (USA) [VERIFICADA] | FPS: " + 
-                        std::to_string(static_cast<int>(currentFps)) + " | 3D Engine Activo";
+                title = "Conker64: Recompiled | MIPS Core + Audio AI [44.1kHz] | FPS: " + 
+                        std::to_string(static_cast<int>(currentFps)) + " | 60Hz";
             } else {
-                title = "Conker64: Recompiled | ESPERANDO ROM (Arrastra tu .z64 a la ventana o presiona O)";
+                title = "Conker64: Recompiled | ESPERANDO ROM (Arrastra tu .z64 o presiona O)";
             }
             SDL_SetWindowTitle(window, title.c_str());
             frameCount = 0;
@@ -200,17 +203,15 @@ int main(int argc, char** argv) {
         int winW, winH;
         SDL_GetWindowSize(window, &winW, &winH);
 
-        // Renderizado 3D en tiempo real
+        // Renderizado 3D
         N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, rotationAngle);
 
-        // Presentar cuadro
         SDL_RenderPresent(renderer);
     }
 
-    // Guardar partida al salir
-    N64::SaveSystem::getInstance().saveEEPROM();
-
     // Limpieza
+    N64::SaveSystem::getInstance().saveEEPROM();
+    N64::AudioManager::getInstance().shutdown();
     N64::InputManager::getInstance().shutdown();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
