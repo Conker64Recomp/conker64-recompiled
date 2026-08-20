@@ -1,0 +1,143 @@
+options:
+  basename: conker
+  target_path: baserom.ects.z64
+  base_path: .
+  compiler: IDO
+  extensions_path: tools/splat_ext
+segments:
+  - name:  header.ects
+    type:  bin
+    start: 0x00000000
+  - name:  boot.ects
+    type:  bin
+    start: 0x00000040
+  - name:  init.ects
+    type:  bin
+    start: 0x1000
+  - [0xCAF0, bin] # start of ucode
+  - [0xD448, bin]
+  - [0xDCD8, bin]
+  - [0xEB60, bin]
+  - [0xF3F0, bin]
+  - [0xf920, bin]   # same as 0xCAF0
+  - [0x10278, bin]  # same as 0xD448
+  - [0x10b08, bin]
+  - [0x11628, bin]
+  - [0x12b38, bin]
+  - [0x14048, bin]
+  - [0x15578, bin]
+  - [0x16aa0, bin]
+  - [0x17f48, bin]
+  - [0x193e8, bin]
+  - [0x1a888, bin] # ucode data?
+  - name:  game.ects
+    type:  bin
+    start: 0x26040
+    files:
+    - [0x26040, bin]
+  - name:  debugger.ects
+    type:  bin
+    start: 0x23da50
+    files:
+    - [0x23DA50, bin]
+  ###
+  - [0x246E10, bin, compressed] # 8427 files
+  - [0xB802DF, bin, compressed_padding] # 1 byte 0x0 padding
+  ###
+  - [0xB802E0, bin, assets_offsets_table]
+  - name:  assets00 # 71 file(s) / 6240 bytes
+    type:  rzip
+    start: 0xb803e0
+  - name:  assets01 # 60 file(s) / 286312 bytes
+    type:  rzip
+    start: 0xb81c40
+  - name:  assets02 # 182 file(s) / 790520 bytes
+    type:  rzip
+    start: 0xbc7aa8
+  - name:  assets03 # 143 file(s) / 3311648 bytes
+    type:  rzip
+    start: 0xc88aa0
+  - name:  assets04 # 75 file(s) / 59936 bytes
+    type:  rzip
+    start: 0xfb12c0
+  - name:  assets05 # 69 file(s) / 1881744 bytes
+    type:  rzip
+    start: 0xfbfce0
+  - name:  assets06 # 37 file(s) / 173288 bytes
+    type:  rzip
+    start: 0x118b370
+  - name:  assets07 # 48 file(s) / 758048 bytes
+    type:  rzip
+    start: 0x11b5858
+  - name:  assets08 # 1 file(s) / 80 bytes
+    type:  rzip
+    start: 0x126e978
+  - name:  assets09 # 1 file(s) / 1992 bytes
+    type:  rzip
+    start: 0x126e9c8
+  - name:  assets0A # 422 file(s) / 307008 bytes
+    type:  rzip
+    start: 0x126f190
+  - name:  assets0B # 28 file(s) / 168760 bytes
+    type:  rzip
+    start: 0x12ba0d0
+  - name:  assets0C # 51 file(s) / 10472 bytes
+    type:  rzip
+    start: 0x12e3408
+  - name:  assets0D # 65 file(s) / 195224 bytes
+    type:  rzip
+    start: 0x12e5cf0
+  - name:  assets0E # 9 file(s) / 304 bytes
+    type:  rzip
+    start: 0x1315788
+  - name:  assets0F # 69 file(s) / 13760 bytes
+    type:  rzip
+    start: 0x13158b8
+  - name:  assets10 # 180 file(s) / 246480 bytes
+    type:  rzip
+    start: 0x1318e78
+  - name:  assets11 # 69 file(s) / 20088 bytes
+    type:  rzip
+    start: 0x1355148
+  - name:  assets12 # 182 file(s) / 14080 bytes
+    type:  rzip
+    start: 0x1359fc0
+  - name:  assets13 # 17 file(s) / 2816 bytes
+    type:  rzip
+    start: 0x135d6c0
+  - name:  assets14 # 2 file(s) / 19832 bytes
+    type:  rzip
+    start: 0x135e1c0
+  - name:  assets15 # 180 file(s) / 154608 bytes
+    type:  rzip
+    start: 0x1362f38
+  - name:  assets16 # 69 files / 7816 bytes
+    type:  rzip
+    start: 0x1388b28
+  - name:  assets17 # 377 file(s) / 19561184 bytes
+    type:  rzip
+    start: 0x138a9b0
+  - name:  assets18 # 4 file(s) / 19908248 bytes
+    type:  rzip
+    start: 0x2632490
+  - name:  assets19 # 6 file(s) / 4392 bytes
+    type:  rzip
+    start: 0x392eb28
+  - name:  assets1A # 1 file(s) / 800 bytes
+    type:  rzip
+    start: 0x392fc50
+  - name:  assets1B # 25 file(s) / 19616 bytes
+    type:  rzip
+    start: 0x392ff70
+  - name:  assets1C # 5 file(s) / 5432 bytes
+    type:  rzip
+    start: 0x3934c10
+  - name:  assets1D # 4 file(s) / 5536 bytes
+    type:  rzip
+    start: 0x3936148
+  - name:  assets1E # 5 file(s) / 9272 bytes
+    type:  rzip
+    start: 0x3937620
+  - [0x3939a58, bin]
+  - [0x3939af0, bin, trailer] # 0xff to end
+  - [0x4000000]

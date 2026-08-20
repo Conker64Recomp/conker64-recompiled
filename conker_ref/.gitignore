@@ -1,0 +1,38 @@
+# directories
+
+__pycache__/
+asm/
+assets/
+bin/
+build/
+expected/
+extracted/
+html/
+junk/
+nonmatchings
+py/
+rodata/
+rzip/
+src_debug/
+src_eu/
+text/
+textures/
+
+# files
+
+conker/ctx.c
+.splat_cache
+*.bin
+*.csv
+*.gz
+*.o
+*.ok
+*.pad
+*.z64
+*.ld
+*_auto.txt
+
+# optional tools
+
+tools/decomp-permuter
+tools/gfxdis

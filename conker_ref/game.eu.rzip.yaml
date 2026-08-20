@@ -1,0 +1,18 @@
+options:
+  target_path: assets/game.eu.rzip.bin
+  base_path: .
+  asset_path: assets/game
+  extensions_path: tools/splat_ext
+segments:
+  - name:  code
+    type:  rzip
+    xor:   0x8039CCCA
+    start: 0x0
+  - [0x143CA4, "bin", "code_padding"] # (almost) zero padding
+  - name:  data
+    type:  rzip
+    start: 0x145ED8
+    subsegments:
+      - [0x145ED8, "compressed"] # compressed .data
+  - [0x15A36C, "bin", "data_padding"] # zero padding
+  - [0x15C638] # 1,427,000 bytes

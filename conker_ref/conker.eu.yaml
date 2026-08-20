@@ -1,0 +1,121 @@
+options:
+  basename: conker
+  target_path: baserom.eu.z64
+  base_path: .
+  compiler: IDO
+  extensions_path: tools/splat_ext
+  sha1: ee7bc6656fd1e1d9ffb3d19add759f28b88df710
+segments:
+  - name:  header.eu
+    type:  bin
+    start: 0x00000000
+  - name:  boot.eu
+    type:  bin
+    start: 0x00000040
+  - name:  init.eu
+    type:  bin
+    start: 0x00001000
+  - [0x2D810, bin] # ucode etc
+  - name:  game.eu.rzip
+    type:  bin
+    start: 0x000427B0
+  - name:  debugger.eu
+    type:  bin
+    start: 0x0019EDE8
+  - [0x1A3B40, bin, compressed] # 7762 files
+  - [0xAB223E, bin, compressed_padding] # 2 bytes 0x0 padding
+  ###
+  - [0xAB2240, bin, assets_offsets_table]
+  - name:  assets00
+    type:  rzip
+    start: 0xab2330
+  - name:  assets01
+    type:  rzip
+    start: 0xaf5208
+  - name:  assets02
+    type:  rzip
+    start: 0xbb2478
+  - name:  assets03
+    type:  rzip
+    start: 0xf8fb50
+  - name:  assets04
+    type:  rzip
+    start: 0xf9ef58
+  - name:  assets05
+    type:  rzip
+    start: 0x1154ba8
+  - name:  assets06
+    type:  rzip
+    start: 0x11806e8
+  - name:  assets07
+    type:  rzip
+    start: 0x1204c30
+  - name:  assets08
+    type:  rzip
+    start: 0x1204c80
+  - name:  assets09
+    type:  rzip
+    start: 0x1205000
+  - name:  assets0A
+    type:  rzip
+    start: 0x125d748
+  - name:  assets0B
+    type:  rzip
+    start: 0x129eff8
+  - name:  assets0C
+    type:  rzip
+    start: 0x12a1eb0
+  - name:  assets0D
+    type:  rzip
+    start: 0x12dfc38
+  - name:  assets0E
+    type:  rzip
+    start: 0x12dfe00
+  - name:  assets0F
+    type:  rzip
+    start: 0x12e3b40
+  - name:  assets10
+    type:  rzip
+    start: 0x12f6d88
+  - name:  assets11
+    type:  rzip
+    start: 0x12fcb38
+  - name:  assets12
+    type:  rzip
+    start: 0x1300398
+  - name:  assets13
+    type:  rzip
+    start: 0x1300fd0
+  - name:  assets14
+    type:  rzip
+    start: 0x1305d48
+  - name:  assets15
+    type:  rzip
+    start: 0x132f5d8
+  - name:  assets16 # mp3s
+    type:  rzip
+    start: 0x13313b8 # uncompressed
+  - name:  assets17
+    type:  rzip
+    start: 0x29af928 # uncompressed
+  - name:  assets18
+    type:  rzip
+    start: 0x3f830b0
+  - name:  assets19
+    type:  rzip
+    start: 0x3f833d0
+  - name:  assets1A
+    type:  rzip
+    start: 0x3f88ea8
+  - name:  assets1B
+    type:  rzip
+    start: 0x3f8a580
+  - name:  assets1C
+    type:  rzip
+    start: 0x3f8ba58
+  # - name:  assets1D
+  #   type:  rzip
+  #   start: 0x3f8c6b0
+  - [0x3f8c6b0, bin]
+  - [0x3f8c740, bin, trailer] # 0xff to end
+  - [0x04000000] # the end of the rom
