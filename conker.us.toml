@@ -1,0 +1,25 @@
+# Conker's Bad Fur Day (USA) — N64Recomp Configuration
+# ROM SHA1: 4cbadd3c4e0729dec46af64ad018050eada4f47a
+# Framework: N64Recomp by Mr-Wiseguy
+
+[input]
+symbols_file_path = "conker.symbols.toml"
+rom_file_path     = "baserom.us.z64"
+output_func_path  = "recomp/src/generated"
+
+# Entrypoint MIPS IPL3 de Conker's Bad Fur Day (ROM 0x1000)
+entrypoint = 0x10001000
+
+# Agrupar 50 funciones por archivo C generado para compilar a máxima velocidad
+functions_per_output_file = 50
+
+# Modo de compilación
+single_file_output   = false
+use_absolute_symbols = true
+
+# Header requerido en los archivos C generados
+recomp_include = "#include \"recomp.h\""
+
+[patches]
+stubs = []
+ignored = []
