@@ -14,24 +14,24 @@ namespace N64 {
 
 struct Camera3D {
     float targetX = 0.0f, targetY = 0.0f, targetZ = 0.0f;
-    float posX = 0.0f, posY = 1.2f, posZ = -4.5f;
+    float posX = 0.0f, posY = 3.2f, posZ = -6.5f;
     float rotY = 0.0f;
-    float pitch = 10.0f; // Inclinación suave para ver el cuerpo entero
-    float distance = 4.5f;
+    float pitch = 26.0f; // Inclinación cenital idéntica a Conker's Bad Fur Day (N64)
+    float distance = 6.5f;
 
     void update(float pX, float pY, float pZ, float camInputX, float dt) {
         rotY += camInputX * 120.0f * dt;
 
-        // Seguir al centro del cuerpo de Conker (Y = pY - 0.2f)
-        targetX += (pX - targetX) * 10.0f * dt;
-        targetY += ((pY - 0.2f) - targetY) * 10.0f * dt;
-        targetZ += (pZ - targetZ) * 10.0f * dt;
+        // Seguir suavemente a Conker
+        targetX += (pX - targetX) * 8.0f * dt;
+        targetY += ((pY + 0.3f) - targetY) * 8.0f * dt;
+        targetZ += (pZ - targetZ) * 8.0f * dt;
 
         float radY = rotY * 3.14159265f / 180.0f;
         float radP = pitch * 3.14159265f / 180.0f;
 
         posX = targetX - std::sin(radY) * std::cos(radP) * distance;
-        posY = targetY + std::sin(radP) * distance + 0.8f;
+        posY = targetY + std::sin(radP) * distance;
         posZ = targetZ - std::cos(radY) * std::cos(radP) * distance;
     }
 };
