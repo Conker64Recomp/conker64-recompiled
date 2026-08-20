@@ -47,12 +47,16 @@ public:
         std::cout << "[RDP] Fast3D / F3DEX2 Microcode Display List Processor initialized." << std::endl;
         activeTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 64, 64);
         conkerMesh = Model3D::createConkerMesh();
+        levelMesh  = Model3D::createLevelGeometry();
         groundTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 32, 32);
 
         std::cout << "[RDP] Loaded 3D Mesh: " << conkerMesh.name << " (" 
                   << conkerMesh.vertices.size() << " vertices, " 
                   << conkerMesh.triangles.size() << " triangles)" << std::endl;
-        std::cout << "[RDP] Third-Person Camera and 3D Ground Plane Engine active." << std::endl;
+        std::cout << "[RDP] Loaded Level Mesh: " << levelMesh.name << " (" 
+                  << levelMesh.vertices.size() << " vertices, " 
+                  << levelMesh.triangles.size() << " triangles)" << std::endl;
+        std::cout << "[RDP] Third-Person Camera, Level Geometry & F3DEX2 Display List Engine active." << std::endl;
     }
 
     void loadRealTexture(SDL_Renderer* renderer, const uint8_t* rgba16Data, int width, int height) {
@@ -101,10 +105,13 @@ public:
         // 1. Renderizar Suelo 3D de N64
         renderGroundPlane(renderer, winW, winH, pX, pZ);
 
-        // 2. Renderizar Sombra Proyectada de Conker
+        // 2. Renderizar Geometría del Escenario (Nivel / Props)
+        renderStaticMesh(renderer, winW, winH, levelMesh);
+
+        // 3. Renderizar Sombra Proyectada de Conker
         renderPlayerShadow(renderer, winW, winH, pX, pZ, pY);
 
-        // 3. Renderizar Personaje (Conker)
+        // 4. Renderizar Personaje (Conker)
         renderConkerMesh3D(renderer, winW, winH, pX, pY, pZ, pRotY);
     }
 
@@ -113,24 +120,22 @@ private:
     SDL_Texture* activeTexture;
     SDL_Texture* groundTexture;
     Model3D conkerMesh;
+    Model3D levelMesh;
     Camera3D camera;
 
     struct Point2D { float x, y, z; };
 
     // Proyección de cámara 3D en perspectiva con View Matrix clásica
     Point2D projectCamera(float wx, float wy, float wz, int winW, int winH) {
-        // Vector relativo del objeto respecto a la cámara
         float dx = wx - camera.posX;
         float dy = wy - camera.posY;
         float dz = wz - camera.posZ;
 
-        // Rotación Y (Yaw)
         float radY = camera.rotY * 3.14159265f / 180.0f;
         float cosY = std::cos(radY), sinY = std::sin(radY);
         float x1 = dx * cosY - dz * sinY;
         float z1 = dx * sinY + dz * cosY;
 
-        // Rotación X (Pitch)
         float radP = camera.pitch * 3.14159265f / 180.0f;
         float cosP = std::cos(radP), sinP = std::sin(radP);
         float y2 = dy * cosP + z1 * sinP;
@@ -147,7 +152,6 @@ private:
         };
     }
 
-    // Renderiza la cuadrícula de suelo 3D con textura de Rareware
     void renderGroundPlane(SDL_Renderer* renderer, int winW, int winH, float pX, float pZ) {
         int gridSize = 16;
         float tileSize = 1.5f;
@@ -160,7 +164,7 @@ private:
                 float x1 = x0 + tileSize;
                 float z0 = startZ + z * tileSize;
                 float z1 = z0 + tileSize;
-                float y = -1.35f; // Nivel de los pies
+                float y = -1.35f;
 
                 Point2D p0 = projectCamera(x0, y, z0, winW, winH);
                 Point2D p1 = projectCamera(x1, y, z0, winW, winH);
@@ -169,7 +173,6 @@ private:
 
                 if (p0.z < 0.5f || p1.z < 0.5f || p2.z < 0.5f || p3.z < 0.5f) continue;
 
-                // Patrón de tablero verde pasto / marrón
                 bool alt = ((x + z) % 2 == 0);
                 SDL_Color c = alt ? SDL_Color{35, 95, 30, 255} : SDL_Color{25, 75, 20, 255};
 
@@ -186,16 +189,10 @@ private:
 
                 SDL_RenderGeometry(renderer, nullptr, v1, 3, nullptr, 0);
                 SDL_RenderGeometry(renderer, nullptr, v2, 3, nullptr, 0);
-
-                // Cuadrícula sutil
-                SDL_SetRenderDrawColor(renderer, 20, 60, 15, 120);
-                SDL_RenderDrawLineF(renderer, p0.x, p0.y, p1.x, p1.y);
-                SDL_RenderDrawLineF(renderer, p1.x, p1.y, p2.x, p2.y);
             }
         }
     }
 
-    // Sombra circular estilo N64 bajo Conker
     void renderPlayerShadow(SDL_Renderer* renderer, int winW, int winH, float pX, float pZ, float pY) {
         float shadowRadius = (0.65f - pY * 0.08f < 0.2f) ? 0.2f : (0.65f - pY * 0.08f);
         float y = -1.33f;
@@ -221,6 +218,55 @@ private:
         }
     }
 
+    // Renderiza una malla estática del escenario
+    void renderStaticMesh(SDL_Renderer* renderer, int winW, int winH, const Model3D& mesh) {
+        std::vector<Point2D> projected(mesh.vertices.size());
+        std::vector<float> transformedZ(mesh.vertices.size());
+
+        for (size_t i = 0; i < mesh.vertices.size(); ++i) {
+            const auto& v = mesh.vertices[i];
+            projected[i] = projectCamera(v.x, v.y, v.z, winW, winH);
+            transformedZ[i] = projected[i].z;
+        }
+
+        struct RenderTri { uint16_t v0, v1, v2; float avgZ; };
+        std::vector<RenderTri> drawList;
+        drawList.reserve(mesh.triangles.size());
+
+        for (const auto& tri : mesh.triangles) {
+            float avgZ = (transformedZ[tri.v0] + transformedZ[tri.v1] + transformedZ[tri.v2]) / 3.0f;
+            drawList.push_back({tri.v0, tri.v1, tri.v2, avgZ});
+        }
+
+        std::sort(drawList.begin(), drawList.end(), [](const RenderTri& a, const RenderTri& b) {
+            return b.avgZ < a.avgZ;
+        });
+
+        for (const auto& tri : drawList) {
+            const auto& v0 = mesh.vertices[tri.v0];
+            const auto& v1 = mesh.vertices[tri.v1];
+            const auto& v2 = mesh.vertices[tri.v2];
+
+            const auto& p0 = projected[tri.v0];
+            const auto& p1 = projected[tri.v1];
+            const auto& p2 = projected[tri.v2];
+
+            if (p0.z < 0.2f || p1.z < 0.2f || p2.z < 0.2f) continue;
+
+            SDL_Color c0 = { static_cast<Uint8>(v0.r * 255), static_cast<Uint8>(v0.g * 255), static_cast<Uint8>(v0.b * 255), 255 };
+            SDL_Color c1 = { static_cast<Uint8>(v1.r * 255), static_cast<Uint8>(v1.g * 255), static_cast<Uint8>(v1.b * 255), 255 };
+            SDL_Color c2 = { static_cast<Uint8>(v2.r * 255), static_cast<Uint8>(v2.g * 255), static_cast<Uint8>(v2.b * 255), 255 };
+
+            SDL_Vertex vertices[3] = {
+                { { p0.x, p0.y }, c0, { v0.u, v0.v } },
+                { { p1.x, p1.y }, c1, { v1.u, v1.v } },
+                { { p2.x, p2.y }, c2, { v2.u, v2.v } }
+            };
+
+            SDL_RenderGeometry(renderer, activeTexture, vertices, 3, nullptr, 0);
+        }
+    }
+
     void renderConkerMesh3D(SDL_Renderer* renderer, int winW, int winH, float posX, float posY, float posZ, float rotY) {
         float radY = rotY * 3.14159265f / 180.0f;
         float cosY = std::cos(radY), sinY = std::sin(radY);
@@ -231,12 +277,10 @@ private:
         for (size_t i = 0; i < conkerMesh.vertices.size(); ++i) {
             const auto& v = conkerMesh.vertices[i];
             
-            // Rotación local del personaje
             float lx = v.x * cosY + v.z * sinY;
             float lz = -v.x * sinY + v.z * cosY;
             float ly = v.y;
 
-            // Mundo 3D
             float wx = lx + posX;
             float wy = ly + posY;
             float wz = lz + posZ;
@@ -245,12 +289,7 @@ private:
             transformedZ[i] = projected[i].z;
         }
 
-        // Z-Sorting
-        struct RenderTri {
-            uint16_t v0, v1, v2;
-            float avgZ;
-        };
-
+        struct RenderTri { uint16_t v0, v1, v2; float avgZ; };
         std::vector<RenderTri> drawList;
         drawList.reserve(conkerMesh.triangles.size());
 
