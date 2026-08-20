@@ -21,6 +21,16 @@ set(SDL_TEST OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(SDL2)
 
+# Descargar e integrar zlib (para descomprimir assets Rareware / deflate raw)
+FetchContent_Declare(
+    zlib
+    GIT_REPOSITORY https://github.com/madler/zlib.git
+    GIT_TAG v1.3.1
+    GIT_SHALLOW TRUE
+)
+set(ZLIB_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(zlib)
+
 # Ejecutable principal
 add_executable(Conker
     src/main.cpp
@@ -33,14 +43,16 @@ target_include_directories(Conker PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${sdl2_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include
-    ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include/SDL2
     ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include-config-release/SDL2
     ${CMAKE_CURRENT_BINARY_DIR}/_deps/sdl2-build/include-config-debug/SDL2
+    ${zlib_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/_deps/zlib-build
 )
 
 target_link_libraries(Conker PRIVATE
     SDL2::SDL2
     SDL2::SDL2main
+    zlibstatic
 )
 
 # Copiar SDL2.dll a la carpeta del ejecutable
@@ -51,5 +63,5 @@ add_custom_command(TARGET Conker POST_BUILD
 )
 
 if(MSVC)
-    target_compile_options(Conker PRIVATE /W4 /utf-8 /permissive-)
+    target_compile_options(Conker PRIVATE /W4 /utf-8 /permissive- /wd4100 /wd4244 /wd4996)
 endif()
