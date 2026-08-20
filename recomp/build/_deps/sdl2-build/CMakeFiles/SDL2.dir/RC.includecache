@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Proyectos/decompiler/Conker's Bad Fur Day/recomp/build/_deps/sdl2-src/src/main/windows/version.rc
+winresrc.h
+C:/Proyectos/decompiler/Conker's Bad Fur Day/recomp/build/_deps/sdl2-src/src/main/windows/winresrc.h
+
