@@ -31,9 +31,11 @@ FetchContent_Declare(
 set(ZLIB_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(zlib)
 
-# Rutas a N64ModernRuntime y sus librerías compiladas
+# Rutas a N64ModernRuntime y RT64
 set(RUNTIME_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../tools/N64ModernRuntime")
 set(RUNTIME_BUILD_DIR "${RUNTIME_DIR}/build")
+set(RT64_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../tools/rt64")
+set(RT64_BUILD_DIR "${RT64_DIR}/build_nmake")
 
 # Ejecutable principal
 add_executable(Conker
@@ -54,13 +56,17 @@ target_include_directories(Conker PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}/_deps/zlib-build
     ${RUNTIME_DIR}/ultramodern/include
     ${RUNTIME_DIR}/librecomp/include
+    ${RUNTIME_DIR}/N64Recomp/include
     ${RUNTIME_DIR}/thirdparty
+    ${RT64_DIR}/src
+    ${RT64_DIR}/src/contrib/json
 )
 
-# Librerías estáticas de N64ModernRuntime
+# Librerías estáticas y dinámicas
 find_library(LIB_ULTRAMODERN ultramodern PATHS "${RUNTIME_BUILD_DIR}/ultramodern/Release" NO_DEFAULT_PATH)
 find_library(LIB_LIBRECOMP librecomp PATHS "${RUNTIME_BUILD_DIR}/librecomp/Release" NO_DEFAULT_PATH)
 find_library(LIB_MINIZ miniz PATHS "${RUNTIME_BUILD_DIR}/librecomp/miniz/Release" NO_DEFAULT_PATH)
+find_library(LIB_RT64 rt64 PATHS "${RT64_BUILD_DIR}" NO_DEFAULT_PATH)
 
 target_link_libraries(Conker PRIVATE
     SDL2::SDL2
@@ -83,9 +89,22 @@ if (LIB_MINIZ)
     message(STATUS "[N64ModernRuntime] Linked miniz.lib")
 endif()
 
-# Copiar SDL2.dll a la carpeta del ejecutable
+if (LIB_RT64)
+    target_link_libraries(Conker PRIVATE ${LIB_RT64})
+    message(STATUS "[RT64] Linked rt64.lib (DirectX 12 / Ray Tracing)")
+endif()
+
+# Copiar SDL2.dll y rt64.dll a la carpeta del ejecutable
 add_custom_command(TARGET Conker POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     $<TARGET_FILE:SDL2::SDL2>
     $<TARGET_FILE_DIR:Conker>
 )
+
+if (EXISTS "${RT64_BUILD_DIR}/rt64.dll")
+    add_custom_command(TARGET Conker POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${RT64_BUILD_DIR}/rt64.dll"
+        $<TARGET_FILE_DIR:Conker>
+    )
+endif()
