@@ -5,9 +5,12 @@
 #include <cmath>
 #include <cstdint>
 #include <string>
+#include <fstream>
+#include <sstream>
 #include <SDL.h>
 #include "gbi.hpp"
 #include "memory.hpp"
+#include "asset_decoder.hpp"
 
 namespace N64 {
 
@@ -16,6 +19,65 @@ public:
     std::vector<Vertex3D> vertices;
     std::vector<Triangle3D> triangles;
     std::string name;
+
+    // Carga un archivo de modelo 3D Wavefront OBJ extraído de la ROM
+    bool loadFromOBJ(const std::string& filepath) {
+        std::ifstream file(filepath);
+        if (!file.is_open()) {
+            return false;
+        }
+
+        vertices.clear();
+        triangles.clear();
+        std::vector<std::pair<float, float>> texCoords;
+
+        std::string line;
+        while (std::getline(file, line)) {
+            if (line.empty() || line[0] == '#') continue;
+
+            std::istringstream ss(line);
+            std::string prefix;
+            ss >> prefix;
+
+            if (prefix == "v") {
+                float x, y, z;
+                ss >> x >> y >> z;
+                vertices.push_back({ x, y, z, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f });
+            }
+            else if (prefix == "vt") {
+                float u, v;
+                ss >> u >> v;
+                texCoords.push_back({ u, v });
+            }
+            else if (prefix == "f") {
+                std::string vStr1, vStr2, vStr3;
+                ss >> vStr1 >> vStr2 >> vStr3;
+
+                auto parseFaceIdx = [](const std::string& s) -> int {
+                    size_t slash = s.find('/');
+                    if (slash == std::string::npos) return std::stoi(s) - 1;
+                    return std::stoi(s.substr(0, slash)) - 1;
+                };
+
+                int idx1 = parseFaceIdx(vStr1);
+                int idx2 = parseFaceIdx(vStr2);
+                int idx3 = parseFaceIdx(vStr3);
+
+                if (idx1 >= 0 && idx2 >= 0 && idx3 >= 0 &&
+                    idx1 < (int)vertices.size() && idx2 < (int)vertices.size() && idx3 < (int)vertices.size()) {
+                    triangles.push_back({ static_cast<uint16_t>(idx1), static_cast<uint16_t>(idx2), static_cast<uint16_t>(idx3) });
+                }
+            }
+        }
+
+        // Asignar coordenadas de textura si existen
+        for (size_t i = 0; i < vertices.size() && i < texCoords.size(); ++i) {
+            vertices[i].u = texCoords[i].first;
+            vertices[i].v = texCoords[i].second;
+        }
+
+        return !vertices.empty();
+    }
 
     // Helper para añadir bloques 3D poligonales
     void addBox(float cx, float cy, float cz, float sx, float sy, float sz, 
@@ -60,6 +122,16 @@ public:
         Model3D m;
         m.name = "Conker (Player Mesh)";
 
+        // Intentar cargar modelo 3D extraído directamente de la ROM si existe
+        if (m.loadFromOBJ("exported_assets/models/conker_character.obj") ||
+            m.loadFromOBJ("../exported_assets/models/conker_character.obj") ||
+            m.loadFromOBJ("../../exported_assets/models/conker_character.obj")) {
+            std::cout << "[3D Mesh Engine] Loaded REAL Conker 3D mesh from ROM (" 
+                      << m.vertices.size() << " vertices, " << m.triangles.size() << " triangles)" << std::endl;
+            return m;
+        }
+
+        // Fallback procedural de alta densidad
         // Cabeza
         m.addBox(0.0f, 0.5f, 0.0f,  1.1f, 1.0f, 1.0f,  0.95f, 0.50f, 0.15f,  0.0f, 0.0f, 1.0f, 1.0f);
         // Hocico / Mejillas
@@ -87,10 +159,18 @@ public:
         return m;
     }
 
-    // 2. Malla 3D del escenario interactivo (Plataformas de madera, colinas, y botón Context Sensitive "B")
+    // 2. Malla 3D del escenario interactivo
     static Model3D createLevelGeometry() {
         Model3D m;
         m.name = "Hungover Area (Level Environment & Props)";
+
+        // Intentar cargar modelo de escenario si existe
+        if (m.loadFromOBJ("exported_assets/models/assets02_model_000.obj") ||
+            m.loadFromOBJ("../exported_assets/models/assets02_model_000.obj")) {
+            std::cout << "[3D Mesh Engine] Loaded REAL Level 3D mesh from assets02 (" 
+                      << m.vertices.size() << " vertices, " << m.triangles.size() << " triangles)" << std::endl;
+            return m;
+        }
 
         // Plataforma Context Sensitive (Botón "B" de madera roja de Rareware)
         m.addBox(0.0f, -1.25f, 5.0f,  2.8f, 0.20f, 2.8f,  0.85f, 0.25f, 0.15f,  0.0f, 0.0f, 1.0f, 1.0f);
