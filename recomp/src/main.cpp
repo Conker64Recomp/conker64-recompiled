@@ -141,8 +141,8 @@ int main(int argc, char** argv) {
                     N64::ROMaudioDecoder::getInstance().init(romBuf, romBufSize);
                     std::cout << "[ROM Audio] Indexed " << N64::ROMaudioDecoder::getInstance().trackCount()
                               << " real MP3 tracks from assets16." << std::endl;
-                    // Reproducir Track 0: Música de la intro de Conker's Bad Fur Day
-                    N64::ROMaudioPlayer::getInstance().playTrack(0);
+                    // La música la dispara IntroSequence en la etapa que toca.
+                    // Antes se lanzaba el track 0, que es `sfx_conker_grunt`.
                 }
 
                 N64::MIPSRecompiler::getInstance().executeBootFunction();
@@ -158,9 +158,6 @@ int main(int argc, char** argv) {
     float currentFps = 0.0f;
     float rotationAngle = 0.0f;
     N64::OSContPad pad{};
-
-    int currentTextureIdx = 0;
-    std::string currentTextureName = "Hojas y Vegetacion (assets00:0)";
 
     bool isRunning = true;
     SDL_Event event;
@@ -195,24 +192,9 @@ int main(int argc, char** argv) {
                 else if (event.key.keysym.sym == SDLK_t) {
                     N64::AudioManager::getInstance().playBootJingle();
                 }
-                // Tab, no Espacio: Espacio ya es saltar, y compartirlo hacia que
-                // cada salto ciclara las texturas (con autorepeat, en bucle).
-                else if (event.key.keysym.sym == SDLK_TAB && event.key.repeat == 0) {
-                    currentTextureIdx = (currentTextureIdx + 1) % 9;
-                    int tw = 64, th = 64;
-                    auto texData = N64::AssetDecoder::getInstance().loadTextureByIndex(currentTextureIdx, tw, th, currentTextureName);
-                    if (!texData.empty()) {
-                        N64::RDPProcessor::getInstance().loadRealTexture(renderer, texData.data(), tw, th);
-                    }
-                }
-                else if (event.key.keysym.sym >= SDLK_1 && event.key.keysym.sym <= SDLK_9) {
-                    currentTextureIdx = event.key.keysym.sym - SDLK_1;
-                    int tw = 64, th = 64;
-                    auto texData = N64::AssetDecoder::getInstance().loadTextureByIndex(currentTextureIdx, tw, th, currentTextureName);
-                    if (!texData.empty()) {
-                        N64::RDPProcessor::getInstance().loadRealTexture(renderer, texData.data(), tw, th);
-                    }
-                }
+                // El ciclado de texturas se ha eliminado: compartia tecla con el
+                // salto y cambiaba la textura de TODA la escena en caliente.
+                // La textura de la ROM se carga una vez y se queda fija.
             }
         }
 
@@ -242,7 +224,7 @@ int main(int argc, char** argv) {
         if (currentTicks - lastFpsUpdate >= 500) {
             currentFps = (frameCount * 1000.0f) / (currentTicks - lastFpsUpdate);
             std::string title = romLoaded
-                ? "Conker64: Recompiled | [" + std::to_string(currentTextureIdx + 1) + "/9] " + currentTextureName + " | Cam: Q/E | FPS: " + std::to_string(static_cast<int>(currentFps))
+                ? "Conker64: Recompiled | Cam: Q/E | FPS: " + std::to_string(static_cast<int>(currentFps))
                 : "Conker64: Recompiled | ESPERANDO ROM (Arrastra tu .z64 o presiona O)";
             SDL_SetWindowTitle(window, title.c_str());
             frameCount = 0;

@@ -8,6 +8,7 @@
 #include "gbi.hpp"
 #include "texture_loader.hpp"
 #include "audio.hpp"
+#include "audio_rom.hpp"
 
 namespace N64 {
 
@@ -54,7 +55,8 @@ public:
                 if (timer > 2.5f) {
                     stage = IntroStage::RAREWARE_GOLD;
                     timer = 0.0f;
-                    AudioManager::getInstance().playBootJingle();
+                    // Musica real del logo de Rareware extraida de la ROM.
+                    playROMTrack(MusicTrack::TITLE_RAREWARE, "music_title_rareware");
                     std::cout << "[Intro] Stage 3: Rareware Golden Twinkling R Logo!" << std::endl;
                 }
                 break;
@@ -63,6 +65,7 @@ public:
                 if (timer > 3.0f) {
                     stage = IntroStage::TITLE_THEME;
                     timer = 0.0f;
+                    playROMTrack(MusicTrack::CONKER_THEME, "music_conker_theme");
                     std::cout << "[Intro] Stage 4: Conker Hungover / Throne Scene!" << std::endl;
                 }
                 break;
@@ -103,6 +106,22 @@ public:
 
     bool isGameplayActive() const { return stage == IntroStage::GAMEPLAY; }
     void skipIntro() { stage = IntroStage::GAMEPLAY; }
+
+private:
+    // Reproduce una pista de la ROM; si aun no hay ROM cargada (o el indice no
+    // existe en este volcado) recurre al acorde sintetizado en vez de callar.
+    static void playROMTrack(size_t index, const char* label) {
+        if (index < ROMaudioDecoder::getInstance().trackCount()) {
+            std::cout << "[Intro] Playing ROM track " << index << " (" << label << ")" << std::endl;
+            ROMaudioPlayer::getInstance().playTrack(index);
+        } else {
+            std::cout << "[Intro] ROM track " << index << " (" << label
+                      << ") unavailable; using synthesized chord." << std::endl;
+            AudioManager::getInstance().playBootJingle();
+        }
+    }
+
+public:
 
 private:
     IntroSequence() : stage(IntroStage::N64_LOGO_SPIN), timer(0.0f), logoAngle(0.0f), logoCutOffset(0.0f), hasPlayedSound(false) {}

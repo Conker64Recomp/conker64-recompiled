@@ -18,6 +18,27 @@ struct AudioTrackEntry {
     uint32_t length;      // Tamaño en bytes del stream MP3
 };
 
+// Indices identificados cruzando el tamano en bytes de cada archivo de
+// exported_assets/audio con las entradas de la tabla de assets16; el orden
+// coincide con el de parseTracks().
+//
+// Importante: el track 0 es `sfx_conker_grunt`, un efecto de sonido. Arrancar
+// reproduciendo el track 0 hacia que el juego empezara con un gruñido en vez
+// de con la musica de Rareware.
+namespace MusicTrack {
+    constexpr size_t WINDY_THEME     = 5;
+    constexpr size_t BAT_TOWER       = 7;
+    constexpr size_t HUNGOVER_THEME  = 13;
+    constexpr size_t IT_IS_WAR       = 20;
+    constexpr size_t POO_MOUNTAIN    = 33;
+    constexpr size_t UGA_BUGA        = 82;
+    constexpr size_t SPOOKY          = 200;
+    constexpr size_t OVERWORLD       = 280;
+    constexpr size_t CONKER_THEME    = 283;
+    constexpr size_t SLOPRANO        = 336;
+    constexpr size_t TITLE_RAREWARE  = 390;
+}
+
 class ROMaudioDecoder {
 public:
     static ROMaudioDecoder& getInstance() {
@@ -61,6 +82,7 @@ public:
         mp3dec_init(&dec);
 
         uint32_t consumed = 0;
+        uint32_t frames = 0, resyncs = 0;
         while (consumed < mp3Len) {
             uint32_t remaining = mp3Len - consumed;
             if (remaining < 4) break;
@@ -69,8 +91,25 @@ public:
             int16_t pcm[MINIMP3_MAX_SAMPLES_PER_FRAME];
 
             int samples = mp3dec_decode_frame(&dec, mp3Buf + consumed, remaining, pcm, &info);
-            if (info.frame_bytes == 0) break; // No se pudo decodificar más
+
+            if (info.frame_bytes == 0) {
+                // Los streams de la ROM llevan bytes de relleno intercalados
+                // entre frames. Rendirse al primero truncaba las pistas: la
+                // musica del logo de Rareware daba 1.25s de sus 7.2s reales.
+                // Buscamos la siguiente cabecera y continuamos.
+                uint32_t next = consumed + 1;
+                while (next + 1 < mp3Len &&
+                       !(mp3Buf[next] == 0xFF && (mp3Buf[next + 1] & 0xE0) == 0xE0)) {
+                    ++next;
+                }
+                if (next + 1 >= mp3Len) break;
+                consumed = next;
+                ++resyncs;
+                continue;
+            }
+
             consumed += info.frame_bytes;
+            ++frames;
 
             if (samples > 0) {
                 if (outHz == 0) {
@@ -81,6 +120,9 @@ public:
                 output.insert(output.end(), pcm, pcm + totalSamples);
             }
         }
+
+        std::cout << "[ROMaudio]   decode: " << frames << " frames, " << resyncs
+                  << " resyncs, consumed " << consumed << "/" << mp3Len << " bytes" << std::endl;
 
         return output;
     }
