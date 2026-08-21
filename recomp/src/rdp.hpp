@@ -125,18 +125,28 @@ public:
             ++loadedCount;
         }
 
-        // La geometria extraida de la ROM viene en unidades del cartucho y con
-        // origen arbitrario: sin normalizar aparece fuera del encuadre.
-        if (merged.triangles.size() >= kMinLevelTriangles) {
+        const size_t rawTris = merged.triangles.size();
+        pruneDegenerateTriangles(merged);
+        const float flatness = verticalFlatness(merged);
+
+        std::cout << "[RDP] ROM level geometry: " << loadedCount << " models, "
+                  << rawTris << " tris -> " << merged.triangles.size()
+                  << " non-degenerate, vertical extent " << (flatness * 100.0f) << "% of footprint."
+                  << std::endl;
+
+        // Un nivel tiene relieve. Si la malla es practicamente una lamina plana
+        // es ruido del extractor, no geometria: dibujarla solo produce las
+        // franjas que se ven tumbadas en el suelo.
+        if (merged.triangles.size() >= kMinLevelTriangles && flatness >= kMinFlatness) {
             fitMeshToWorld(merged, 18.0f);
             levelMesh = std::move(merged);
-            std::cout << "[RDP] Merged " << loadedCount << " ROM level models ("
+            std::cout << "[RDP] Using ROM level geometry ("
                       << levelMesh.triangles.size() << " tris)." << std::endl;
             return;
         }
 
-        std::cout << "[RDP] ROM level geometry too sparse ("
-                  << merged.triangles.size() << " tris); using procedural level." << std::endl;
+        std::cout << "[RDP] ROM level geometry rejected; using procedural level "
+                  << "until the F3DEX2 extractor lands." << std::endl;
         merged.releaseTexture();
         levelMesh = Model3D::createLevelGeometry(renderer);
     }
@@ -191,8 +201,10 @@ public:
         renderSkyGradient(renderer, winW, winH);
         renderGroundPlane(renderer, winW, winH, player.posX, player.posZ);
 
-        SDL_Texture* levelTex = levelMesh.sdlTexture ? levelMesh.sdlTexture : activeTexture;
-        renderStaticMesh(renderer, winW, winH, levelMesh, levelTex);
+        // Solo la textura propia de la malla. Antes se caia a `activeTexture`
+        // (la RGBA16 suelta de la ROM), que sobre UVs de cajas procedurales se
+        // veia como ruido estatico encima del personaje y del nivel.
+        renderStaticMesh(renderer, winW, winH, levelMesh, levelMesh.sdlTexture);
 
         renderPlayerShadow(renderer, winW, winH, player.posX, player.posZ, player.posY);
         renderConkerMesh3D(renderer, winW, winH, player);
@@ -202,6 +214,7 @@ private:
     RDPProcessor() : activeTexture(nullptr), groundTexture(nullptr) {}
 
     static constexpr size_t kMinLevelTriangles = 64;
+    static constexpr float  kMinFlatness       = 0.05f;  // altura minima vs. huella
 
     SDL_Texture* activeTexture;
     SDL_Texture* groundTexture;
@@ -233,6 +246,49 @@ private:
         camSinY = std::sin(radY);
         camCosP = std::cos(radP);
         camSinP = std::sin(radP);
+    }
+
+    // Los OBJ del extractor traen multitud de triangulos con indices repetidos
+    // o vertices colineales. Dibujarlos no aporta superficie y satura el
+    // z-sort, asi que se descartan al cargar.
+    static void pruneDegenerateTriangles(Model3D& mesh) {
+        std::vector<Triangle3D> kept;
+        kept.reserve(mesh.triangles.size());
+        const size_t n = mesh.vertices.size();
+
+        for (const auto& t : mesh.triangles) {
+            if (t.v0 == t.v1 || t.v1 == t.v2 || t.v0 == t.v2) continue;
+            if (t.v0 >= n || t.v1 >= n || t.v2 >= n) continue;
+
+            const auto& a = mesh.vertices[t.v0];
+            const auto& b = mesh.vertices[t.v1];
+            const auto& c = mesh.vertices[t.v2];
+
+            float nx, ny, nz;
+            faceNormal(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z, nx, ny, nz);
+            if (nx * nx + ny * ny + nz * nz < 1e-8f) continue;   // area nula
+
+            kept.push_back(t);
+        }
+        mesh.triangles.swap(kept);
+    }
+
+    // Altura de la malla relativa a su huella horizontal. ~0 = lamina plana.
+    static float verticalFlatness(const Model3D& mesh) {
+        if (mesh.vertices.empty()) return 0.0f;
+
+        float minX = std::numeric_limits<float>::max(), maxX = -minX;
+        float minY = minX, maxY = -minX;
+        float minZ = minX, maxZ = -minX;
+        for (const auto& v : mesh.vertices) {
+            minX = mathMin(minX, v.x); maxX = mathMax(maxX, v.x);
+            minY = mathMin(minY, v.y); maxY = mathMax(maxY, v.y);
+            minZ = mathMin(minZ, v.z); maxZ = mathMax(maxZ, v.z);
+        }
+
+        float footprint = mathMax(maxX - minX, maxZ - minZ);
+        if (footprint < 1e-4f) return 0.0f;
+        return (maxY - minY) / footprint;
     }
 
     // Centra la malla en el origen y la escala a un radio horizontal util.
@@ -448,7 +504,7 @@ private:
         }
 
         if (!batchScratch.empty()) {
-            SDL_RenderGeometry(renderer, tex ? tex : activeTexture, batchScratch.data(),
+            SDL_RenderGeometry(renderer, tex, batchScratch.data(),
                                static_cast<int>(batchScratch.size()), nullptr, 0);
         }
     }
@@ -565,8 +621,7 @@ private:
         }
 
         if (!batchScratch.empty()) {
-            SDL_RenderGeometry(renderer,
-                               conkerMesh.sdlTexture ? conkerMesh.sdlTexture : activeTexture,
+            SDL_RenderGeometry(renderer, conkerMesh.sdlTexture,
                                batchScratch.data(), static_cast<int>(batchScratch.size()), nullptr, 0);
         }
     }

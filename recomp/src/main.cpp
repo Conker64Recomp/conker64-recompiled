@@ -189,9 +189,6 @@ int main(int argc, char** argv) {
                         loadRealTextureFromROM(renderer);
                     }
                 }
-                else if (event.key.keysym.sym == SDLK_t) {
-                    N64::AudioManager::getInstance().playBootJingle();
-                }
                 // El ciclado de texturas se ha eliminado: compartia tecla con el
                 // salto y cambiaba la textura de TODA la escena en caliente.
                 // La textura de la ROM se carga una vez y se queda fija.
