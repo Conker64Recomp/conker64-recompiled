@@ -1,5 +1,7 @@
+mtllib assets09_model_109.mtl
 # Conker's Bad Fur Day — Real 3D Model (Multiplayer Level Models)
 o assets09_model_109
+usemtl assets09_model_109_mat
 
 v 0.0000 2.1600 0.0000
 v 0.2600 3.1400 -0.0100

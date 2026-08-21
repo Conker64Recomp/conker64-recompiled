@@ -1,5 +1,7 @@
+mtllib assets06_model_001.mtl
 # Conker's Bad Fur Day — Real 3D Model (Cutscene Geometry)
 o assets06_model_001
+usemtl assets06_model_001_mat
 
 v 0.0000 3.2000 0.0000
 v 25.8800 4.9200 5.1100

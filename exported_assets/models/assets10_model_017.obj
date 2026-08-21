@@ -1,5 +1,7 @@
+mtllib assets10_model_017.mtl
 # Conker's Bad Fur Day — Real 3D Model (Spooky Models)
 o assets10_model_017
+usemtl assets10_model_017_mat
 
 v 0.0000 0.4000 0.0000
 v 0.0000 1.0400 0.0000

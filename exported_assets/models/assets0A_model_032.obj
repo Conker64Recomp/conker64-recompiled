@@ -1,5 +1,7 @@
+mtllib assets0A_model_032.mtl
 # Conker's Bad Fur Day — Real 3D Model (Bat's Tower Level Models)
 o assets0A_model_032
+usemtl assets0A_model_032_mat
 
 v 0.8500 7.3200 3.6800
 v 10.2400 9.4100 8.2000

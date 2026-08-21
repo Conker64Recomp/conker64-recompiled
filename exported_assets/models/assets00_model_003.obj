@@ -1,5 +1,7 @@
+mtllib assets00_model_003.mtl
 # Conker's Bad Fur Day — Real 3D Model (Vegetation & Foliage)
 o assets00_model_003
+usemtl assets00_model_003_mat
 
 v -6.9400 0.0000 0.0000
 v -4.9700 -4.9900 0.0000

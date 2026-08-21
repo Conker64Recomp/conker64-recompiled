@@ -1,5 +1,7 @@
+mtllib assets11_model_054.mtl
 # Conker's Bad Fur Day — Real 3D Model (Heist Models)
 o assets11_model_054
+usemtl assets11_model_054_mat
 
 v 0.0000 0.1600 0.0000
 v 1.2800 6.5300 0.0000

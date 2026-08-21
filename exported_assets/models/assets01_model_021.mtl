@@ -1,0 +1,7 @@
+# Conker's Bad Fur Day — Material for assets01_model_021.obj
+newmtl assets01_model_021_mat
+Ka 0.35 0.35 0.35
+Kd 1.0 1.0 1.0
+Ks 0.0 0.0 0.0
+d 1.0
+map_Kd ..\textures_rgb\assets00_tex_006_32x32.png

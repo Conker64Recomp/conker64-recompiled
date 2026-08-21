@@ -42,14 +42,14 @@ public:
     void init(SDL_Renderer* renderer) {
         std::cout << "[RDP] Fast3D / F3DEX2 Microcode Display List Processor initialized." << std::endl;
 
-        // Try to load authentic ROM textures
-        activeTexture  = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 64, 64);
-        groundTexture  = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 32, 32);
+        // Procedural fallback textures
+        activeTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 64, 64);
+        groundTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 32, 32);
 
-        // Load authentic 3D meshes from extracted ROM OBJ files
-        conkerMesh = Model3D::createConkerMesh();
+        // Load authentic 3D meshes — pass renderer so MTL/PNG textures are loaded
+        conkerMesh = Model3D::createConkerMesh(renderer);
 
-        // Level geometry: merge several real ROM obj files
+        // Level geometry: merge real ROM OBJ files
         levelMesh.name = "Level (Merged ROM Meshes)";
         loadAdditionalLevel(renderer);
 
@@ -63,8 +63,6 @@ public:
     }
 
     void loadAdditionalLevel(SDL_Renderer* renderer) {
-        (void)renderer;
-        // Merge real ROM level OBJ files if they exist
         const char* levelFiles[] = {
             "exported_assets/models/assets09_model_000.obj",
             "exported_assets/models/assets09_model_001.obj",
@@ -79,7 +77,7 @@ public:
         bool anyLoaded = false;
         for (int i = 0; levelFiles[i]; ++i) {
             Model3D tmp;
-            if (tmp.loadFromOBJ(levelFiles[i])) {
+            if (tmp.loadFromOBJ(levelFiles[i], renderer)) {
                 uint16_t base = static_cast<uint16_t>(levelMesh.vertices.size());
                 for (auto& v : tmp.vertices) levelMesh.vertices.push_back(v);
                 for (auto& t : tmp.triangles)
@@ -88,10 +86,13 @@ public:
                         static_cast<uint16_t>(t.v1 + base),
                         static_cast<uint16_t>(t.v2 + base)
                     });
+                // Use the first successfully loaded ROM texture for the level
+                if (!levelMesh.sdlTexture && tmp.sdlTexture)
+                    levelMesh.sdlTexture = tmp.sdlTexture;
                 anyLoaded = true;
             }
         }
-        if (!anyLoaded) levelMesh = Model3D::createLevelGeometry();
+        if (!anyLoaded) levelMesh = Model3D::createLevelGeometry(renderer);
     }
 
     void loadRealTexture(SDL_Renderer* renderer, const uint8_t* rgba16Data, int width, int height) {
@@ -133,11 +134,12 @@ public:
         renderSkyGradient(renderer, winW, winH);
         // Ground tiles
         renderGroundPlane(renderer, winW, winH, pX, pZ);
-        // Level geometry from ROM OBJ
-        renderStaticMesh(renderer, winW, winH, levelMesh, nullptr);
+        // Level geometry from ROM OBJ — prefer its own MTL texture
+        SDL_Texture* levelTex = levelMesh.sdlTexture ? levelMesh.sdlTexture : activeTexture;
+        renderStaticMesh(renderer, winW, winH, levelMesh, levelTex);
         // Player shadow blob
         renderPlayerShadow(renderer, winW, winH, pX, pZ, pY);
-        // Conker 3D character with Gouraud shading + back-face culling
+        // Conker 3D character — prefer its own MTL texture
         renderConkerMesh3D(renderer, winW, winH, pX, pY, pZ, pRotY);
     }
 
@@ -423,7 +425,7 @@ private:
                 {{ p1.x, p1.y }, c1, { v1.u, v1.v }},
                 {{ p2.x, p2.y }, c2, { v2.u, v2.v }}
             };
-            SDL_RenderGeometry(renderer, activeTexture, verts, 3, nullptr, 0);
+            SDL_RenderGeometry(renderer, conkerMesh.sdlTexture ? conkerMesh.sdlTexture : activeTexture, verts, 3, nullptr, 0);
         }
     }
 };

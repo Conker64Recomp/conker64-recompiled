@@ -1,5 +1,7 @@
+mtllib assets04_model_000.mtl
 # Conker's Bad Fur Day — Real 3D Model (World Structures)
 o assets04_model_000
+usemtl assets04_model_000_mat
 
 v 0.0000 1.2800 0.0000
 v 0.0000 -13.0400 0.0000

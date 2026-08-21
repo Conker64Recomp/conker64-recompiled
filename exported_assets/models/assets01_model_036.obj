@@ -1,5 +1,7 @@
+mtllib assets01_model_036.mtl
 # Conker's Bad Fur Day — Real 3D Model (HUD & UI Props)
 o assets01_model_036
+usemtl assets01_model_036_mat
 
 v 8.6700 6.3700 -2.5800
 v 8.6600 8.0000 -2.5800

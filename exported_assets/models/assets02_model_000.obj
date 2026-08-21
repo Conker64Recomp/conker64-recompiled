@@ -1,5 +1,7 @@
+mtllib assets02_model_000.mtl
 # Conker's Bad Fur Day — Real 3D Model (Level Props & Geometry)
 o assets02_model_000
+usemtl assets02_model_000_mat
 
 v 0.0000 -31.6800 0.0000
 v 0.0000 -20.5600 0.0000

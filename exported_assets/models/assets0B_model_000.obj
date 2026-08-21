@@ -1,5 +1,7 @@
+mtllib assets0B_model_000.mtl
 # Conker's Bad Fur Day — Real 3D Model (Windy Level Models)
 o assets0B_model_000
+usemtl assets0B_model_000_mat
 
 v -9.7100 1.9100 -15.6300
 v 0.0000 0.0900 0.0000

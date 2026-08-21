@@ -1,5 +1,7 @@
+mtllib assets0E_model_039.mtl
 # Conker's Bad Fur Day — Real 3D Model (Sloprano Models)
 o assets0E_model_039
+usemtl assets0E_model_039_mat
 
 v 0.3200 2.5800 17.9200
 v 20.4800 0.0000 0.0000
