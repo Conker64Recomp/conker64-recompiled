@@ -1,154 +1,53 @@
-# Conker's Bad Fur Day Decompilation
+# Conker's Bad Fur Day Decompilation & Asset Specification
 
-![Conker's Bad Fur Day (US) Progress](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fconker.deco.mp%2Flatest.json&color=critical&label=Conker's%20Bad%20Fur%20Day%20(US)&query=$.progress[0].sections[3].percent&suffix=%25) ![all Functions](https://img.shields.io/badge/funcs-1365%2F5916-blue) ![Build Status](https://github.com/mkst/conker/workflows/build/badge.svg)
+![Conker's Bad Fur Day (US) Progress](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fconker.deco.mp%2Flatest.json&color=critical&label=Conker's%20Bad%20Fur%20Day%20(US)&query=$.progress[0].sections[3].percent&suffix=%25) ![all Functions](https://img.shields.io/badge/funcs-1365%2F5916-blue)
 
-| Progress                                                                                                                                           | Functions                                                |
-|----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
-| ![init Progress](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fconker.deco.mp%2Flatest.json&color=yellow&label=init&query=$.progress[0].sections[0].percent&suffix=%25)      | ![init Functions](https://img.shields.io/badge/funcs-231%2F536-blue)      |
-| ![game Progress](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fconker.deco.mp%2Flatest.json&color=critical&label=game&query=$.progress[0].sections[1].percent&suffix=%25)     | ![game Functions](https://img.shields.io/badge/funcs-1114%2F5338-blue) |
-| ![debugger Progress](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fconker.deco.mp%2Flatest.json&color=orange&label=debugger&query=$.progress[0].sections[2].percent&suffix=%25) | ![debugger Functions](https://img.shields.io/badge/funcs-20%2F42-blue) |
+| Section | Decompiled Functions | Status |
+|---|---|---|
+| `init.us` | 231 / 536 | Matching |
+| `game.us` (RZIP Code) | 1114 / 5338 | In Progress |
+| `debugger.us` | 20 / 42 | Matching |
 
-A WIP decompilation of Conker's Bad Fur Day.
+---
 
-Note: To use this repository, you must already have a copy of the game.
+## 📖 About This Reference
 
-# Building
+This folder contains the complete assembly, disassembly mappings, asset offsets, and Splat configuration schemas for the **US release of Conker's Bad Fur Day** (`baserom.us.z64`, SHA-1: `4cbadd3c4e0729dec46af64ad018050eada4f47a`).
 
-Place the **US** Conker's Bad Fur Day ROM in the root of this repository, name it `baserom.us.z64`.
+It is used as the foundational reference data for the **Conker64 Recompiled** project (`recomp/`).
 
-**Preamble**
+---
 
-The assumption is that you will be using [Docker](https://www.docker.com/products/docker-desktop) for the building process.
-If this is not the case, see the [Dockerfile](Dockerfile) for the prerequisites; the steps below work perfectly well in **Ubuntu 20.04** running via WSL on Windows.
+## 📦 ROM Memory Layout & Asset Packages
 
-See the [Quickstart](https://github.com/mkst/conker/wiki/Quickstart) for more information.
+| Offset Range | Type | Description |
+|---|---|---|
+| `0x00000000 - 0x00000040` | Header | N64 Rom Header & Checksum |
+| `0x00000040 - 0x00001000` | IPL3 Boot | Bootloader code |
+| `0x00001000 - 0x00042450` | Init Segment | Entry point, memory manager, OS initialization |
+| `0x00042450 - 0x0019EA88` | `game.us.rzip` | 508 RZIP compressed MIPS code subsegments (XOR `0x8039CCCA`) |
+| `0x001A37E0 - 0x00AB1941` | Master Asset Block | 7,760 compressed per-actor asset records |
+| `0x00AB1A40 - 0x00AF4918` | `assets00` | Foliage & Environment geometry |
+| `0x00AF4918 - 0x00BB1BA0` | `assets01` | UI, Icons, Font glyphs, HUD props |
+| `0x00BB1BA0 - 0x00F8F278` | `assets02` | Level geometry & Interactive props |
+| `0x00F8F278 - 0x00F9E660` | `assets03` | Conker Character 3D Model & Display Lists |
+| `0x00F9E660 - 0x011542A8` | `assets04` | Large level structures & Skyboxes |
+| `0x011542A8 - 0x0117FE50` | `assets05` | Enemy actors & NPCs |
+| `0x0117FE50 - 0x012043B0` | `assets06` | Cutscene sequences & intro choreography |
+| `0x01204780 - 0x0125CED0` | `assets09` | Multiplayer characters & maps |
+| `0x0125CED0 - 0x0129E780` | `assets0A` | Bat's Tower / Barn Boys |
+| `0x0129E780 - 0x012A1638` | `assets0B` | Windy / Poop Mountain |
+| `0x012A1638 - 0x012DEDF0` | `assets0C` | It's War / Tediz Base |
+| `0x012DEFB8 - 0x012E2CF8` | `assets0E` | Sloprano / Great Mighty Poo |
+| `0x012E2CF8 - 0x012F5F40` | `assets0F` | Uga Buga / Raptor Arena |
+| `0x012F5F40 - 0x012FBCF0` | `assets10` | Spooky / Count Batula Castle |
+| `0x012FBCF0 - 0x012FF550` | `assets11` | Heist / Bank Vault |
+| `0x01300000 - 0x03FA5000` | `assets16` | 453 MP3 compressed audio & speech streams |
 
-**Clone repository**
+---
 
-```sh
-git clone https://github.com/mkst/conker.git --recursive
-cd conker
-```
+## 🛠️ Extraction Tools
 
-**Build Docker image (optional)**
-
-```sh
-docker build . -t conker
-```
-
-**Spin up the image interactively (optional)**
-
-```sh
-docker run --rm -ti -v $(pwd):/conker conker bash
-```
-
-**Sanity check ROM checksum**
-
-```sh
-make check
-```
-
-**Extract ROM**
-
-```sh
-make extract
-```
-
-**Decompress code (optional)**
-
-```sh
-make -C conker extract
-```
-
-**Compile code (optional)**
-
-```sh
-make -C conker --jobs
-```
-
-**Replace compiled code (optional)**
-
-```sh
-make -C conker replace
-```
-
-**Compile ROM**
-
-```sh
-make --jobs
-```
-
-If everything matches, you will be greeted with an `OK`:
-
-```
-build/conker.us.z64: OK
-```
-
-# Progress
-
-This project is in its infancy; there are multiple tasks being worked on:
-
-  - Converting disassembly into (byte-perfect) C code
-  - Extracting assets from the ROM and being able to successfully re-pack them
-  - Identify and document all asset types used in the ROM
-  - Tooling to support the above tasks
-
-## Open issues
-
-  - Identifying and documenting Conker asset (model/texture/sound) format
-
-## ROM layout
-
-The layout of the ROM is still a work-in-progress. There are a number of sections within the ROM that are compressed with [gzip](https://tools.ietf.org/html/rfc1952) but have the standard header/trailer stripped and, instead, replaced with a 4-byte header containing the uncompressed data length. These sections are dubbed `rzip`.
-
-Overview of US ROM shown below:
-```
-[header]  0000 0000 > 0000 0040 ; suggests libultra 2.0G
-[ boot ]  0000 0040 > 0000 1000 ;
-[ code ]  0000 1000 > 0004 2C50 ; init + libultra .text
-[ ???? ]  0002 90D0 > ???? ???? ;
-[ data ]  0002 C750 > 0002 C7A0 ; init + libultra .data
-[ ???? ]  0002 C7A0 > 0004 2C50 ; μcode
-[ rzip ]  0004 2C50 > 0018 6B50 ; game .text (compressed)
-[ rzip ]  0018 8328 > 0019 C7D8 ; game .data (compressed)
-[ code ]  0019 EA88 > 001A 2190 ; debugger .text
-[ data ]  001A 2190 > 001A 37E0 ; debugger .data
-[ rzip ]  001A 37E0 > 00AB 1950 ; compressed section (textures?)
-[ offs ]  00AB 1950 > 00AB 1A40 ; table of asset offsets
-[ rzip ]  00AB 1A40 > 03F8 B800 ; assets 00 thru assets 1C
-[ ffff ]  03F8 B800 > 0400 0000 ; 0xff padding
-```
-
-### Compressed section(s)
-
-There are a number of compressed sections within the ROM. The decompression/compression method is understood and generates matching results.
-
-## Building ROM
-
-Due to the compressed code sections, all code segments within the ROM are cut from the ROM and combined together, creating a sub-project inside the `conker/` directory.
-
-See the [README](conker/README.md) for more information.
-
-# Tools
-
-## Custom tools
-
- - `rarezip/rareunzip`; python script to compress/decompress the compression format used in the ROM.
-
-NOTE: `gzip` is used for compression rather than `zlib`; use the binary in `tools/` in order to get matching compression.
-
-## Existing tools
-
-This repo makes use of the following open-source tools without which, there would be no decomp:
-
- - [asm-differ](https://github.com/simonlindholm/asm-differ); compare assembly against the original ROM
- - [asm-processor](https://github.com/simonlindholm/asm-processor); allow `GLOBAL_ASM` wrappers to include assembly within the c files
- - [n64splat](https://github.com/ethteck/n64splat); split up the rom & much more...
- - [ido-static-recomp](https://github.com/Emill/ido-static-recomp); IDO compiler
- - [gzip](https://github.com/mkst/gzip); gzip; specifically with the pre-1.5 `memzero` behaviour
-
-# Contributing
-
-The [wiki](https://github.com/mkst/conker/wiki) will eventually contain discoveries as they are made.
-
-In the meantime, if you wish to contribute in any way, get stuck in and raise a PR or find me on Discord `mkst#4741`.
+- `tools/splat_ext/rzip.py`: Custom Rareware RZIP decrypter supporting XOR `0x8039CCCA`.
+- `tools/extract_compressed.py`: Decompresses individual asset files.
+- `conker.us.yaml`: Master Splat segmentation configuration.

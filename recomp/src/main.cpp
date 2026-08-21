@@ -243,7 +243,7 @@ int main(int argc, char** argv) {
             SDL_SetRenderDrawColor(renderer, 70, 130, 200, 255);
             SDL_RenderClear(renderer);
 
-            N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player.posX, player.posY, player.posZ, player.rotY, camInputX, 1.0f / 60.0f);
+            N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player, camInputX, 1.0f / 60.0f);
         }
 
         SDL_RenderPresent(renderer);
