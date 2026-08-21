@@ -1,16 +1,33 @@
 #pragma once
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <array>
 #include <SDL.h>
 #include "gbi.hpp"
 #include "memory.hpp"
 #include "texture_loader.hpp"
 #include "model_loader.hpp"
+#include "actor_system.hpp"
 
 namespace N64 {
+
+template<typename T>
+inline T mathMin(T a, T b) { return (a < b) ? a : b; }
+
+template<typename T>
+inline T mathMax(T a, T b) { return (a > b) ? a : b; }
+
+template<typename T>
+inline T mathClamp(T val, T low, T high) {
+    return (val < low) ? low : ((val > high) ? high : val);
+}
 
 struct Camera3D {
     float targetX = 0.0f, targetY = 0.0f, targetZ = 0.0f;
@@ -22,7 +39,7 @@ struct Camera3D {
     void update(float pX, float pY, float pZ, float camInputX, float dt) {
         rotY += camInputX * 100.0f * dt;
         targetX += (pX - targetX) * 8.0f * dt;
-        targetY += ((pY - 0.3f) - targetY) * 8.0f * dt;
+        targetY += ((pY + 0.2f) - targetY) * 8.0f * dt;
         targetZ += (pZ - targetZ) * 8.0f * dt;
         float radY = rotY * 3.14159265f / 180.0f;
         float radP = pitch * 3.14159265f / 180.0f;
@@ -42,14 +59,10 @@ public:
     void init(SDL_Renderer* renderer) {
         std::cout << "[RDP] Fast3D / F3DEX2 Microcode Display List Processor initialized." << std::endl;
 
-        // Procedural fallback textures
         activeTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 64, 64);
         groundTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 32, 32);
 
-        // Load authentic 3D meshes — pass renderer so MTL/PNG textures are loaded
         conkerMesh = Model3D::createConkerMesh(renderer);
-
-        // Level geometry: merge real ROM OBJ files
         levelMesh.name = "Level (Merged ROM Meshes)";
         loadAdditionalLevel(renderer);
 
@@ -59,7 +72,7 @@ public:
         std::cout << "[RDP] Loaded Level Mesh: " << levelMesh.name
                   << " (" << levelMesh.vertices.size() << " vertices, "
                   << levelMesh.triangles.size() << " triangles)" << std::endl;
-        std::cout << "[RDP] Third-Person Camera, Gouraud Shading, Back-Face Culling active." << std::endl;
+        std::cout << "[RDP] Skeletal Animation, Gouraud Shading & Back-Face Culling active." << std::endl;
     }
 
     void loadAdditionalLevel(SDL_Renderer* renderer) {
@@ -86,7 +99,6 @@ public:
                         static_cast<uint16_t>(t.v1 + base),
                         static_cast<uint16_t>(t.v2 + base)
                     });
-                // Use the first successfully loaded ROM texture for the level
                 if (!levelMesh.sdlTexture && tmp.sdlTexture)
                     levelMesh.sdlTexture = tmp.sdlTexture;
                 anyLoaded = true;
@@ -125,22 +137,27 @@ public:
 
     void processDisplayList(uint32_t dlVaddr, SDL_Renderer* renderer,
                             int winW, int winH,
-                            float pX, float pY, float pZ, float pRotY,
+                            const ActorState& player,
                             float camInputX, float dt) {
         (void)dlVaddr;
         if (!renderer) return;
-        camera.update(pX, pY, pZ, camInputX, dt);
+        camera.update(player.posX, player.posY, player.posZ, camInputX, dt);
+
         // Sky + fog background gradient
         renderSkyGradient(renderer, winW, winH);
+
         // Ground tiles
-        renderGroundPlane(renderer, winW, winH, pX, pZ);
-        // Level geometry from ROM OBJ — prefer its own MTL texture
+        renderGroundPlane(renderer, winW, winH, player.posX, player.posZ);
+
+        // Level geometry from ROM OBJ
         SDL_Texture* levelTex = levelMesh.sdlTexture ? levelMesh.sdlTexture : activeTexture;
         renderStaticMesh(renderer, winW, winH, levelMesh, levelTex);
+
         // Player shadow blob
-        renderPlayerShadow(renderer, winW, winH, pX, pZ, pY);
-        // Conker 3D character — prefer its own MTL texture
-        renderConkerMesh3D(renderer, winW, winH, pX, pY, pZ, pRotY);
+        renderPlayerShadow(renderer, winW, winH, player.posX, player.posZ, player.posY);
+
+        // Conker 3D character with Skeletal Animations
+        renderConkerMesh3D(renderer, winW, winH, player);
     }
 
 private:
@@ -151,14 +168,11 @@ private:
     Model3D levelMesh;
     Camera3D camera;
 
-    // ─── DIRECTIONAL LIGHT (N64-style) ──────────────────────────────────────
-    // N64 lighting was typically one overhead directional + ambient
     float lightDirX = 0.5f, lightDirY = 1.0f, lightDirZ = 0.3f;
     float ambientIntensity = 0.35f;
 
     struct Point2D { float x, y, z; };
 
-    // ─── PERSPECTIVE PROJECTION ─────────────────────────────────────────────
     Point2D projectCamera(float wx, float wy, float wz, int winW, int winH) const {
         float dx = wx - camera.posX;
         float dy = wy - camera.posY;
@@ -177,8 +191,6 @@ private:
         return { winW / 2.0f + x1 * f, winH / 2.0f - y2 * f, z2 };
     }
 
-    // ─── GOURAUD SHADING per vertex ─────────────────────────────────────────
-    // Compute diffuse intensity using face normal
     static float computeLighting(float nx, float ny, float nz,
                                  float ldx, float ldy, float ldz, float ambient) {
         float len = std::sqrt(nx*nx + ny*ny + nz*nz);
@@ -191,7 +203,6 @@ private:
         return ambient + (1.0f - ambient) * dot;
     }
 
-    // Compute face normal from 3 world-space vertices
     static void faceNormal(float ax, float ay, float az,
                            float bx, float by, float bz,
                            float cx, float cy, float cz,
@@ -203,16 +214,12 @@ private:
         nz = ux*vy - uy*vx;
     }
 
-    // ─── BACK-FACE CULLING ───────────────────────────────────────────────────
-    // True if the triangle is front-facing relative to the camera
     bool isFrontFacing(const Point2D& p0, const Point2D& p1, const Point2D& p2) const {
         float cross = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
-        return cross < 0.0f; // Counter-clockwise in screen space = front
+        return cross < 0.0f;
     }
 
-    // ─── SKY / FOG GRADIENT (N64 style) ─────────────────────────────────────
     void renderSkyGradient(SDL_Renderer* renderer, int winW, int winH) {
-        // Top: deep sky blue  Bottom: lighter haze (N64 Windy level palette)
         for (int y = 0; y < winH / 2; ++y) {
             float t = static_cast<float>(y) / (winH / 2.0f);
             uint8_t r = static_cast<uint8_t>(30  + t * 80);
@@ -221,7 +228,6 @@ private:
             SDL_SetRenderDrawColor(renderer, r, g, b, 255);
             SDL_RenderDrawLine(renderer, 0, y, winW, y);
         }
-        // Horizon fog band
         for (int y = winH / 2; y < winH * 2 / 3; ++y) {
             float t = static_cast<float>(y - winH / 2) / (winH / 6.0f);
             uint8_t r = static_cast<uint8_t>(110 + t * 30);
@@ -232,13 +238,12 @@ private:
         }
     }
 
-    // ─── GROUND PLANE ────────────────────────────────────────────────────────
     void renderGroundPlane(SDL_Renderer* renderer, int winW, int winH, float pX, float pZ) {
         const int gridSize = 20;
         const float tileSize = 1.5f;
         float startX = std::floor(pX / tileSize) * tileSize - (gridSize / 2) * tileSize;
         float startZ = std::floor(pZ / tileSize) * tileSize - (gridSize / 2) * tileSize;
-        const float y = -1.35f;
+        const float y = 0.0f;
 
         for (int xi = 0; xi < gridSize; ++xi) {
             for (int zi = 0; zi < gridSize; ++zi) {
@@ -252,8 +257,7 @@ private:
 
                 if (p0.z < 0.3f || p1.z < 0.3f || p2.z < 0.3f || p3.z < 0.3f) continue;
 
-                // Distance-based fog
-                float fog = std::min(1.0f, p0.z / 18.0f);
+                float fog = mathMin(1.0f, p0.z / 18.0f);
                 bool alt = ((xi + zi) % 2 == 0);
                 uint8_t gr = alt ? static_cast<uint8_t>(35 + fog * 80) : static_cast<uint8_t>(25 + fog * 80);
                 uint8_t gg = alt ? static_cast<uint8_t>(95 + fog * 80) : static_cast<uint8_t>(75 + fog * 80);
@@ -276,10 +280,9 @@ private:
         }
     }
 
-    // ─── PLAYER SHADOW ───────────────────────────────────────────────────────
     void renderPlayerShadow(SDL_Renderer* renderer, int winW, int winH, float pX, float pZ, float pY) {
-        float radius = std::max(0.2f, 0.65f - pY * 0.08f);
-        const float y = -1.33f;
+        float radius = mathMax(0.2f, 0.65f - pY * 0.08f);
+        const float y = 0.02f;
         const int segs = 14;
         SDL_Color sc = { 10, 20, 10, 140 };
         Point2D center = projectCamera(pX, y, pZ, winW, winH);
@@ -298,7 +301,6 @@ private:
         }
     }
 
-    // ─── GENERIC MESH RENDERER with Gouraud + backface culling ──────────────
     void renderStaticMesh(SDL_Renderer* renderer, int winW, int winH,
                           const Model3D& mesh, SDL_Texture* tex) {
         if (mesh.vertices.empty() || mesh.triangles.empty()) return;
@@ -335,18 +337,18 @@ private:
                        v1.x, v1.y, v1.z,
                        v2.x, v2.y, v2.z, nx, ny, nz);
             float L = computeLighting(nx, ny, nz, lightDirX, lightDirY, lightDirZ, ambientIntensity);
-            L = std::min(1.0f, L);
+            L = mathMin(1.0f, L);
 
-            float fog = std::min(1.0f, ((p0.z + p1.z + p2.z) / 3.0f) / 20.0f);
+            float fog = mathMin(1.0f, ((p0.z + p1.z + p2.z) / 3.0f) / 20.0f);
 
-            auto shade = [&](float base, float l, float f) -> uint8_t {
+            auto shadeVal = [](float base, float l, float f) -> uint8_t {
                 float c = base * l * (1.0f - f) + f * 0.8f;
-                return static_cast<uint8_t>(std::min(255.0f, c * 255.0f));
+                return static_cast<uint8_t>(mathMin(255.0f, c * 255.0f));
             };
 
-            SDL_Color c0 = { shade(v0.r, L, fog), shade(v0.g, L, fog), shade(v0.b, L, fog), 255 };
-            SDL_Color c1 = { shade(v1.r, L, fog), shade(v1.g, L, fog), shade(v1.b, L, fog), 255 };
-            SDL_Color c2 = { shade(v2.r, L, fog), shade(v2.g, L, fog), shade(v2.b, L, fog), 255 };
+            SDL_Color c0 = { shadeVal(v0.r, L, fog), shadeVal(v0.g, L, fog), shadeVal(v0.b, L, fog), 255 };
+            SDL_Color c1 = { shadeVal(v1.r, L, fog), shadeVal(v1.g, L, fog), shadeVal(v1.b, L, fog), 255 };
+            SDL_Color c2 = { shadeVal(v2.r, L, fog), shadeVal(v2.g, L, fog), shadeVal(v2.b, L, fog), 255 };
 
             SDL_Vertex verts[3] = {
                 {{ p0.x, p0.y }, c0, { v0.u, v0.v }},
@@ -357,23 +359,82 @@ private:
         }
     }
 
-    // ─── CONKER CHARACTER MESH ───────────────────────────────────────────────
-    void renderConkerMesh3D(SDL_Renderer* renderer, int winW, int winH,
-                            float posX, float posY, float posZ, float rotY) {
+    // ─── CONKER CHARACTER SKELETAL ANIMATION DEFORMER ────────────────────────
+    void renderConkerMesh3D(SDL_Renderer* renderer, int winW, int winH, const ActorState& player) {
         if (conkerMesh.vertices.empty()) return;
 
-        float radY = rotY * 3.14159265f / 180.0f;
+        float radY = player.rotY * 3.14159265f / 180.0f;
         float cosY = std::cos(radY), sinY = std::sin(radY);
 
-        // Transform vertices into world space
         std::vector<Point2D> proj(conkerMesh.vertices.size());
         std::vector<std::array<float,3>> worldPos(conkerMesh.vertices.size());
 
+        // Skeletal limb angles
+        float legRad = player.legAngle * 3.14159265f / 180.0f;
+        float armRad = player.armAngle * 3.14159265f / 180.0f;
+        float tailRad = player.tailAngle * 3.14159265f / 180.0f;
+        float spinRad = player.tailSpinAngle * 3.14159265f / 180.0f;
+        float leanRad = player.bodyLean * 3.14159265f / 180.0f;
+
         for (size_t i = 0; i < conkerMesh.vertices.size(); ++i) {
             const auto& v = conkerMesh.vertices[i];
-            float lx =  v.x * cosY + v.z * sinY;
-            float lz = -v.x * sinY + v.z * cosY;
-            float wx = lx + posX, wy = v.y + posY, wz = lz + posZ;
+            float lx = v.x, ly = v.y, lz = v.z;
+
+            // 1. Procedural Skeletal deformation by anatomical zone
+            if (v.y < -0.8f) {
+                // Legs & Feet — swing in stride
+                float sign = (v.x > 0.0f) ? 1.0f : -1.0f;
+                float currentLegAngle = legRad * sign;
+                float hipY = -0.8f, hipZ = 0.0f;
+                float dy = ly - hipY, dz = lz - hipZ;
+                ly = hipY + dy * std::cos(currentLegAngle) - dz * std::sin(currentLegAngle);
+                lz = hipZ + dy * std::sin(currentLegAngle) + dz * std::cos(currentLegAngle);
+            }
+            else if (std::abs(v.x) > 0.45f && v.y > -0.7f && v.y < 0.2f) {
+                // Arms — opposing arm swing
+                float sign = (v.x > 0.0f) ? -1.0f : 1.0f;
+                float currentArmAngle = armRad * sign;
+                float shoulderY = -0.1f, shoulderZ = 0.0f;
+                float dy = ly - shoulderY, dz = lz - shoulderZ;
+                ly = shoulderY + dy * std::cos(currentArmAngle) - dz * std::sin(currentArmAngle);
+                lz = shoulderZ + dy * std::sin(currentArmAngle) + dz * std::cos(currentArmAngle);
+            }
+            else if (v.z < -0.3f && v.y > -0.8f && v.y < 0.3f) {
+                // Tail
+                if (player.animState == AnimState::HOVER || player.animState == AnimState::ATTACK) {
+                    // Helicopter tail spin (Propeller 360 deg)
+                    float tailPivotY = -0.2f, tailPivotZ = -0.35f;
+                    float tx = lx, ty = ly - tailPivotY;
+                    lx = tx * std::cos(spinRad) - ty * std::sin(spinRad);
+                    ly = tailPivotY + tx * std::sin(spinRad) + ty * std::cos(spinRad);
+                } else {
+                    // Sway / Arch
+                    float tailPivotX = 0.0f, tailPivotZ = -0.35f;
+                    float dx = lx - tailPivotX, dz = lz - tailPivotZ;
+                    lx = tailPivotX + dx * std::cos(tailRad) - dz * std::sin(tailRad);
+                    lz = tailPivotZ + dx * std::sin(tailRad) + dz * std::cos(tailRad);
+                }
+            }
+            else if (v.y > 0.3f) {
+                // Head — bobbing
+                ly += player.bobY * 0.5f;
+            }
+
+            // Body forward lean & vertical bobbing
+            if (leanRad > 0.01f && v.y > -0.8f) {
+                float dy = ly, dz = lz;
+                ly = dy * std::cos(leanRad) - dz * std::sin(leanRad);
+                lz = dy * std::sin(leanRad) + dz * std::cos(leanRad);
+            }
+            ly += player.bobY;
+
+            // 2. Global Model to World Space Transform
+            float rx =  lx * cosY + lz * sinY;
+            float rz = -lx * sinY + lz * cosY;
+            float wx = rx + player.posX;
+            float wy = ly + player.posY;
+            float wz = rz + player.posZ;
+
             worldPos[i] = { wx, wy, wz };
             proj[i] = projectCamera(wx, wy, wz, winW, winH);
         }
@@ -408,17 +469,17 @@ private:
                        wp1[0], wp1[1], wp1[2],
                        wp2[0], wp2[1], wp2[2], nx, ny, nz);
             float L = computeLighting(nx, ny, nz, lightDirX, lightDirY, lightDirZ, ambientIntensity);
-            L = std::min(1.0f, L);
-            float fog = std::min(1.0f, ((p0.z + p1.z + p2.z) / 3.0f) / 20.0f);
+            L = mathMin(1.0f, L);
+            float fog = mathMin(1.0f, ((p0.z + p1.z + p2.z) / 3.0f) / 20.0f);
 
-            auto shade = [&](float base, float l, float f) -> uint8_t {
+            auto shadeVal = [](float base, float l, float f) -> uint8_t {
                 float c = base * l * (1.0f - f) + f * 0.8f;
-                return static_cast<uint8_t>(std::min(255.0f, c * 255.0f));
+                return static_cast<uint8_t>(mathMin(255.0f, c * 255.0f));
             };
 
-            SDL_Color c0 = { shade(v0.r, L, fog), shade(v0.g, L, fog), shade(v0.b, L, fog), 255 };
-            SDL_Color c1 = { shade(v1.r, L, fog), shade(v1.g, L, fog), shade(v1.b, L, fog), 255 };
-            SDL_Color c2 = { shade(v2.r, L, fog), shade(v2.g, L, fog), shade(v2.b, L, fog), 255 };
+            SDL_Color c0 = { shadeVal(v0.r, L, fog), shadeVal(v0.g, L, fog), shadeVal(v0.b, L, fog), 255 };
+            SDL_Color c1 = { shadeVal(v1.r, L, fog), shadeVal(v1.g, L, fog), shadeVal(v1.b, L, fog), 255 };
+            SDL_Color c2 = { shadeVal(v2.r, L, fog), shadeVal(v2.g, L, fog), shadeVal(v2.b, L, fog), 255 };
 
             SDL_Vertex verts[3] = {
                 {{ p0.x, p0.y }, c0, { v0.u, v0.v }},
