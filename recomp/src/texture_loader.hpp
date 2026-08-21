@@ -29,41 +29,39 @@ public:
     }
 
     // ── Load a PNG file from disk using stb_image ─────────────────────────
+    //
+    // Espera una ruta ya resuelta (ver AssetPaths). Antes probaba a ciegas los
+    // prefijos "", "../", "../../" y "exported_assets/" contra el cwd, lo que
+    // nunca acertaba con las rutas relativas al MTL.
     SDL_Texture* loadPNG(SDL_Renderer* renderer, const std::string& path) {
         if (!renderer || path.empty()) return nullptr;
 
-        // Try several base paths
-        const char* bases[] = {
-            "",
-            "../",
-            "../../",
-            "exported_assets/",
-            nullptr
-        };
-
-        std::string fullPath;
-        FILE* fp = nullptr;
-        for (int i = 0; bases[i]; ++i) {
-            fullPath = std::string(bases[i]) + path;
-            fp = fopen(fullPath.c_str(), "rb");
-            if (fp) break;
-        }
+        FILE* fp = fopen(path.c_str(), "rb");
         if (!fp) {
-            fp = fopen(path.c_str(), "rb");
-            if (!fp) return nullptr;
+            std::cerr << "[TextureLoader] Cannot open texture: " << path << std::endl;
+            return nullptr;
         }
 
         // Read file into buffer
-        fseek(fp, 0, SEEK_END);
+        if (fseek(fp, 0, SEEK_END) != 0) { fclose(fp); return nullptr; }
         long fsize = ftell(fp);
-        fseek(fp, 0, SEEK_SET);
-        std::vector<uint8_t> buf(fsize);
-        fread(buf.data(), 1, fsize, fp);
+        if (fsize <= 0) { fclose(fp); return nullptr; }
+        rewind(fp);
+
+        std::vector<uint8_t> buf(static_cast<size_t>(fsize));
+        size_t readBytes = fread(buf.data(), 1, buf.size(), fp);
         fclose(fp);
+        if (readBytes != buf.size()) {
+            std::cerr << "[TextureLoader] Short read on texture: " << path << std::endl;
+            return nullptr;
+        }
 
         int w, h, ch;
         uint8_t* pixels = stbi_load_from_memory(buf.data(), (int)buf.size(), &w, &h, &ch, 4);
-        if (!pixels) return nullptr;
+        if (!pixels) {
+            std::cerr << "[TextureLoader] stb_image failed to decode: " << path << std::endl;
+            return nullptr;
+        }
 
         SDL_Texture* tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
                                              SDL_TEXTUREACCESS_STATIC, w, h);

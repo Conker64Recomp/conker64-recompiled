@@ -50,8 +50,11 @@ struct Vertex3D {
     float u, v;
 };
 
+// Indices de 32 bits: al fusionar la geometria real de la ROM en una sola malla
+// se superan facilmente los 65535 vertices, y el uint16_t anterior desbordaba en
+// silencio produciendo triangulos que apuntaban a vertices arbitrarios.
 struct Triangle3D {
-    uint16_t v0, v1, v2;
+    uint32_t v0, v1, v2;
 };
 
 } // namespace N64

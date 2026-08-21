@@ -48,12 +48,14 @@ public:
         return base;
     }
 
+    // Separadores '/': validos tambien en Windows, y el '\\' fijo anterior
+    // generaba rutas rotas en la rama POSIX de getAppDataPath().
     static std::string getSaveFilePath() {
-        return getAppDataPath() + "\\Saves\\conker.eep";
+        return getAppDataPath() + "/Saves/conker.eep";
     }
 
     static std::string getSaveStatePath(int slot = 0) {
-        return getAppDataPath() + "\\Saves\\state_" + std::to_string(slot) + ".savestate";
+        return getAppDataPath() + "/Saves/state_" + std::to_string(slot) + ".savestate";
     }
 };
 

@@ -1,136 +1,213 @@
 <p align="center">
-  <img src="banner.jpg" alt="Conker: Recompiled" width="100%" />
+  <img src="banner.jpg" alt="Conker64: Recompiled" width="100%" />
 </p>
 
 <h1 align="center">🍺 CONKER64: RECOMPILED 🐿️</h1>
 
 <p align="center">
-  <b>Port Nativo para PC de <i>Conker's Bad Fur Day</i> (Nintendo 64)</b><br>
-  Construido con Recompilación Estática, C++20, SDL2, N64ModernRuntime, RT64 (DirectX 12 / Ray Tracing) y el Pipeline Oficial de Assets de Rareware.
+  <b>Motor nativo en C++20 y pipeline de assets para <i>Conker's Bad Fur Day</i> (Nintendo 64)</b><br>
+  Lee un volcado real de cartucho, desencripta y descomprime los archivos RZIP de Rareware,
+  y renderiza una escena 3D explorable con los datos que recupera.
 </p>
 
 <p align="center">
   <a href="README.md"><img src="https://img.shields.io/badge/Language-English-blue?style=for-the-badge&logo=googletranslate" alt="Read in English" /></a>
-  <img src="https://img.shields.io/badge/Plataforma-Windows%20%7C%20Linux-blue?style=for-the-badge&logo=windows" />
-  <img src="https://img.shields.io/badge/FPS_Objetivo-60%20%2F%20120%20%2F%20240%20%2F%20Desbloqueado-brightgreen?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Relaci%C3%B3n_Aspecto-16%3A9%20%2F%2021%3A9%20%2F%20Ultrawide-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Gr%C3%A1ficos-DirectX_12%20%7C%20Vulkan%20%7C%20Ray_Tracing-9cf?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Estado-En_desarrollo-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Plataforma-Windows_x64-blue?style=for-the-badge&logo=windows" />
+  <img src="https://img.shields.io/badge/Renderer-SDL2_Software-9cf?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge" />
 </p>
 
 ---
 
-## ⚡ Descripción General
+## ⚡ Qué es esto realmente
 
-En el año 2001, **Rareware** llevó al límite absoluto el hardware de la Nintendo 64 con *Conker's Bad Fur Day*. Con voces dinámicas completas en MP3, cientos de animaciones faciales y cinemáticas complejas, la consola original sufría caídas graves de rendimiento (12–20 FPS).
+Esto **no es una recompilación estática terminada** de *Conker's Bad Fur Day*, y no permite
+jugar al juego. Mejor dejarlo claro desde el principio.
 
-**CONKER64: RECOMPILED** entrega la versión nativa definitiva para PC. Mediante **Recompilación Estática (MIPS VR4300 ➔ C++ Nativo x86_64)** junto con **RT64** y **N64ModernRuntime**, el juego se ejecuta como un binario nativo de 64 bits sin sobrecoste de emulación.
+Lo que **sí** es: un conjunto de herramientas de ingeniería inversa y un motor 3D escritos
+desde cero en C++20 sobre SDL2, que:
+
+- Carga un volcado real de cartucho de 64 MB y valida su cabecera.
+- Rompe el formato contenedor RZIP de Rareware — tabla de offsets cifrada con XOR
+  (clave `0x8039CCCA`) más cargas útiles en deflate crudo — y recupera **507 de 508
+  subsegmentos de código ejecutable** (~2 MB de MIPS) en una RDRAM emulada de 8 MB.
+- Indexa y reproduce **453 pistas de audio MP3** incrustadas en el cartucho.
+- Decodifica todos los formatos de textura nativos de N64 (RGBA16/32, IA16/8, CI8/4, I8).
+- Renderiza una escena 3D explorable con su propio rasterizador por software: sombreado
+  Gouraud, back-face culling, ordenación por profundidad (algoritmo del pintor), niebla
+  por distancia y un sistema de animación esquelética procedural para el personaje.
+
+El código MIPS recuperado reside en RDRAM pero **todavía no se ejecuta**. Conectar
+N64Recomp para que corra es el problema abierto central del proyecto — ver la hoja de ruta.
 
 ---
 
-## 🌟 Características Principales
+## 📊 Estado actual
 
-- 🚀 **Fluidez Total de Cuadros:** 60 FPS, 120 FPS, 144 FPS, 240 FPS nativos y tasa de refresco desbloqueada.
-- 🖥️ **Panorámico y Ultra-Panorámico:** Compatibilidad real con 16:9, 21:9 y 32:9 con proyección de cámara y FOV corregidos.
-- 💎 **Motor Gráfico RT64:** Pipeline DirectX 12 y Vulkan con Ray Tracing por hardware, DLSS / FSR / XeSS y Anti-Aliasing MSAA.
-- 🏃 **Motor de Físicas de Colisión y Animación 3D:** Físicas fieles de Rareware, salto con física real, detección de suelo/rampas, colisión con muros y el famoso *Helicopter Tail Hover*.
-- 🎨 **749 Modelos Poligonales 3D (.OBJ):** Geometría extraída de los paquetes de la ROM (`assets00` hasta `assets1C`).
-- 🖼️ **Más de 940 Texturas Auténticas (RGBA16 y HD):** Mapeo de materiales `.mtl` y decodificador rápido vía `stb_image`.
-- 🎵 **453 Pistas de Audio MP3:** Música de fondo, voces completas sin censura y efectos de sonido en tiempo real.
-- 🎮 **Soporte de Mandos y Teclado:** DualSense, Xbox Wireless, Switch Pro Controller y Teclado/Ratón mediante SDL2.
-- 💾 **Persistencia Nativa de Partidas:** Emulación de EEPROM 16Kbit guardada directamente en `%APPDATA%\ConkerRecompiled\Saves\conker.eep`.
+### Funciona
+
+| Área | Detalle |
+|---|---|
+| Carga de ROM | Detección de orden de bytes `.z64` / `.v64` / `.n64`, normalizado a big-endian. Cabecera parseada campo a campo. |
+| Desencriptación RZIP | 508 offsets desencriptados, 507 subsegmentos de código descomprimidos en RDRAM. |
+| Paquetes de assets | Los 29 paquetes de Rareware (`assets00`–`assets1C`) localizados y enumerados. |
+| Audio | 453 pistas MP3 indexadas desde `assets16`, decodificadas con `minimp3` y remuestreadas al dispositivo de salida vía `SDL_AudioStream`. |
+| Decodificación de texturas | RGBA16, RGBA32, IA16, IA8, CI8, CI4, I8 → RGBA8888. |
+| Guardado | EEPROM de 16 Kbit (256 bloques × 8 bytes) persistida en `%APPDATA%\ConkerRecompiled\Saves\conker.eep`, tras los hooks `osEeprom*`. |
+| Renderer | `SDL_RenderGeometry` por lotes — una llamada de dibujo por malla en vez de una por triángulo. Medido: 50–90 FPS a 1280×720 con una escena de 35 k triángulos. |
+| Control del jugador | Movimiento relativo a cámara, gravedad, salto, colisión con muros y repisas, y el característico planeo con la cola. |
+
+### Parcial
+
+- **Modelos 3D extraídos.** Se recuperaron 750 archivos `.obj` de los paquetes, pero el
+  extractor busca patrones de bytes en lugar de recorrer display lists F3DEX2 de verdad:
+  **590 de ellos tienen menos de 10 caras**, y solo 20 superan las 100. El
+  `conker_character.obj` incluido son 4 triángulos, así que el motor recurre a un modelo
+  procedural para el personaje.
+- **Materiales.** Existen 749 archivos `.mtl`, pero **todos apuntan a la misma textura**
+  (`assets00_tex_006_32x32.png`). La asignación real por malla debe deducirse de los
+  comandos `G_SETTIMG` / `G_SETTILE`.
+- **Secuencia de intro.** Una máquina de estados de relleno con rectángulos de colores,
+  no la cinemática real de Rareware.
+
+### Sin empezar
+
+- **Ejecución del código MIPS recompilado.** `conker.us.toml` y `conker.symbols.toml`
+  están escritos, pero N64Recomp no se ha ejecutado nunca y `recomp/src/generated/`
+  está vacío.
+- **Integración de RT64.** `rt64.dll` compila y se copia junto al ejecutable, y
+  `rt64_bridge.hpp` está escrito contra la interfaz de renderer de `ultramodern` — pero
+  ningún archivo lo incluye todavía, así que todo el renderizado pasa por el rasterizador
+  software. Ray tracing, DLSS/FSR/XeSS y escalado por hardware **no** están disponibles.
+- Lógica de juego, enemigos, NPCs, niveles, HUD.
 
 ---
 
-## 🏛️ Arquitectura del Proyecto
+## 🏛️ Arquitectura
 
 ```mermaid
 graph TD
-    ROM["baserom.us.z64 (64 MB USA NTSC)"] --> EXT["Extractor de Assets de Rareware"]
-    EXT --> AUD["453 Pistas de Audio MP3 (assets16)"]
-    EXT --> TEX["940+ Texturas RGBA16 / HD"]
-    EXT --> MOD["749 Modelos 3D OBJ Extraídos"]
-    
-    ROM --> REC["Framework N64Recomp (Mr-Wiseguy)"]
-    REC --> CODE["code_full.bin (1.98 MB MIPS Descomprimido)"]
-    
-    CODE --> RUNTIME["N64ModernRuntime (ultramodern + librecomp)"]
-    RUNTIME --> BRIDGE["Puente RT64 (rt64_bridge.hpp)"]
-    BRIDGE --> RT64["Renderer RT64 (DirectX 12 / Vulkan / Ray Tracing)"]
-    
-    AUD --> EXE["Conker.exe (Juego Nativo de PC x86_64)"]
+    ROM["Volcado de cartucho (64 MB)"] --> ORDER["Normalizacion de orden de bytes"]
+    ORDER --> RZIP["Desencriptacion RZIP / XOR"]
+    ORDER --> PKG["29 paquetes de assets"]
+
+    RZIP --> CODE["507 subsegmentos MIPS -> RDRAM"]
+    CODE -.->|aun no se ejecuta| RECOMP["N64Recomp (planeado)"]
+
+    PKG --> AUD["453 pistas MP3"]
+    PKG --> TEX["Texturas RGBA16 / CI8 / IA8"]
+
+    DISK["exported_assets/ (OBJ + MTL + PNG)"] --> MESH["Cargador de modelos"]
+
+    AUD --> EXE["Conker.exe"]
     TEX --> EXE
-    MOD --> EXE
-    RT64 --> EXE
+    MESH --> RAST["Rasterizador software (SDL2)"]
+    RAST --> EXE
+
+    RT64["rt64.dll (compilado, sin conectar)"] -.-> EXE
 ```
 
 ---
 
-## 📊 Estado Actual del Proyecto
-
-- [x] **Verificación Bit-Perfect de la ROM:** USA NTSC SHA-1: `4cbadd3c4e0729dec46af64ad018050eada4f47a`.
-- [x] **Descompresión RZIP y Desencriptación XOR:** 508 segmentos de código procesados con clave `0x8039CCCA`.
-- [x] **Integración N64Recomp:** Configuración de traducción estática lista (`conker.us.toml` y `conker.symbols.toml`).
-- [x] **N64ModernRuntime (ultramodern + librecomp):** Compilado y enlazado con MSVC C++20.
-- [x] **Motor Gráfico RT64:** Compilado como `rt64.dll` (2.48 MB) y enlazado con Direct3D 12.
-- [x] **Extracción Total de Modelos 3D:** 749 archivos OBJ de los 29 paquetes de assets.
-- [x] **Extracción Total de Texturas:** 549 texturas RGBA16 + 400 texturas HD vinculadas por MTL.
-- [x] **Decodificador de Audio MP3:** 453 canciones y voces nombradas con reproducción vía `minimp3`.
-- [x] **Cinemática y Físicas 3D:** Raycast de suelo, salto y planeo con cola helicóptero.
-- [x] **Animaciones del Personaje:** Respiración idle, carrera con oscilación de extremidades y animación de planeo.
-
----
-
-## 🛠️ Compilación y Ejecución
+## 🛠️ Compilación
 
 ### Requisitos
-- **Windows 10 / 11 (64 bits)**
-- **Visual Studio 2022 / 2026** (C++ Desktop Development)
-- **CMake 3.20+**
-- **Python 3.10+** (con Pillow)
-- Copia legal de **Conker's Bad Fur Day (USA)** (`baserom.us.z64`)
 
-### Pasos
+- Windows 10 / 11 (x64)
+- Visual Studio 2022 o superior, con la carga de trabajo de Desarrollo para escritorio con C++
+- CMake 3.20+
+- Un volcado obtenido legalmente de *Conker's Bad Fur Day (USA)*
+  — SHA-1 `4cbadd3c4e0729dec46af64ad018050eada4f47a`
+
+SDL2 y zlib los descarga CMake automáticamente; no hay que configurar nada a mano.
+
+### Compilar
+
 ```powershell
-# 1. Clonar el repositorio
-git clone https://github.com/Conker64Recomp/conker64-recompiled.git
-cd conker64-recompiled
-
-# 2. Colocar la ROM en la raíz
-# Renómbrala como baserom.us.z64 (SHA-1: 4cbadd3c4e0729dec46af64ad018050eada4f47a)
-
-# 3. Compilar el ejecutable nativo
 cd recomp
-.\quick_build.bat
+.\build_game.bat
+```
 
-# 4. ¡A jugar!
+`build_game.bat` hace una configuración y compilación limpias. Para recompilaciones
+incrementales después:
+
+```powershell
+.\quick_build.bat
+```
+
+### Ejecutar
+
+Coloca tu ROM en la raíz del repositorio como `baserom.us.z64` y luego:
+
+```powershell
 .\build\Conker.exe
 ```
+
+Sirve cualquiera de `.z64`, `.v64` o `.n64` — el cargador detecta el orden de bytes por la
+firma en lugar de fiarse de la extensión del archivo. También puedes arrastrar una ROM a la
+ventana, o pulsar <kbd>O</kbd> para buscarla.
+
+Los assets se localizan respecto al ejecutable, así que funciona desde cualquier directorio
+de trabajo.
 
 ---
 
 ## 🎮 Controles
 
-| Acción | Teclado | Mando Xbox | Mando DualSense / PS |
-|---|---|---|---|
-| **Mover a Conker** | <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> / Flechas | Stick Analógico Izquierdo | Stick Analógico Izquierdo |
-| **Rotar Cámara** | <kbd>Q</kbd> / <kbd>E</kbd> | Stick Derecho / Gatillos | Stick Derecho / Gatillos |
-| **Saltar / Volar con Cola** | <kbd>Espacio</kbd> | Botón <kbd>A</kbd> | Botón <kbd>Cruz</kbd> (✕) |
-| **Ataque / Acción de Contexto** | <kbd>X</kbd> / <kbd>F</kbd> | Botón <kbd>B</kbd> | Botón <kbd>Círculo</kbd> (○) |
-| **Agacharse** | <kbd>C</kbd> / <kbd>Ctrl</kbd> | <kbd>Z</kbd> / <kbd>LT</kbd> | <kbd>L2</kbd> |
-| **Abrir ROM / Menú** | <kbd>O</kbd> / <kbd>Esc</kbd> | <kbd>Start</kbd> | <kbd>Options</kbd> |
+| Acción | Teclado | Mando |
+|---|---|---|
+| Moverse | <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> | Stick izquierdo |
+| Rotar cámara | <kbd>Q</kbd> / <kbd>E</kbd> | C-Izquierda / C-Derecha |
+| Saltar — mantener en el aire para planear | <kbd>Espacio</kbd> / <kbd>X</kbd> | <kbd>A</kbd> |
+| Atacar | <kbd>C</kbd> / <kbd>Z</kbd> | <kbd>X</kbd> |
+| Cambiar textura de la ROM | <kbd>Tab</kbd> / <kbd>1</kbd>–<kbd>9</kbd> | — |
+| Abrir ROM | <kbd>O</kbd> | — |
+| Salir | <kbd>Esc</kbd> | — |
+
+El movimiento es relativo a la cámara: «adelante» sigue la dirección hacia la que hayas
+girado la vista.
 
 ---
 
-## ⚖️ Aviso Legal y Preservación Digital
+## 🗺️ Hoja de ruta
 
-Este proyecto es un esfuerzo de preservación digital e ingeniería inversa con fines educativos e interoperabilidad.
-- **No se distribuyen assets con derechos de autor:** No se incluyen ROMs protegidas, código binario comercial ni pistas de audio con copyright.
-- **Requisito de ROM:** Cada usuario debe proveer su propio volcado legal de cartucho de *Conker's Bad Fur Day*.
-- Todas las marcas pertenecen a sus respectivos dueños (Rare Ltd. / Microsoft / Nintendo).
+1. **Arreglar el extractor de assets.** Recorrer display lists F3DEX2 correctamente
+   (`G_VTX` → pila de matrices → `G_TRI1`/`G_TRI2`) en vez de buscar patrones de bytes, y
+   leer las texturas reales por malla desde `G_SETTIMG`/`G_SETTILE`. Esto es lo que
+   desbloquea el ~98% de geometría restante.
+2. **Ejecutar el código recompilado.** Inicializar los submódulos, compilar N64Recomp,
+   traducir `code_full.bin` con los TOML existentes y compilar el C generado dentro del
+   ejecutable.
+3. **Conectar RT64.** `rt64_bridge.hpp` está escrito pero no lo referencia nadie;
+   conectarlo requiere `N64ModernRuntime` compilado y un pipeline de display lists que le
+   entregue comandos F3DEX2 reales.
+4. **Sistemas de juego.** Enemigos, NPCs, carga de niveles, HUD.
 
 ---
 
-<p align="center">
-  <i>Desarrollado con ❤️ por la comunidad de Conker Recompiled. ¡Conker está de vuelta en PC! 🐿️🍺</i>
-</p>
+## 🤝 Contribuir
+
+La contribución más valiosa ahora mismo es el punto 1 de la hoja de ruta: el extractor de
+assets. Todo lo demás está limitado por la calidad de la geometría extraída.
+
+Para obtener los submódulos (necesarios para los puntos 2 y 3):
+
+```powershell
+git submodule update --init --recursive
+```
+
+---
+
+## ⚖️ Aviso legal
+
+Este proyecto es un trabajo de ingeniería inversa y preservación digital con fines
+educativos y de interoperabilidad.
+
+- **No se distribuye ningún asset con derechos de autor.** Este repositorio no contiene
+  ROMs, ni código propietario del juego, ni pistas de audio.
+- **Cada usuario debe aportar su propio volcado de cartucho obtenido legalmente.**
+- Todas las marcas y derechos pertenecen a sus respectivos dueños (Rare Ltd. / Microsoft /
+  Nintendo).
+
+Licencia MIT — ver [LICENSE](LICENSE).

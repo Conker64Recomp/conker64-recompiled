@@ -27,6 +27,7 @@
 #include "actor_system.hpp"
 #include "intro_sequence.hpp"
 #include "audio_rom.hpp"
+#include "asset_paths.hpp"
 
 std::string openFileDialog() {
 #ifdef _WIN32
@@ -78,6 +79,9 @@ int main(int argc, char** argv) {
     SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
     std::cout << "[Init] SDL2 Video & Audio Systems Initialized... OK" << std::endl;
 
+    // Debe resolverse antes de que el RDP cargue mallas y texturas.
+    N64::AssetPaths::getInstance().init();
+
     N64::AudioManager::getInstance().init(44100);
     N64::InputManager::getInstance().init();
 
@@ -104,7 +108,7 @@ int main(int argc, char** argv) {
     want.callback = nullptr; // Usaremos SDL_QueueAudio en vez de callback
     SDL_AudioDeviceID romAudioDev = SDL_OpenAudioDevice(nullptr, 0, &want, &got, 0);
     if (romAudioDev > 0) {
-        N64::ROMaudioPlayer::getInstance().init(romAudioDev);
+        N64::ROMaudioPlayer::getInstance().init(romAudioDev, got);
         SDL_PauseAudioDevice(romAudioDev, 0);
         std::cout << "[ROM Audio] SDL Audio Device " << romAudioDev << " opened for ROM MP3 playback." << std::endl;
     }
@@ -112,9 +116,16 @@ int main(int argc, char** argv) {
     // Carga de ROM automática
     bool romLoaded = false;
     std::string loadedRomPath;
+    // El cargador normaliza z64/v64/n64 por firma, asi que cualquiera sirve.
     std::vector<std::string> searchPaths = {
         "baserom.us.z64", "../baserom.us.z64", "../../baserom.us.z64",
-        "Conker's Bad Fur Day (USA).z64"
+        "baserom.us.n64", "../baserom.us.n64", "../../baserom.us.n64",
+        "Conker's Bad Fur Day (USA).z64",
+        "../Conker's Bad Fur Day (USA).z64",
+        "../../Conker's Bad Fur Day (USA).z64",
+        "Conker's Bad Fur Day (USA).n64",
+        "../Conker's Bad Fur Day (USA).n64",
+        "../../Conker's Bad Fur Day (USA).n64"
     };
 
     for (const auto& path : searchPaths) {
@@ -143,6 +154,7 @@ int main(int argc, char** argv) {
 
     uint32_t frameCount = 0;
     uint32_t lastFpsUpdate = SDL_GetTicks();
+    uint32_t lastFpsLog = SDL_GetTicks();
     float currentFps = 0.0f;
     float rotationAngle = 0.0f;
     N64::OSContPad pad{};
@@ -183,7 +195,9 @@ int main(int argc, char** argv) {
                 else if (event.key.keysym.sym == SDLK_t) {
                     N64::AudioManager::getInstance().playBootJingle();
                 }
-                else if (event.key.keysym.sym == SDLK_SPACE) {
+                // Tab, no Espacio: Espacio ya es saltar, y compartirlo hacia que
+                // cada salto ciclara las texturas (con autorepeat, en bucle).
+                else if (event.key.keysym.sym == SDLK_TAB && event.key.repeat == 0) {
                     currentTextureIdx = (currentTextureIdx + 1) % 9;
                     int tw = 64, th = 64;
                     auto texData = N64::AssetDecoder::getInstance().loadTextureByIndex(currentTextureIdx, tw, th, currentTextureName);
@@ -203,18 +217,23 @@ int main(int argc, char** argv) {
         }
 
         N64::InputManager::getInstance().poll(pad);
-        
+
+        const float dt = 1.0f / 60.0f;
+
         // Control de rotación orbital de cámara con C-Buttons / Teclas Q y E
         float camInputX = 0.0f;
         const Uint8* keyState = SDL_GetKeyboardState(nullptr);
         if (keyState[SDL_SCANCODE_Q] || (pad.button & N64::Buttons::CONT_C)) camInputX -= 1.0f;
         if (keyState[SDL_SCANCODE_E] || (pad.button & N64::Buttons::CONT_F)) camInputX += 1.0f;
 
-        // Ejecución de la física y movimiento del jugador (Conker)
-        N64::ActorManager::getInstance().updatePlayer(pad, 1.0f / 60.0f);
+        // El yaw se integra ANTES de mover al jugador, para que su input quede
+        // orientado respecto a la cámara vigente en este mismo frame.
+        N64::RDPProcessor::getInstance().advanceCameraYaw(camInputX, dt);
+        N64::ActorManager::getInstance().updatePlayer(
+            pad, dt, N64::RDPProcessor::getInstance().getCameraYaw());
 
         // Ejecución de la lógica del hilo principal del juego recompilado
-        N64::MIPSRecompiler::getInstance().updateGameLogic(1.0f / 60.0f);
+        N64::MIPSRecompiler::getInstance().updateGameLogic(dt);
 
         const auto& player = N64::ActorManager::getInstance().getPlayer();
 
@@ -228,13 +247,20 @@ int main(int argc, char** argv) {
             SDL_SetWindowTitle(window, title.c_str());
             frameCount = 0;
             lastFpsUpdate = currentTicks;
+
+            // Traza de rendimiento a bajo ritmo: el renderer es software y el
+            // coste depende mucho de cuantos triangulos traiga el nivel.
+            if (currentTicks - lastFpsLog >= 3000) {
+                std::cout << "[Perf] " << static_cast<int>(currentFps) << " FPS" << std::endl;
+                lastFpsLog = currentTicks;
+            }
         }
 
         int winW = 960, winH = 540;
         SDL_GetWindowSize(window, &winW, &winH);
 
         // Actualización de la cinemática de Intro oficial
-        N64::IntroSequence::getInstance().update(1.0f / 60.0f);
+        N64::IntroSequence::getInstance().update(dt);
 
         if (!N64::IntroSequence::getInstance().isGameplayActive()) {
             N64::IntroSequence::getInstance().render(renderer, winW, winH);
@@ -243,7 +269,7 @@ int main(int argc, char** argv) {
             SDL_SetRenderDrawColor(renderer, 70, 130, 200, 255);
             SDL_RenderClear(renderer);
 
-            N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player, camInputX, 1.0f / 60.0f);
+            N64::RDPProcessor::getInstance().processDisplayList(0, renderer, winW, winH, player, dt);
         }
 
         SDL_RenderPresent(renderer);
@@ -258,15 +284,4 @@ int main(int argc, char** argv) {
     SDL_Quit();
     std::cout << "[Exit] Conker Recompiled closed cleanly." << std::endl;
     return 0;
-}
-// force  
-// recompile  
-// solid  
-// camfix  
-// cam_match  
-// viewfix  
-// phase1_2_3  
-// phase4  
-// unified  
-// unified2  
-// rt64  
+}  

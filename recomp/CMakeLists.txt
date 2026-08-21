@@ -43,6 +43,13 @@ add_executable(Conker
     src/ultralib_stubs.cpp
 )
 
+# <windows.h> define macros min/max que rompen std::min/std::max y
+# std::numeric_limits<T>::max(). Hay que silenciarlas antes de cualquier
+# inclusion; hacerlo en un header suelto llega tarde.
+if (WIN32)
+    target_compile_definitions(Conker PRIVATE NOMINMAX)
+endif()
+
 # Inclusiones
 target_include_directories(Conker PUBLIC
     include

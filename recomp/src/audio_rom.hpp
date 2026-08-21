@@ -38,8 +38,15 @@ public:
     // Devuelve el número de tracks disponibles
     size_t trackCount() const { return tracks.size(); }
 
-    // Decodifica un track completo a PCM estéreo 16-bit 44100 Hz
-    std::vector<int16_t> decodeTrack(size_t idx) {
+    // Decodifica un track completo a PCM 16-bit EN SU FORMATO NATIVO.
+    //
+    // Los tracks de la ROM no son 44100/estereo: el track 0, por ejemplo, es
+    // mono a 22050 Hz. Devolvemos hz/canales reales para que el reproductor
+    // pueda convertirlos; encolarlos crudos en el dispositivo de 44100 estereo
+    // los reproducia a ~4x velocidad.
+    std::vector<int16_t> decodeTrack(size_t idx, int& outHz, int& outChannels) {
+        outHz = 0;
+        outChannels = 0;
         if (idx >= tracks.size() || !romPtr) return {};
         const auto& t = tracks[idx];
         if (t.romOffset + t.length > romSz || t.length < 4) return {};
@@ -66,6 +73,10 @@ public:
             consumed += info.frame_bytes;
 
             if (samples > 0) {
+                if (outHz == 0) {
+                    outHz = info.hz;
+                    outChannels = info.channels;
+                }
                 int totalSamples = samples * info.channels;
                 output.insert(output.end(), pcm, pcm + totalSamples);
             }
@@ -140,26 +151,67 @@ public:
         return instance;
     }
 
-    void init(SDL_AudioDeviceID device) {
+    void init(SDL_AudioDeviceID device, const SDL_AudioSpec& obtainedSpec) {
         audioDevice = device;
+        deviceSpec  = obtainedSpec;
     }
 
-    // Reproduce un track de la ROM directamente en el device SDL2
+    // Reproduce un track de la ROM, convirtiendolo al formato del dispositivo.
     void playTrack(size_t idx) {
-        auto pcm = ROMaudioDecoder::getInstance().decodeTrack(idx);
-        if (pcm.empty()) {
+        if (!audioDevice) return;
+
+        int srcHz = 0, srcCh = 0;
+        auto pcm = ROMaudioDecoder::getInstance().decodeTrack(idx, srcHz, srcCh);
+        if (pcm.empty() || srcHz <= 0 || srcCh <= 0) {
             std::cerr << "[ROMaudio] Track " << idx << " could not be decoded." << std::endl;
             return;
         }
 
-        int hz = 44100, ch = 2, kbps = 0;
-        ROMaudioDecoder::getInstance().getTrackInfo(idx, hz, ch, kbps);
-        std::cout << "[ROMaudio] Playing Track " << idx << ": "
-                  << hz << " Hz, " << ch << "ch, " << kbps
-                  << " kbps, " << (pcm.size() / (hz * ch)) << "s" << std::endl;
+        double seconds = static_cast<double>(pcm.size()) / (srcHz * srcCh);
+        std::cout << "[ROMaudio] Track " << idx << ": " << srcHz << " Hz, " << srcCh
+                  << "ch, " << seconds << "s -> device " << deviceSpec.freq << " Hz, "
+                  << static_cast<int>(deviceSpec.channels) << "ch" << std::endl;
+
+        const Uint32 srcBytes = static_cast<Uint32>(pcm.size() * sizeof(int16_t));
+
+        // Ya coincide con el dispositivo: sin conversion.
+        if (srcHz == deviceSpec.freq && srcCh == deviceSpec.channels) {
+            SDL_ClearQueuedAudio(audioDevice);
+            SDL_QueueAudio(audioDevice, pcm.data(), srcBytes);
+            SDL_PauseAudioDevice(audioDevice, 0);
+            return;
+        }
+
+        // Resampleo + conversion de canales. Sin esto, un track mono de 22050 Hz
+        // encolado en un dispositivo estereo de 44100 suena a ~4x velocidad.
+        SDL_AudioStream* stream = SDL_NewAudioStream(
+            AUDIO_S16SYS, static_cast<Uint8>(srcCh), srcHz,
+            deviceSpec.format, deviceSpec.channels, deviceSpec.freq);
+        if (!stream) {
+            std::cerr << "[ROMaudio] SDL_NewAudioStream failed: " << SDL_GetError() << std::endl;
+            return;
+        }
+
+        if (SDL_AudioStreamPut(stream, pcm.data(), srcBytes) != 0) {
+            std::cerr << "[ROMaudio] SDL_AudioStreamPut failed: " << SDL_GetError() << std::endl;
+            SDL_FreeAudioStream(stream);
+            return;
+        }
+        SDL_AudioStreamFlush(stream);
+
+        int available = SDL_AudioStreamAvailable(stream);
+        if (available <= 0) {
+            SDL_FreeAudioStream(stream);
+            return;
+        }
+
+        std::vector<uint8_t> converted(static_cast<size_t>(available));
+        int got = SDL_AudioStreamGet(stream, converted.data(), available);
+        SDL_FreeAudioStream(stream);
+        if (got <= 0) return;
 
         SDL_ClearQueuedAudio(audioDevice);
-        SDL_QueueAudio(audioDevice, pcm.data(), static_cast<Uint32>(pcm.size() * sizeof(int16_t)));
+        SDL_QueueAudio(audioDevice, converted.data(), static_cast<Uint32>(got));
         SDL_PauseAudioDevice(audioDevice, 0);
     }
 
@@ -170,6 +222,7 @@ public:
 private:
     ROMaudioPlayer() : audioDevice(0) {}
     SDL_AudioDeviceID audioDevice;
+    SDL_AudioSpec deviceSpec{};
 };
 
 } // namespace N64
