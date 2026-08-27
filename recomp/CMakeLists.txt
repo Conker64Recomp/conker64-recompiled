@@ -5,6 +5,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
 
+# Runtime de MSVC enlazado estaticamente: el binario distribuido arranca sin
+# exigir el redistribuible de Visual C++. Debe fijarse ANTES de FetchContent
+# para que SDL2 y zlib usen el mismo CRT; mezclarlos rompe el enlazado.
+option(CONKER_STATIC_CRT "Link the MSVC runtime statically (self-contained binary)" ON)
+if (MSVC AND CONKER_STATIC_CRT)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "" FORCE)
+endif()
+
 include(FetchContent)
 
 # Descargar e integrar SDL2
