@@ -40,3 +40,7 @@ CMakeCache.txt
 # Assets extraidos de la ROM (material con copyright de Rare/Microsoft)
 exported_assets/
 
+
+# Toolchain IDO 5.3 de SGI (binarios propietarios)
+conker_ref/ido/
+
