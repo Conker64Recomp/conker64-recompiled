@@ -36,3 +36,7 @@ CMakeCache.txt
 # Logs y volcados
 *.log
 *.dump
+
+# Assets extraidos de la ROM (material con copyright de Rare/Microsoft)
+exported_assets/
+
