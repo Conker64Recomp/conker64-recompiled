@@ -32,69 +32,42 @@
 #include "asset_paths.hpp"
 
 // ─── EMBEDDED BITMAP FONT SYSTEM (8x8 ASCII FONT) ───────────────────────────
-// Proporciona tipografía limpia y nítida a cualquier escala sin dependencias externas.
 static const uint8_t font8x8_basic[128][8] = {
-    // 0-31 control chars (empty)
     {0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},
     {0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},
-    // Space (32)
-    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
-    // ! (33)
-    {0x18, 0x3C, 0x3C, 0x18, 0x18, 0x00, 0x18, 0x00},
-    // " (34)
-    {0x66, 0x66, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00},
-    // # (35)
-    {0x6C, 0x6C, 0xFE, 0x6C, 0xFE, 0x6C, 0x6C, 0x00},
-    // $ (36)
-    {0x18, 0x3E, 0x60, 0x3C, 0x06, 0x7C, 0x18, 0x00},
-    // % (37)
-    {0x00, 0x63, 0x66, 0x0C, 0x18, 0x33, 0x63, 0x00},
-    // & (38)
-    {0x38, 0x6C, 0x38, 0x76, 0xDC, 0xCC, 0x76, 0x00},
-    // ' (39)
-    {0x18, 0x18, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00},
-    // ( (40)
-    {0x0C, 0x18, 0x30, 0x30, 0x30, 0x18, 0x0C, 0x00},
-    // ) (41)
-    {0x30, 0x18, 0x0C, 0x0C, 0x0C, 0x18, 0x30, 0x00},
-    // * (42)
-    {0x00, 0x66, 0x3C, 0xFF, 0x3C, 0x66, 0x00, 0x00},
-    // + (43)
-    {0x00, 0x18, 0x18, 0x7E, 0x18, 0x18, 0x00, 0x00},
-    // , (44)
-    {0x00, 0x00, 0x00, 0x00, 0x00, 0x18, 0x18, 0x08},
-    // - (45)
-    {0x00, 0x00, 0x00, 0x7E, 0x00, 0x00, 0x00, 0x00},
-    // . (46)
-    {0x00, 0x00, 0x00, 0x00, 0x00, 0x18, 0x18, 0x00},
-    // / (47)
-    {0x06, 0x0C, 0x18, 0x30, 0x60, 0xC0, 0x80, 0x00},
-    // 0-9 (48-57)
-    {0x3C, 0x66, 0x6E, 0x76, 0x66, 0x66, 0x3C, 0x00},
-    {0x18, 0x38, 0x18, 0x18, 0x18, 0x18, 0x7E, 0x00},
-    {0x3C, 0x66, 0x06, 0x1C, 0x30, 0x66, 0x7E, 0x00},
-    {0x3C, 0x66, 0x06, 0x1C, 0x06, 0x66, 0x3C, 0x00},
-    {0x0C, 0x1C, 0x3C, 0x6C, 0xFE, 0x0C, 0x0C, 0x00},
-    {0x7E, 0x60, 0x7C, 0x06, 0x06, 0x66, 0x3C, 0x00},
-    {0x3C, 0x66, 0x60, 0x7C, 0x66, 0x66, 0x3C, 0x00},
-    {0x7E, 0x06, 0x0C, 0x18, 0x30, 0x30, 0x30, 0x00},
-    {0x3C, 0x66, 0x66, 0x3C, 0x66, 0x66, 0x3C, 0x00},
-    {0x3C, 0x66, 0x66, 0x3E, 0x06, 0x66, 0x3C, 0x00},
-    // : (58)
-    {0x00, 0x18, 0x18, 0x00, 0x00, 0x18, 0x18, 0x00},
-    // ; (59)
-    {0x00, 0x18, 0x18, 0x00, 0x00, 0x18, 0x18, 0x08},
-    // < (60)
-    {0x0C, 0x18, 0x30, 0x60, 0x30, 0x18, 0x0C, 0x00},
-    // = (61)
-    {0x00, 0x00, 0x7E, 0x00, 0x7E, 0x00, 0x00, 0x00},
-    // > (62)
-    {0x30, 0x18, 0x0C, 0x06, 0x0C, 0x18, 0x30, 0x00},
-    // ? (63)
-    {0x3C, 0x66, 0x0C, 0x18, 0x18, 0x00, 0x18, 0x00},
-    // @ (64)
-    {0x3C, 0x66, 0x6E, 0x6E, 0x60, 0x62, 0x3C, 0x00},
-    // A-Z (65-90)
+    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, // Space (32)
+    {0x18, 0x3C, 0x3C, 0x18, 0x18, 0x00, 0x18, 0x00}, // !
+    {0x66, 0x66, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00}, // "
+    {0x6C, 0x6C, 0xFE, 0x6C, 0xFE, 0x6C, 0x6C, 0x00}, // #
+    {0x18, 0x3E, 0x60, 0x3C, 0x06, 0x7C, 0x18, 0x00}, // $
+    {0x00, 0x63, 0x66, 0x0C, 0x18, 0x33, 0x63, 0x00}, // %
+    {0x38, 0x6C, 0x38, 0x76, 0xDC, 0xCC, 0x76, 0x00}, // &
+    {0x18, 0x18, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00}, // '
+    {0x0C, 0x18, 0x30, 0x30, 0x30, 0x18, 0x0C, 0x00}, // (
+    {0x30, 0x18, 0x0C, 0x0C, 0x0C, 0x18, 0x30, 0x00}, // )
+    {0x00, 0x66, 0x3C, 0xFF, 0x3C, 0x66, 0x00, 0x00}, // *
+    {0x00, 0x18, 0x18, 0x7E, 0x18, 0x18, 0x00, 0x00}, // +
+    {0x00, 0x00, 0x00, 0x00, 0x00, 0x18, 0x18, 0x08}, // ,
+    {0x00, 0x00, 0x00, 0x7E, 0x00, 0x00, 0x00, 0x00}, // -
+    {0x00, 0x00, 0x00, 0x00, 0x00, 0x18, 0x18, 0x00}, // .
+    {0x06, 0x0C, 0x18, 0x30, 0x60, 0xC0, 0x80, 0x00}, // /
+    {0x3C, 0x66, 0x6E, 0x76, 0x66, 0x66, 0x3C, 0x00}, // 0
+    {0x18, 0x38, 0x18, 0x18, 0x18, 0x18, 0x7E, 0x00}, // 1
+    {0x3C, 0x66, 0x06, 0x1C, 0x30, 0x66, 0x7E, 0x00}, // 2
+    {0x3C, 0x66, 0x06, 0x1C, 0x06, 0x66, 0x3C, 0x00}, // 3
+    {0x0C, 0x1C, 0x3C, 0x6C, 0xFE, 0x0C, 0x0C, 0x00}, // 4
+    {0x7E, 0x60, 0x7C, 0x06, 0x06, 0x66, 0x3C, 0x00}, // 5
+    {0x3C, 0x66, 0x60, 0x7C, 0x66, 0x66, 0x3C, 0x00}, // 6
+    {0x7E, 0x06, 0x0C, 0x18, 0x30, 0x30, 0x30, 0x00}, // 7
+    {0x3C, 0x66, 0x66, 0x3C, 0x66, 0x66, 0x3C, 0x00}, // 8
+    {0x3C, 0x66, 0x66, 0x3E, 0x06, 0x66, 0x3C, 0x00}, // 9
+    {0x00, 0x18, 0x18, 0x00, 0x00, 0x18, 0x18, 0x00}, // :
+    {0x00, 0x18, 0x18, 0x00, 0x00, 0x18, 0x18, 0x08}, // ;
+    {0x0C, 0x18, 0x30, 0x60, 0x30, 0x18, 0x0C, 0x00}, // <
+    {0x00, 0x00, 0x7E, 0x00, 0x7E, 0x00, 0x00, 0x00}, // =
+    {0x30, 0x18, 0x0C, 0x06, 0x0C, 0x18, 0x30, 0x00}, // >
+    {0x3C, 0x66, 0x0C, 0x18, 0x18, 0x00, 0x18, 0x00}, // ?
+    {0x3C, 0x66, 0x6E, 0x6E, 0x60, 0x62, 0x3C, 0x00}, // @
     {0x18, 0x3C, 0x66, 0x66, 0x7E, 0x66, 0x66, 0x00}, // A
     {0x7C, 0x66, 0x66, 0x7C, 0x66, 0x66, 0x7C, 0x00}, // B
     {0x3C, 0x66, 0x60, 0x60, 0x60, 0x66, 0x3C, 0x00}, // C
@@ -121,19 +94,13 @@ static const uint8_t font8x8_basic[128][8] = {
     {0x66, 0x66, 0x3C, 0x18, 0x3C, 0x66, 0x66, 0x00}, // X
     {0x66, 0x66, 0x66, 0x3C, 0x18, 0x18, 0x18, 0x00}, // Y
     {0x7E, 0x06, 0x0C, 0x18, 0x30, 0x60, 0x7E, 0x00}, // Z
-    // [ (91)
-    {0x3C, 0x30, 0x30, 0x30, 0x30, 0x30, 0x3C, 0x00},
-    // \ (92)
-    {0xC0, 0x60, 0x30, 0x18, 0x0C, 0x06, 0x02, 0x00},
-    // ] (93)
-    {0x3C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x3C, 0x00},
-    // ^ (94)
-    {0x18, 0x3C, 0x66, 0x00, 0x00, 0x00, 0x00, 0x00},
-    // _ (95)
-    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00},
-    // ` (96)
-    {0x18, 0x18, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00},
-    // a-z (97-122) - Rendered uppercase for maximum arcade clarity
+    {0x3C, 0x30, 0x30, 0x30, 0x30, 0x30, 0x3C, 0x00}, // [
+    {0xC0, 0x60, 0x30, 0x18, 0x0C, 0x06, 0x02, 0x00}, // \
+    {0x3C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x3C, 0x00}, // ]
+    {0x18, 0x3C, 0x66, 0x00, 0x00, 0x00, 0x00, 0x00}, // ^
+    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00}, // _
+    {0x18, 0x18, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00}, // `
+    // a-z
     {0x18, 0x3C, 0x66, 0x66, 0x7E, 0x66, 0x66, 0x00},
     {0x7C, 0x66, 0x66, 0x7C, 0x66, 0x66, 0x7C, 0x00},
     {0x3C, 0x66, 0x60, 0x60, 0x60, 0x66, 0x3C, 0x00},
@@ -160,7 +127,6 @@ static const uint8_t font8x8_basic[128][8] = {
     {0x66, 0x66, 0x3C, 0x18, 0x3C, 0x66, 0x66, 0x00},
     {0x66, 0x66, 0x66, 0x3C, 0x18, 0x18, 0x18, 0x00},
     {0x7E, 0x06, 0x0C, 0x18, 0x30, 0x60, 0x7E, 0x00},
-    // { | } ~
     {0x0E, 0x18, 0x18, 0x70, 0x18, 0x18, 0x0E, 0x00},
     {0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x00},
     {0x70, 0x18, 0x18, 0x0E, 0x18, 0x18, 0x70, 0x00},
@@ -191,7 +157,7 @@ void drawChar(SDL_Renderer* renderer, char c, int x, int y, int scale, SDL_Color
 
 void drawText(SDL_Renderer* renderer, const std::string& text, int x, int y, int scale, SDL_Color color, bool shadow = true) {
     if (shadow) {
-        SDL_Color sc = { 0, 0, 0, 180 };
+        SDL_Color sc = { 0, 0, 0, 200 };
         for (size_t i = 0; i < text.size(); ++i) {
             drawChar(renderer, text[i], x + static_cast<int>(i) * 8 * scale + scale, y + scale, scale, sc);
         }
@@ -227,7 +193,6 @@ std::string openFileDialog() {
     return "";
 }
 
-// Carga y descomprime la primera textura real de assets00 y la sube a la GPU
 void loadRealTextureFromROM(SDL_Renderer* renderer) {
     int texW = 96, texH = 110;
     auto texData = N64::AssetDecoder::getInstance().loadFirstTexture(texW, texH);
@@ -236,9 +201,32 @@ void loadRealTextureFromROM(SDL_Renderer* renderer) {
     }
 }
 
-// Inicializa todos los subsistemas del juego una vez que se valida la ROM
-bool startLoadedGame(const std::string& path, SDL_Renderer* renderer) {
+// Pantalla de carga animada (Feedback instantáneo para cero lag percibido)
+void renderLoadingScreen(SDL_Renderer* renderer, int winW, int winH, const std::string& message) {
+    SDL_SetRenderDrawColor(renderer, 10, 14, 22, 255);
+    SDL_RenderClear(renderer);
+
+    int cx = winW / 2;
+    int cy = winH / 2;
+
+    // Spinner animado
+    SDL_Rect box = { cx - 220, cy - 60, 440, 120 };
+    SDL_SetRenderDrawColor(renderer, 24, 30, 44, 255);
+    SDL_RenderFillRect(renderer, &box);
+    SDL_SetRenderDrawColor(renderer, 245, 158, 11, 255);
+    SDL_RenderDrawRect(renderer, &box);
+
+    drawCenteredText(renderer, "CARGANDO Y DESCOMPRIMIENDO", cx, cy - 35, 2, { 245, 158, 11, 255 }, true);
+    drawCenteredText(renderer, message, cx, cy + 5, 1, { 255, 255, 255, 255 }, true);
+    drawCenteredText(renderer, "POR FAVOR ESPERA UN MOMENTO...", cx, cy + 25, 1, { 148, 163, 184, 255 }, true);
+
+    SDL_RenderPresent(renderer);
+}
+
+bool startLoadedGame(const std::string& path, SDL_Renderer* renderer, int winW, int winH) {
     std::cout << "[Launcher] Cargando ROM: " << path << std::endl;
+    renderLoadingScreen(renderer, winW, winH, "DESCOMPRIMIENDO 508 SUBSEGMENTOS RZIP...");
+
     if (!N64::ROMLoader::loadROM(path)) {
         std::cerr << "[Launcher] Error: La ROM no es valida o no se pudo leer." << std::endl;
         return false;
@@ -248,8 +236,6 @@ bool startLoadedGame(const std::string& path, SDL_Renderer* renderer) {
     size_t romBufSize     = N64::AssetDecoder::getInstance().getROMSize();
     if (romBuf && romBufSize > 0) {
         N64::ROMaudioDecoder::getInstance().init(romBuf, romBufSize);
-        std::cout << "[ROM Audio] Indexados " << N64::ROMaudioDecoder::getInstance().trackCount()
-                  << " tracks de audio reales desde assets16." << std::endl;
     }
 
     N64::MIPSRecompiler::getInstance().executeBootFunction();
@@ -259,20 +245,20 @@ bool startLoadedGame(const std::string& path, SDL_Renderer* renderer) {
     return true;
 }
 
-// ─── MODERN TAILWIND-INSPIRED LAUNCHER UI ───────────────────────────────────
-void renderModernLauncher(SDL_Renderer* renderer, int winW, int winH, float animTime, bool isHoveringBtn) {
-    // 1. Fondo Slate-950 con degradado cinematográfico
+// ─── MODERN REACT/TAILWIND-INSPIRED LAUNCHER UI ─────────────────────────────
+void renderModernLauncher(SDL_Renderer* renderer, int winW, int winH, float animTime, bool isHoveringDrop, bool isHoveringBtn) {
+    // 1. Fondo Slate-950 con degradado
     for (int y = 0; y < winH; ++y) {
         float t = static_cast<float>(y) / static_cast<float>(winH);
-        uint8_t bgR = static_cast<uint8_t>(11 + t * 8);   // #0B0F17 -> #131B2A
-        uint8_t bgG = static_cast<uint8_t>(15 + t * 12);
-        uint8_t bgB = static_cast<uint8_t>(23 + t * 18);
+        uint8_t bgR = static_cast<uint8_t>(10 + t * 8);   // #0A0E17 -> #121B2A
+        uint8_t bgG = static_cast<uint8_t>(14 + t * 11);
+        uint8_t bgB = static_cast<uint8_t>(22 + t * 16);
         SDL_SetRenderDrawColor(renderer, bgR, bgG, bgB, 255);
         SDL_RenderDrawLine(renderer, 0, y, winW, y);
     }
 
-    // Grid sutil con puntos de acento (estilo Tailwind/Modern UI)
-    SDL_SetRenderDrawColor(renderer, 30, 41, 59, 100);
+    // Grid sutil
+    SDL_SetRenderDrawColor(renderer, 30, 41, 59, 120);
     int gridStep = 48;
     for (int x = 0; x < winW; x += gridStep) {
         for (int y = 0; y < winH; y += gridStep) {
@@ -280,78 +266,75 @@ void renderModernLauncher(SDL_Renderer* renderer, int winW, int winH, float anim
         }
     }
 
-    // 2. Tarjeta Principal Glassmorphism (Slate-900 con borde iluminado)
+    // 2. Tarjeta Principal Glassmorphism
     int panelW = std::min(winW - 80, 840);
-    int panelH = std::min(winH - 80, 540);
+    int panelH = std::min(winH - 80, 560);
     int panelX = (winW - panelW) / 2;
     int panelY = (winH - panelH) / 2;
 
-    // Sombra profunda multicapa
-    SDL_Rect shadow2 = { panelX + 10, panelY + 10, panelW, panelH };
-    SDL_SetRenderDrawColor(renderer, 2, 6, 12, 180);
+    // Sombra proyectada
+    SDL_Rect shadow2 = { panelX + 8, panelY + 8, panelW, panelH };
+    SDL_SetRenderDrawColor(renderer, 2, 5, 10, 190);
     SDL_RenderFillRect(renderer, &shadow2);
 
-    SDL_Rect shadow1 = { panelX + 4, panelY + 4, panelW, panelH };
-    SDL_SetRenderDrawColor(renderer, 5, 10, 20, 240);
-    SDL_RenderFillRect(renderer, &shadow1);
-
-    // Fondo del panel principal (Zinc/Slate-900)
     SDL_Rect panelBg = { panelX, panelY, panelW, panelH };
-    SDL_SetRenderDrawColor(renderer, 22, 27, 38, 255);
+    SDL_SetRenderDrawColor(renderer, 20, 26, 38, 255);
     SDL_RenderFillRect(renderer, &panelBg);
 
-    // Borde exterior con pulso sutil ámbar Conker
+    // Pulso animado ámbar
     float pulse = (std::sin(animTime * 3.0f) + 1.0f) * 0.5f;
-    uint8_t borderR = static_cast<uint8_t>(217 + pulse * 38); // Amber-500 (#F59E0B)
+    uint8_t borderR = static_cast<uint8_t>(217 + pulse * 38);
     uint8_t borderG = static_cast<uint8_t>(119 + pulse * 45);
     uint8_t borderB = static_cast<uint8_t>(6 + pulse * 20);
+
     SDL_SetRenderDrawColor(renderer, borderR, borderG, borderB, 255);
     SDL_RenderDrawRect(renderer, &panelBg);
-
-    // Borde interior sutil
     SDL_Rect panelInner = { panelX + 1, panelY + 1, panelW - 2, panelH - 2 };
-    SDL_SetRenderDrawColor(renderer, 51, 65, 85, 255);
+    SDL_SetRenderDrawColor(renderer, 45, 55, 75, 255);
     SDL_RenderDrawRect(renderer, &panelInner);
 
-    // 3. Encabezado de la Tarjeta
+    // 3. Encabezado
     SDL_Rect headerBg = { panelX + 2, panelY + 2, panelW - 4, 75 };
     SDL_SetRenderDrawColor(renderer, 15, 20, 30, 255);
     SDL_RenderFillRect(renderer, &headerBg);
-    SDL_SetRenderDrawColor(renderer, 51, 65, 85, 255);
+    SDL_SetRenderDrawColor(renderer, 45, 55, 75, 255);
     SDL_RenderDrawLine(renderer, panelX + 2, panelY + 77, panelX + panelW - 2, panelY + 77);
 
-    // Título Principal
-    SDL_Color amberCol = { 245, 158, 11, 255 };  // Tailwind Amber-500
+    SDL_Color amberCol = { 245, 158, 11, 255 };
     SDL_Color whiteCol = { 255, 255, 255, 255 };
-    SDL_Color mutedCol = { 148, 163, 184, 255 };  // Tailwind Slate-400
-    SDL_Color cyanCol  = { 56, 189, 248, 255 };   // Tailwind Sky-400
-    SDL_Color greenCol = { 52, 211, 153, 255 };   // Tailwind Emerald-400
+    SDL_Color mutedCol = { 148, 163, 184, 255 };
+    SDL_Color cyanCol  = { 56, 189, 248, 255 };
+    SDL_Color greenCol = { 52, 211, 153, 255 };
 
     drawCenteredText(renderer, "CONKER 64 : RECOMPILED", panelX + panelW / 2, panelY + 16, 3, amberCol, true);
-    drawCenteredText(renderer, "NATIVE PC PORT ENGINE  *  X86_64 ARCHITECTURE", panelX + panelW / 2, panelY + 48, 1, mutedCol, true);
+    drawCenteredText(renderer, "NATIVE PC PORT ENGINE  *  64-BIT RECOMPILATION", panelX + panelW / 2, panelY + 48, 1, mutedCol, true);
 
     // Badge de Versión
-    SDL_Rect badge = { panelX + panelW - 130, panelY + 24, 110, 22 };
+    SDL_Rect badge = { panelX + panelW - 130, panelY + 24, 110, 24 };
     SDL_SetRenderDrawColor(renderer, 30, 41, 59, 255);
     SDL_RenderFillRect(renderer, &badge);
     SDL_SetRenderDrawColor(renderer, 56, 189, 248, 255);
     SDL_RenderDrawRect(renderer, &badge);
-    drawCenteredText(renderer, "V1.0.0 NATIVE", panelX + panelW - 75, panelY + 31, 1, cyanCol, false);
+    drawCenteredText(renderer, "V1.0.0 NATIVE", panelX + panelW - 75, panelY + 32, 1, cyanCol, false);
 
-    // 4. Zona de Drop Central (Dropzone Interactiva)
+    // 4. Dropzone Central Interactiva
     int dropX = panelX + 40;
     int dropY = panelY + 95;
     int dropW = panelW - 80;
     int dropH = panelH - 210;
 
     SDL_Rect dropZone = { dropX, dropY, dropW, dropH };
-    SDL_SetRenderDrawColor(renderer, 13, 17, 26, 255);
+    if (isHoveringDrop) {
+        SDL_SetRenderDrawColor(renderer, 18, 26, 42, 255); // Highlight al pasar el ratón
+    } else {
+        SDL_SetRenderDrawColor(renderer, 13, 17, 26, 255);
+    }
     SDL_RenderFillRect(renderer, &dropZone);
 
-    // Borde animado discontinuo en la Dropzone
-    SDL_SetRenderDrawColor(renderer, borderR, borderG, borderB, 200);
+    // Borde animado de la dropzone
+    SDL_SetRenderDrawColor(renderer, isHoveringDrop ? 251 : borderR, isHoveringDrop ? 191 : borderG, isHoveringDrop ? 36 : borderB, 255);
     int dash = 12;
-    int offset = static_cast<int>(animTime * 20.0f) % (dash * 2);
+    int offset = static_cast<int>(animTime * 22.0f) % (dash * 2);
     for (int x = dropX + offset; x < dropX + dropW; x += dash * 2) {
         SDL_RenderDrawLine(renderer, x, dropY, std::min(x + dash, dropX + dropW), dropY);
         SDL_RenderDrawLine(renderer, x, dropY + dropH, std::min(x + dash, dropX + dropW), dropY + dropH);
@@ -361,8 +344,8 @@ void renderModernLauncher(SDL_Renderer* renderer, int winW, int winH, float anim
         SDL_RenderDrawLine(renderer, dropX + dropW, y, dropX + dropW, std::min(y + dash, dropY + dropH));
     }
 
-    // Corchetes angulares en las 4 esquinas de la Dropzone
-    int corner = 18;
+    // Esquinas de diseño
+    int corner = 20;
     SDL_SetRenderDrawColor(renderer, 251, 191, 36, 255);
     SDL_RenderDrawLine(renderer, dropX, dropY, dropX + corner, dropY);
     SDL_RenderDrawLine(renderer, dropX, dropY, dropX, dropY + corner);
@@ -373,32 +356,56 @@ void renderModernLauncher(SDL_Renderer* renderer, int winW, int winH, float anim
     SDL_RenderDrawLine(renderer, dropX + dropW - corner, dropY + dropH, dropX + dropW, dropY + dropH);
     SDL_RenderDrawLine(renderer, dropX + dropW, dropY + dropH - corner, dropX + dropW, dropY + dropH);
 
-    // Icono N64 Central Flotante
+    // Icono N64 Detallado en 3D
     int iconCX = dropX + dropW / 2;
-    int iconCY = dropY + 60;
-    float bounce = std::sin(animTime * 4.0f) * 5.0f;
+    int iconCY = dropY + 55;
+    float bounce = std::sin(animTime * 4.0f) * 4.0f;
     int cartY = iconCY + static_cast<int>(bounce);
 
-    SDL_Rect cart = { iconCX - 24, cartY - 18, 48, 36 };
-    SDL_SetRenderDrawColor(renderer, 51, 65, 85, 255);
-    SDL_RenderFillRect(renderer, &cart);
-    SDL_SetRenderDrawColor(renderer, borderR, borderG, borderB, 255);
-    SDL_RenderDrawRect(renderer, &cart);
+    // Carcasa del Cartucho N64 con Biseles
+    SDL_Rect cartBody = { iconCX - 32, cartY - 22, 64, 46 };
+    SDL_SetRenderDrawColor(renderer, 60, 70, 85, 255);
+    SDL_RenderFillRect(renderer, &cartBody);
+    SDL_SetRenderDrawColor(renderer, 90, 105, 125, 255);
+    SDL_RenderDrawRect(renderer, &cartBody);
 
-    SDL_Rect cartLabel = { iconCX - 16, cartY - 10, 32, 20 };
-    SDL_SetRenderDrawColor(renderer, 220, 38, 38, 255); // Red-600
+    // Ranura superior
+    SDL_Rect cartNotch = { iconCX - 22, cartY - 22, 44, 4 };
+    SDL_SetRenderDrawColor(renderer, 35, 42, 55, 255);
+    SDL_RenderFillRect(renderer, &cartNotch);
+
+    // Etiqueta roja auténtica de Conker
+    SDL_Rect cartLabel = { iconCX - 24, cartY - 12, 48, 26 };
+    SDL_SetRenderDrawColor(renderer, 220, 38, 38, 255);
     SDL_RenderFillRect(renderer, &cartLabel);
+    SDL_SetRenderDrawColor(renderer, 245, 158, 11, 255);
+    SDL_RenderDrawRect(renderer, &cartLabel);
 
-    // Texto Central dentro de la Dropzone
+    // Pines dorados inferiores
+    SDL_Rect cartPins = { iconCX - 18, cartY + 24, 36, 4 };
+    SDL_SetRenderDrawColor(renderer, 245, 195, 45, 255);
+    SDL_RenderFillRect(renderer, &cartPins);
+
+    // Textos de la Dropzone perfectamente espaciados
     drawCenteredText(renderer, "ARRASTRA Y SUELTA TU ARCHIVO ROM AQUI", iconCX, dropY + 115, 2, whiteCol, true);
-    drawCenteredText(renderer, "FORMATOS COMPATIBLES: .Z64  |  .N64  |  .V64", iconCX, dropY + 145, 1, cyanCol, true);
-    drawCenteredText(renderer, "ROM REQUERIDA: CONKER'S BAD FUR DAY (USA NTSC)", iconCX, dropY + 165, 1, mutedCol, true);
 
-    // 5. Botón de Acción Principal (Tailwind Amber Button)
-    int btnW = 380;
-    int btnH = 48;
+    // Badge de formatos compatibles
+    int pillW = 340, pillH = 26;
+    SDL_Rect pillRect = { iconCX - pillW / 2, dropY + 145, pillW, pillH };
+    SDL_SetRenderDrawColor(renderer, 24, 34, 52, 255);
+    SDL_RenderFillRect(renderer, &pillRect);
+    SDL_SetRenderDrawColor(renderer, 56, 189, 248, 255);
+    SDL_RenderDrawRect(renderer, &pillRect);
+    drawCenteredText(renderer, "FORMATOS: .Z64  |  .N64  |  .V64", iconCX, dropY + 154, 1, cyanCol, false);
+
+    drawCenteredText(renderer, "ROM REQUERIDA: CONKER'S BAD FUR DAY (USA NTSC)", iconCX, dropY + 185, 1, mutedCol, true);
+    drawCenteredText(renderer, "TAMBIEN PUEDES HACER CLIC EN ESTE RECUADRO PARA BUSCARLA", iconCX, dropY + 205, 1, greenCol, true);
+
+    // 5. Botón de Acción Principal (Totalmente dimensionado y centrado)
+    int btnW = 440;
+    int btnH = 50;
     int btnX = panelX + (panelW - btnW) / 2;
-    int btnY = panelY + panelH - 100;
+    int btnY = panelY + panelH - 95;
 
     SDL_Rect btnRect = { btnX, btnY, btnW, btnH };
     if (isHoveringBtn) {
@@ -407,25 +414,25 @@ void renderModernLauncher(SDL_Renderer* renderer, int winW, int winH, float anim
         SDL_SetRenderDrawColor(renderer, 217, 119, 6, 255);  // Amber-600
     }
     SDL_RenderFillRect(renderer, &btnRect);
-
     SDL_SetRenderDrawColor(renderer, 251, 191, 36, 255);     // Amber-400
     SDL_RenderDrawRect(renderer, &btnRect);
 
-    // Badge [ O ] dentro del botón
-    SDL_Rect keyBadge = { btnX + 16, btnY + 10, 32, 28 };
+    // Badge de tecla [ O ]
+    SDL_Rect keyBadge = { btnX + 16, btnY + 10, 36, 30 };
     SDL_SetRenderDrawColor(renderer, 15, 23, 42, 255);
     SDL_RenderFillRect(renderer, &keyBadge);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &keyBadge);
-    drawCenteredText(renderer, "O", btnX + 32, btnY + 16, 2, whiteCol, false);
+    drawCenteredText(renderer, "O", btnX + 34, btnY + 17, 2, whiteCol, false);
 
-    drawText(renderer, "BUSCAR ROM EN EL EQUIPO", btnX + 60, btnY + 17, 2, { 15, 23, 42, 255 }, false);
+    // Texto del botón con alto contraste (Blanco sobre sombra profunda)
+    drawText(renderer, "SELECCIONAR ARCHIVO ROM", btnX + 68, btnY + 17, 2, whiteCol, true);
 
-    // 6. Pie de Página / Instrucciones de Atajos
-    int footerY = panelY + panelH - 38;
-    drawCenteredText(renderer, "[ O ] SELECCIONAR ARCHIVO       [ ESC ] SALIR DEL JUEGO", panelX + panelW / 2, footerY, 1, mutedCol, true);
+    // 6. Pie de Página / Instrucciones
+    int footerY = panelY + panelH - 35;
+    drawCenteredText(renderer, "[ O / CLIC ] BUSCAR ARCHIVO       [ ESC ] SALIR", panelX + panelW / 2, footerY, 1, mutedCol, true);
 
-    // Barra de Estado Inferior
+    // 7. Barra de Estado Inferior
     int barY = winH - 28;
     SDL_Rect statusBar = { 0, barY, winW, 28 };
     SDL_SetRenderDrawColor(renderer, 10, 14, 22, 255);
@@ -433,12 +440,11 @@ void renderModernLauncher(SDL_Renderer* renderer, int winW, int winH, float anim
     SDL_SetRenderDrawColor(renderer, 30, 41, 59, 255);
     SDL_RenderDrawLine(renderer, 0, barY, winW, barY);
 
-    // Indicador de Estado (Luz verde/amarilla)
     SDL_Rect statusDot = { 20, barY + 9, 10, 10 };
     SDL_SetRenderDrawColor(renderer, 245, 158, 11, 255);
     SDL_RenderFillRect(renderer, &statusDot);
     drawText(renderer, "ESTADO: ESPERANDO VOLCADO DE CARTUCHO", 38, barY + 10, 1, mutedCol, false);
-    drawText(renderer, "PRESERVACION DIGITAL SIN COPYRIGHT", winW - 320, barY + 10, 1, mutedCol, false);
+    drawText(renderer, "PRESERVACION DIGITAL LIMPIA", winW - 270, barY + 10, 1, mutedCol, false);
 }
 
 int main(int argc, char** argv) {
@@ -494,15 +500,17 @@ int main(int argc, char** argv) {
         std::cout << "[ROM Audio] SDL Audio Device " << romAudioDev << " ready." << std::endl;
     }
 
-    // Comprobación de ROM
     bool romLoaded = false;
     std::string loadedRomPath;
 
-    // 1. Argumento de línea de comandos (e.g. Conker.exe "C:\Games\baserom.us.z64")
+    int winW = 1280, winH = 720;
+    SDL_GetWindowSize(window, &winW, &winH);
+
+    // 1. Argumento de línea de comandos
     if (argc > 1 && argv[1]) {
         std::string cliPath = argv[1];
         if (std::filesystem::exists(cliPath)) {
-            if (startLoadedGame(cliPath, renderer)) {
+            if (startLoadedGame(cliPath, renderer, winW, winH)) {
                 romLoaded = true;
                 loadedRomPath = cliPath;
             }
@@ -520,7 +528,7 @@ int main(int argc, char** argv) {
 
         for (const auto& path : searchPaths) {
             if (std::filesystem::exists(path)) {
-                if (startLoadedGame(path, renderer)) {
+                if (startLoadedGame(path, renderer, winW, winH)) {
                     romLoaded = true;
                     loadedRomPath = path;
                     break;
@@ -538,47 +546,55 @@ int main(int argc, char** argv) {
     uint32_t lastFpsLog = SDL_GetTicks();
     float currentFps = 0.0f;
     float launcherAnimTime = 0.0f;
-    bool isHoveringButton = false;
     N64::OSContPad pad{};
 
     bool isRunning = true;
     SDL_Event event;
 
     while (isRunning) {
+        SDL_GetWindowSize(window, &winW, &winH);
+
         int mouseX = 0, mouseY = 0;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        int winW = 1280, winH = 720;
-        SDL_GetWindowSize(window, &winW, &winH);
-
         int panelW = std::min(winW - 80, 840);
-        int panelH = std::min(winH - 80, 540);
+        int panelH = std::min(winH - 80, 560);
         int panelX = (winW - panelW) / 2;
         int panelY = (winH - panelH) / 2;
-        int btnW = 380, btnH = 48;
-        int btnX = panelX + (panelW - btnW) / 2;
-        int btnY = panelY + panelH - 100;
 
-        isHoveringButton = (mouseX >= btnX && mouseX <= btnX + btnW &&
-                            mouseY >= btnY && mouseY <= btnY + btnH);
+        int dropX = panelX + 40;
+        int dropY = panelY + 95;
+        int dropW = panelW - 80;
+        int dropH = panelH - 210;
+
+        int btnW = 440, btnH = 50;
+        int btnX = panelX + (panelW - btnW) / 2;
+        int btnY = panelY + panelH - 95;
+
+        bool isHoveringDrop = (mouseX >= dropX && mouseX <= dropX + dropW &&
+                               mouseY >= dropY && mouseY <= dropY + dropH);
+        bool isHoveringBtn  = (mouseX >= btnX && mouseX <= btnX + btnW &&
+                               mouseY >= btnY && mouseY <= btnY + btnH);
 
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) isRunning = false;
             else if (event.type == SDL_DROPFILE) {
                 char* droppedFile = event.drop.file;
                 std::cout << "[Launcher] ROM Arrastrada: " << droppedFile << std::endl;
-                if (startLoadedGame(droppedFile, renderer)) {
+                if (startLoadedGame(droppedFile, renderer, winW, winH)) {
                     romLoaded = true;
                     loadedRomPath = droppedFile;
                 }
                 SDL_free(droppedFile);
             }
             else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                if (!romLoaded && event.button.button == SDL_BUTTON_LEFT && isHoveringButton) {
-                    std::string selected = openFileDialog();
-                    if (!selected.empty() && startLoadedGame(selected, renderer)) {
-                        romLoaded = true;
-                        loadedRomPath = selected;
+                if (!romLoaded && event.button.button == SDL_BUTTON_LEFT) {
+                    if (isHoveringBtn || isHoveringDrop) {
+                        std::string selected = openFileDialog();
+                        if (!selected.empty() && startLoadedGame(selected, renderer, winW, winH)) {
+                            romLoaded = true;
+                            loadedRomPath = selected;
+                        }
                     }
                 }
             }
@@ -588,7 +604,7 @@ int main(int argc, char** argv) {
                 }
                 else if (event.key.keysym.sym == SDLK_o) {
                     std::string selected = openFileDialog();
-                    if (!selected.empty() && startLoadedGame(selected, renderer)) {
+                    if (!selected.empty() && startLoadedGame(selected, renderer, winW, winH)) {
                         romLoaded = true;
                         loadedRomPath = selected;
                     }
@@ -616,19 +632,12 @@ int main(int argc, char** argv) {
             }
         }
 
-        // =========================================================================
-        // CONTROL DE FLUJO: SI NO HAY ROM CARGADA, RENDERIZAR LAUNCHER SIN LAG
-        // =========================================================================
         if (!romLoaded) {
-            renderModernLauncher(renderer, winW, winH, launcherAnimTime, isHoveringButton);
+            renderModernLauncher(renderer, winW, winH, launcherAnimTime, isHoveringDrop, isHoveringBtn);
             SDL_RenderPresent(renderer);
-            // Cero delays artificiales: SDL_RENDERER_PRESENTVSYNC maneja la tasa de refresco a 60/120+ FPS sin lag
             continue;
         }
 
-        // =========================================================================
-        // FLUJO DE JUEGO ACTIVO (SOLO CON ROM VALIDA)
-        // =========================================================================
         N64::InputManager::getInstance().poll(pad);
 
         float camInputX = 0.0f;
