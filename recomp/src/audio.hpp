@@ -47,7 +47,7 @@ public:
         std::cout << "[Audio] N64 Audio Interface (AI) & Synthesizer initialized at " 
                   << obtainedSpec.freq << " Hz (Stereo 16-bit PCM, Device ID: " << audioDevice << ")" << std::endl;
         
-        playBootJingle();
+        // playBootJingle(); -- Silenciado para arranque limpio
         return true;
     }
 
