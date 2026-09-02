@@ -7,8 +7,8 @@ symbols_file_path = "conker.symbols.toml"
 rom_file_path     = "baserom.us.z64"
 output_func_path  = "recomp/src/generated"
 
-# Entrypoint MIPS IPL3 de Conker's Bad Fur Day (ROM 0x1000)
-entrypoint = 0x10001000
+# Entrypoint MIPS IPL3 de Conker's Bad Fur Day
+entrypoint = 0x80001000
 
 # Agrupar 50 funciones por archivo C generado para compilar a máxima velocidad
 functions_per_output_file = 50
@@ -21,5 +21,8 @@ use_absolute_symbols = true
 recomp_include = "#include \"recomp.h\""
 
 [patches]
-stubs = []
+stubs = [
+  "bootproc",
+  "allocate_memory"
+]
 ignored = []

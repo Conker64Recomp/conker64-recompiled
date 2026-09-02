@@ -41,7 +41,7 @@ std::string openFileDialog() {
     ofn.lpstrFile = filename;
     ofn.nMaxFile = MAX_PATH;
     ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-    ofn.lpstrTitle = "Selecciona tu ROM de Conker's Bad Fur Day (USA)";
+    ofn.lpstrTitle = "Selecciona tu ROM de Conker's Bad Fur Day (USA NTSC)";
     if (GetOpenFileNameA(&ofn)) return std::string(filename);
 #endif
     return "";
@@ -79,99 +79,204 @@ bool startLoadedGame(const std::string& path, SDL_Renderer* renderer) {
     return true;
 }
 
-// Renderiza la pantalla del Launcher cuando NO hay una ROM cargada
+// Renderiza la pantalla del Launcher con diseno estilizado tematico de Conker / Taberna
 void renderNoRomLauncher(SDL_Renderer* renderer, int winW, int winH, float animTime) {
-    // Fondo oscuro con degradado
-    SDL_SetRenderDrawColor(renderer, 15, 18, 24, 255);
-    SDL_RenderClear(renderer);
-
-    // Cuadrícula sutil de fondo
-    SDL_SetRenderDrawColor(renderer, 25, 30, 40, 255);
-    int gridStep = 40;
-    for (int x = 0; x < winW; x += gridStep) {
-        SDL_RenderDrawLine(renderer, x, 0, x, winH);
-    }
-    for (int y = 0; y < winH; y += gridStep) {
+    // 1. Fondo oscuro estilo Taberna (madera oscura y degradado)
+    for (int y = 0; y < winH; ++y) {
+        float t = static_cast<float>(y) / static_cast<float>(winH);
+        uint8_t bgR = static_cast<uint8_t>(18 + t * 10);
+        uint8_t bgG = static_cast<uint8_t>(12 + t * 6);
+        uint8_t bgB = static_cast<uint8_t>(10 + t * 4);
+        SDL_SetRenderDrawColor(renderer, bgR, bgG, bgB, 255);
         SDL_RenderDrawLine(renderer, 0, y, winW, y);
     }
 
-    // Panel Central (Caja de Drop / Launcher)
-    int boxW = std::min(winW - 80, 720);
-    int boxH = std::min(winH - 80, 420);
-    int boxX = (winW - boxW) / 2;
-    int boxY = (winH - boxH) / 2;
+    // Lineas decorativas sutiles de tablones de madera
+    SDL_SetRenderDrawColor(renderer, 32, 22, 16, 255);
+    int plankH = 48;
+    for (int y = 0; y < winH; y += plankH) {
+        SDL_RenderDrawLine(renderer, 0, y, winW, y);
+    }
 
-    // Sombra del panel
-    SDL_Rect shadowRect = { boxX + 6, boxY + 6, boxW, boxH };
-    SDL_SetRenderDrawColor(renderer, 5, 6, 8, 200);
+    // 2. Panel Central Estilo Cartel de Taberna / Conker
+    int panelW = std::min(winW - 100, 780);
+    int panelH = std::min(winH - 100, 480);
+    int panelX = (winW - panelW) / 2;
+    int panelY = (winH - panelH) / 2;
+
+    // Sombra proyectada
+    SDL_Rect shadowRect = { panelX + 8, panelY + 8, panelW, panelH };
+    SDL_SetRenderDrawColor(renderer, 6, 4, 3, 220);
     SDL_RenderFillRect(renderer, &shadowRect);
 
-    // Cuerpo del panel
-    SDL_Rect bgRect = { boxX, boxY, boxW, boxH };
-    SDL_SetRenderDrawColor(renderer, 24, 28, 38, 255);
-    SDL_RenderFillRect(renderer, &bgRect);
+    // Fondo del panel principal
+    SDL_Rect panelRect = { panelX, panelY, panelW, panelH };
+    SDL_SetRenderDrawColor(renderer, 28, 18, 14, 255);
+    SDL_RenderFillRect(renderer, &panelRect);
 
-    // Borde animado con efecto pulso (amarillo/naranja Conker)
-    float pulse = (std::sin(animTime * 3.0f) + 1.0f) * 0.5f;
-    uint8_t borderR = static_cast<uint8_t>(220 + pulse * 35);
-    uint8_t borderG = static_cast<uint8_t>(140 + pulse * 60);
-    uint8_t borderB = static_cast<uint8_t>(20 + pulse * 40);
-    SDL_SetRenderDrawColor(renderer, borderR, borderG, borderB, 255);
-    SDL_RenderDrawRect(renderer, &bgRect);
-    SDL_Rect bgRectInner = { boxX + 1, boxY + 1, boxW - 2, boxH - 2 };
-    SDL_RenderDrawRect(renderer, &bgRectInner);
+    // Borde de madera interior
+    SDL_Rect woodInner = { panelX + 4, panelY + 4, panelW - 8, panelH - 8 };
+    SDL_SetRenderDrawColor(renderer, 44, 28, 20, 255);
+    SDL_RenderDrawRect(renderer, &woodInner);
 
-    // Barra superior del panel
-    SDL_Rect headerRect = { boxX, boxY, boxW, 50 };
-    SDL_SetRenderDrawColor(renderer, 35, 42, 56, 255);
+    // Pulso animado de color naranja / dorado Conker
+    float pulse = (std::sin(animTime * 3.5f) + 1.0f) * 0.5f;
+    uint8_t goldR = static_cast<uint8_t>(235 + pulse * 20);
+    uint8_t goldG = static_cast<uint8_t>(145 + pulse * 45);
+    uint8_t goldB = static_cast<uint8_t>(25 + pulse * 30);
+
+    // Marco exterior brillante
+    SDL_SetRenderDrawColor(renderer, goldR, goldG, goldB, 255);
+    SDL_RenderDrawRect(renderer, &panelRect);
+
+    // Remaches / Tachuelas doradas en las esquinas del cartel
+    int rivetOffset = 10;
+    int rivetSize = 6;
+    SDL_Rect r1 = { panelX + rivetOffset, panelY + rivetOffset, rivetSize, rivetSize };
+    SDL_Rect r2 = { panelX + panelW - rivetOffset - rivetSize, panelY + rivetOffset, rivetSize, rivetSize };
+    SDL_Rect r3 = { panelX + rivetOffset, panelY + panelH - rivetOffset - rivetSize, rivetSize, rivetSize };
+    SDL_Rect r4 = { panelX + panelW - rivetOffset - rivetSize, panelY + panelH - rivetOffset - rivetSize, rivetSize, rivetSize };
+    SDL_SetRenderDrawColor(renderer, 250, 190, 40, 255);
+    SDL_RenderFillRect(renderer, &r1);
+    SDL_RenderFillRect(renderer, &r2);
+    SDL_RenderFillRect(renderer, &r3);
+    SDL_RenderFillRect(renderer, &r4);
+
+    // 3. Encabezado del Panel: "CONKER64: RECOMPILED"
+    SDL_Rect headerRect = { panelX + 8, panelY + 8, panelW - 16, 60 };
+    SDL_SetRenderDrawColor(renderer, 42, 24, 18, 255);
     SDL_RenderFillRect(renderer, &headerRect);
-    SDL_SetRenderDrawColor(renderer, borderR, borderG, borderB, 255);
-    SDL_RenderDrawLine(renderer, boxX, boxY + 50, boxX + boxW, boxY + 50);
+    SDL_SetRenderDrawColor(renderer, goldR, goldG, goldB, 255);
+    SDL_RenderDrawLine(renderer, panelX + 8, panelY + 68, panelX + panelW - 8, panelY + 68);
 
-    // Zona de Drop interior
-    int dropW = boxW - 60;
-    int dropH = boxH - 120;
-    int dropX = boxX + 30;
-    int dropY = boxY + 70;
+    // Adorno central en el encabezado (Insignia Corona / Jarra de Cerveza)
+    int mugCX = panelX + panelW / 2;
+    int mugCY = panelY + 36;
+    int mugW = 20, mugH = 24;
+    SDL_Rect mugBody = { mugCX - mugW / 2, mugCY - mugH / 2, mugW, mugH };
+    SDL_SetRenderDrawColor(renderer, 245, 175, 30, 255);
+    SDL_RenderFillRect(renderer, &mugBody);
+    // Espuma animada sobre la jarra
+    int foamH = 5 + static_cast<int>(pulse * 3);
+    SDL_Rect foamRect = { mugCX - mugW / 2 - 2, mugCY - mugH / 2 - foamH, mugW + 4, foamH };
+    SDL_SetRenderDrawColor(renderer, 255, 255, 240, 255);
+    SDL_RenderFillRect(renderer, &foamRect);
+    // Asa de la jarra
+    SDL_RenderDrawLine(renderer, mugCX + mugW / 2, mugCY - 6, mugCX + mugW / 2 + 6, mugCY - 6);
+    SDL_RenderDrawLine(renderer, mugCX + mugW / 2 + 6, mugCY - 6, mugCX + mugW / 2 + 6, mugCY + 6);
+    SDL_RenderDrawLine(renderer, mugCX + mugW / 2, mugCY + 6, mugCX + mugW / 2 + 6, mugCY + 6);
 
-    SDL_Rect dropRect = { dropX, dropY, dropW, dropH };
-    SDL_SetRenderDrawColor(renderer, 18, 22, 30, 255);
-    SDL_RenderFillRect(renderer, &dropRect);
-
-    // Borde discontinuo de la zona de drop
-    SDL_SetRenderDrawColor(renderer, 70, 90, 120, 255);
-    int dashLen = 12;
-    for (int x = dropX; x < dropX + dropW; x += dashLen * 2) {
-        SDL_RenderDrawLine(renderer, x, dropY, std::min(x + dashLen, dropX + dropW), dropY);
-        SDL_RenderDrawLine(renderer, x, dropY + dropH, std::min(x + dashLen, dropX + dropW), dropY + dropH);
+    // Burbujas ascendentes animadas
+    for (int i = 0; i < 5; ++i) {
+        float bY = std::fmod(animTime * 25.0f + i * 14.0f, 40.0f);
+        int bx = mugCX - 8 + (i * 4);
+        int by = mugCY + 8 - static_cast<int>(bY);
+        if (by > mugCY - 8) {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 200, 200);
+            SDL_RenderDrawPoint(renderer, bx, by);
+        }
     }
-    for (int y = dropY; y < dropY + dropH; y += dashLen * 2) {
-        SDL_RenderDrawLine(renderer, dropX, y, dropX, std::min(y + dashLen, dropY + dropH));
-        SDL_RenderDrawLine(renderer, dropX + dropW, y, dropX + dropW, std::min(y + dashLen, dropY + dropH));
+
+    // 4. Zona Central de Drop (Área interactiva para arrastrar la ROM)
+    int dropMarginX = 35;
+    int dropW = panelW - dropMarginX * 2;
+    int dropH = panelH - 180;
+    int dropX = panelX + dropMarginX;
+    int dropY = panelY + 85;
+
+    SDL_Rect dropZone = { dropX, dropY, dropW, dropH };
+    SDL_SetRenderDrawColor(renderer, 16, 10, 8, 255);
+    SDL_RenderFillRect(renderer, &dropZone);
+
+    // Borde discontinuo animado de la zona de drop
+    SDL_SetRenderDrawColor(renderer, static_cast<uint8_t>(goldR * 0.8f), static_cast<uint8_t>(goldG * 0.8f), 40, 255);
+    int dash = 14;
+    int shift = static_cast<int>(animTime * 18.0f) % (dash * 2);
+    for (int x = dropX + shift; x < dropX + dropW; x += dash * 2) {
+        SDL_RenderDrawLine(renderer, x, dropY, std::min(x + dash, dropX + dropW), dropY);
+        SDL_RenderDrawLine(renderer, x, dropY + dropH, std::min(x + dash, dropX + dropW), dropY + dropH);
+    }
+    for (int y = dropY + shift; y < dropY + dropH; y += dash * 2) {
+        SDL_RenderDrawLine(renderer, dropX, y, dropX, std::min(y + dash, dropY + dropH));
+        SDL_RenderDrawLine(renderer, dropX + dropW, y, dropX + dropW, std::min(y + dash, dropY + dropH));
     }
 
-    // Icono N64 / Cartucho en el centro de la zona de drop
+    // Esquinas con corchetes destacados
+    int cornerLen = 22;
+    SDL_SetRenderDrawColor(renderer, 255, 195, 45, 255);
+    // Superior Izquierda
+    SDL_RenderDrawLine(renderer, dropX, dropY, dropX + cornerLen, dropY);
+    SDL_RenderDrawLine(renderer, dropX, dropY, dropX, dropY + cornerLen);
+    // Superior Derecha
+    SDL_RenderDrawLine(renderer, dropX + dropW - cornerLen, dropY, dropX + dropW, dropY);
+    SDL_RenderDrawLine(renderer, dropX + dropW, dropY, dropX + dropW, dropY + cornerLen);
+    // Inferior Izquierda
+    SDL_RenderDrawLine(renderer, dropX, dropY + dropH - cornerLen, dropX, dropY + dropH);
+    SDL_RenderDrawLine(renderer, dropX, dropY + dropH, dropX + cornerLen, dropY + dropH);
+    // Inferior Derecha
+    SDL_RenderDrawLine(renderer, dropX + dropW - cornerLen, dropY + dropH, dropX + dropW, dropY + dropH);
+    SDL_RenderDrawLine(renderer, dropX + dropW, dropY + dropH - cornerLen, dropX + dropW, dropY + dropH);
+
+    // Icono animado de Cartucho N64 en el centro de la zona de drop
     int iconCX = dropX + dropW / 2;
-    int iconCY = dropY + dropH / 2 - 20;
-    int iconSz = 36;
-    SDL_Rect iconRect = { iconCX - iconSz / 2, iconCY - iconSz / 2, iconSz, iconSz };
-    SDL_SetRenderDrawColor(renderer, borderR, borderG, borderB, 255);
-    SDL_RenderDrawRect(renderer, &iconRect);
+    int iconCY = dropY + dropH / 2 - 25;
+    int cartW = 54, cartH = 46;
+    float bounce = std::sin(animTime * 4.0f) * 4.0f;
+    int cartY = iconCY - cartH / 2 + static_cast<int>(bounce);
 
-    // Líneas decorativas del icono
-    SDL_RenderDrawLine(renderer, iconCX - iconSz / 2, iconCY, iconCX + iconSz / 2, iconCY);
-    SDL_RenderDrawLine(renderer, iconCX, iconCY - iconSz / 2, iconCX, iconCY + iconSz / 2);
+    SDL_Rect cartBody = { iconCX - cartW / 2, cartY, cartW, cartH };
+    SDL_SetRenderDrawColor(renderer, 70, 75, 85, 255);
+    SDL_RenderFillRect(renderer, &cartBody);
+    SDL_SetRenderDrawColor(renderer, goldR, goldG, goldB, 255);
+    SDL_RenderDrawRect(renderer, &cartBody);
 
-    // Botón / Indicador "[ PRESIONA 'O' PARA BUSCAR ROM ]"
-    int btnW = 320;
-    int btnH = 40;
+    // Etiqueta del cartucho
+    SDL_Rect cartLabel = { iconCX - cartW / 2 + 8, cartY + 8, cartW - 16, cartH - 18 };
+    SDL_SetRenderDrawColor(renderer, 220, 80, 20, 255);
+    SDL_RenderFillRect(renderer, &cartLabel);
+
+    // Contactos dorados inferiores del cartucho
+    SDL_Rect cartPins = { iconCX - cartW / 2 + 12, cartY + cartH, cartW - 24, 4 };
+    SDL_SetRenderDrawColor(renderer, 240, 200, 60, 255);
+    SDL_RenderFillRect(renderer, &cartPins);
+
+    // 5. Boton de Accion / Busqueda con Tecla [O]
+    int btnW = 340;
+    int btnH = 44;
     int btnX = dropX + (dropW - btnW) / 2;
-    int btnY = dropY + dropH - 55;
-    SDL_Rect btnRect = { btnX, btnY, btnW, btnH };
-    SDL_SetRenderDrawColor(renderer, 45, 60, 85, 255);
-    SDL_RenderFillRect(renderer, &btnRect);
-    SDL_SetRenderDrawColor(renderer, 240, 180, 50, 255);
-    SDL_RenderDrawRect(renderer, &btnRect);
+    int btnY = dropY + dropH - 58;
+
+    SDL_Rect btnBg = { btnX, btnY, btnW, btnH };
+    SDL_SetRenderDrawColor(renderer, 38, 54, 86, 255);
+    SDL_RenderFillRect(renderer, &btnBg);
+    SDL_SetRenderDrawColor(renderer, 245, 175, 30, 255);
+    SDL_RenderDrawRect(renderer, &btnBg);
+    SDL_Rect btnInner = { btnX + 2, btnY + 2, btnW - 4, btnH - 4 };
+    SDL_SetRenderDrawColor(renderer, 50, 70, 110, 255);
+    SDL_RenderDrawRect(renderer, &btnInner);
+
+    // Insignia de tecla [ O ]
+    int badgeW = 28, badgeH = 26;
+    int badgeX = btnX + 12;
+    int badgeY = btnY + (btnH - badgeH) / 2;
+    SDL_Rect badgeRect = { badgeX, badgeY, badgeW, badgeH };
+    SDL_SetRenderDrawColor(renderer, 255, 195, 40, 255);
+    SDL_RenderFillRect(renderer, &badgeRect);
+    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+    SDL_RenderDrawRect(renderer, &badgeRect);
+
+    // 6. Pie del Panel con Informacion Legal y Preservacion
+    int footerY = panelY + panelH - 75;
+    SDL_SetRenderDrawColor(renderer, 42, 26, 18, 255);
+    SDL_RenderDrawLine(renderer, panelX + 16, footerY, panelX + panelW - 16, footerY);
+
+    // Barra de estado inferior
+    int statusY = winH - 30;
+    SDL_SetRenderDrawColor(renderer, 10, 7, 5, 255);
+    SDL_Rect statusRect = { 0, statusY, winW, 30 };
+    SDL_RenderFillRect(renderer, &statusRect);
+    SDL_SetRenderDrawColor(renderer, 60, 40, 25, 255);
+    SDL_RenderDrawLine(renderer, 0, statusY, winW, statusY);
 }
 
 int main(int argc, char** argv) {
