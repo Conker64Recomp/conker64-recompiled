@@ -104,6 +104,48 @@ public:
         return tex;
     }
 
+    // ── Textura Orgánica HD de Césped de Windy (Lush Grass Texture) ───────────
+    SDL_Texture* createWindyGrassTexture(SDL_Renderer* renderer, int width = 256, int height = 256) {
+        if (!renderer) return nullptr;
+        std::vector<uint32_t> pixels(width * height);
+
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                // Generador de ruido orgánico para césped natural estilo Rareware
+                float fx = static_cast<float>(x) / static_cast<float>(width);
+                float fy = static_cast<float>(y) / static_cast<float>(height);
+
+                float n1 = std::sin(fx * 32.0f + std::cos(fy * 24.0f) * 2.0f);
+                float n2 = std::cos(fy * 40.0f + std::sin(fx * 30.0f) * 2.5f);
+                float n3 = std::sin((fx + fy) * 60.0f) * 0.5f;
+                float noise = (n1 + n2 + n3) / 2.5f; // [-1.0, 1.0]
+
+                // Tonos verdes esmeralda y oliva clásicos de Conker Windy
+                uint8_t r = static_cast<uint8_t>(std::clamp(42.0f + noise * 18.0f, 20.0f, 85.0f));
+                uint8_t g = static_cast<uint8_t>(std::clamp(138.0f + noise * 35.0f, 90.0f, 185.0f));
+                uint8_t b = static_cast<uint8_t>(std::clamp(36.0f + noise * 15.0f, 18.0f, 65.0f));
+
+                // Briznas finas de hierba aleatorias
+                if (((x * 7 + y * 13) % 17) == 0) {
+                    g = std::min(255, g + 30);
+                    r = std::min(255, r + 15);
+                }
+
+                pixels[y * width + x] = (0xFF << 24) | (r << 16) | (g << 8) | b;
+            }
+        }
+
+        SDL_Texture* tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                             SDL_TEXTUREACCESS_STATIC, width, height);
+        if (tex) {
+            SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_NONE);
+            SDL_UpdateTexture(tex, nullptr, pixels.data(), width * sizeof(uint32_t));
+            std::cout << "[TextureLoader] High-Definition Windy Grass Texture generated ("
+                      << width << "x" << height << ")" << std::endl;
+        }
+        return tex;
+    }
+
     // ── Procedural fallback texture (Conker fur pattern) ─────────────────
     SDL_Texture* createConkerProceduralTexture(SDL_Renderer* renderer,
                                                int width = 64, int height = 64) {

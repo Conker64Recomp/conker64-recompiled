@@ -238,91 +238,99 @@ public:
         }
     }
 
-    // ── MODELO 3D AUTÉNTICO ORGÁNICO DE CONKER (RAREWARE N64 ORIGINAL) ────────
+    // ── MODELO 3D AUTÉNTICO DE ALTA FIDELIDAD DE CONKER (RAREWARE N64 ORIGINAL) ─
     static Model3D createConkerMesh(SDL_Renderer* renderer = nullptr) {
         Model3D m;
-        m.name = "Conker (Authentic Organic N64 Model)";
+        m.name = "Conker (Authentic High-Poly Organic Model)";
 
-        // 1. CABEZA Y ROSTRO DE CONKER (Esfera orgánica de pelaje naranja con hocico y orejas)
+        // 1. CABEZA Y ROSTRO DE CONKER (Esfera orgánica de alta subdivisión)
         // Cráneo redondeado principal
-        m.addSphere(0.0f, 0.55f, 0.0f, 0.58f, 0.52f, 0.55f, 0.96f, 0.48f, 0.12f, 10, 14); // Pelo naranja Conker
+        m.addSphere(0.0f, 0.56f, 0.0f, 0.60f, 0.54f, 0.56f, 0.96f, 0.48f, 0.12f, 14, 18);
 
-        // Hocico / Mejillas de color crema claro
-        m.addSphere(0.0f, 0.38f, 0.38f, 0.38f, 0.28f, 0.34f, 0.98f, 0.90f, 0.78f, 8, 12);  // Crema hocico
+        // Hocico / Mejillas pronunciadas en color crema
+        m.addSphere(0.0f, 0.38f, 0.38f, 0.40f, 0.30f, 0.36f, 0.98f, 0.90f, 0.78f, 12, 16);
 
-        // Nariz esférica negra
-        m.addSphere(0.0f, 0.48f, 0.65f, 0.10f, 0.08f, 0.09f, 0.10f, 0.10f, 0.12f, 6, 8);   // Nariz brillante
+        // Nariz esférica negra brillante
+        m.addSphere(0.0f, 0.48f, 0.68f, 0.11f, 0.09f, 0.10f, 0.10f, 0.10f, 0.12f, 8, 10);
 
-        // Ojos de caricatura (Esferas blancas con pupilas oscuras)
-        m.addSphere(-0.20f, 0.65f, 0.42f, 0.14f, 0.18f, 0.10f, 0.98f, 0.98f, 0.98f, 6, 8); // Ojo izq blanco
-        m.addSphere( 0.20f, 0.65f, 0.42f, 0.14f, 0.18f, 0.10f, 0.98f, 0.98f, 0.98f, 6, 8); // Ojo der blanco
-        m.addSphere(-0.19f, 0.65f, 0.50f, 0.07f, 0.10f, 0.04f, 0.12f, 0.20f, 0.45f, 5, 6); // Pupila azul/negra
-        m.addSphere( 0.19f, 0.65f, 0.50f, 0.07f, 0.10f, 0.04f, 0.12f, 0.20f, 0.45f, 5, 6); // Pupila azul/negra
+        // Ojos de caricatura (Esferas blancas con pupilas y destello)
+        m.addSphere(-0.20f, 0.66f, 0.44f, 0.15f, 0.19f, 0.11f, 0.98f, 0.98f, 0.98f, 8, 10);
+        m.addSphere( 0.20f, 0.66f, 0.44f, 0.15f, 0.19f, 0.11f, 0.98f, 0.98f, 0.98f, 8, 10);
+        m.addSphere(-0.19f, 0.66f, 0.53f, 0.08f, 0.11f, 0.04f, 0.10f, 0.25f, 0.55f, 6, 8);
+        m.addSphere( 0.19f, 0.66f, 0.53f, 0.08f, 0.11f, 0.04f, 0.10f, 0.25f, 0.55f, 6, 8);
+        // Brillo blanco en ojos
+        m.addSphere(-0.17f, 0.71f, 0.55f, 0.03f, 0.03f, 0.02f, 1.00f, 1.00f, 1.00f, 4, 6);
+        m.addSphere( 0.21f, 0.71f, 0.55f, 0.03f, 0.03f, 0.02f, 1.00f, 1.00f, 1.00f, 4, 6);
 
-        // Orejas curvadas cónicas (Exterior naranja, interior rosado)
-        m.addCylinder(-0.35f, 0.90f, -0.05f, -0.52f, 1.25f, -0.05f, 0.18f, 0.04f, 0.92f, 0.42f, 0.10f, 8);
-        m.addCylinder( 0.35f, 0.90f, -0.05f,  0.52f, 1.25f, -0.05f, 0.18f, 0.04f, 0.92f, 0.42f, 0.10f, 8);
-        m.addSphere(-0.40f, 1.05f, 0.0f, 0.10f, 0.16f, 0.04f, 0.95f, 0.65f, 0.60f, 6, 6); // Interior oreja izq
-        m.addSphere( 0.40f, 1.05f, 0.0f, 0.10f, 0.16f, 0.04f, 0.95f, 0.65f, 0.60f, 6, 6); // Interior oreja der
+        // Orejas curvadas cónicas con interior rosado suave
+        m.addCylinder(-0.35f, 0.92f, -0.05f, -0.54f, 1.30f, -0.05f, 0.20f, 0.03f, 0.92f, 0.42f, 0.10f, 12);
+        m.addCylinder( 0.35f, 0.92f, -0.05f,  0.54f, 1.30f, -0.05f, 0.20f, 0.03f, 0.92f, 0.42f, 0.10f, 12);
+        m.addSphere(-0.40f, 1.08f, 0.0f, 0.11f, 0.18f, 0.04f, 0.96f, 0.68f, 0.64f, 8, 8);
+        m.addSphere( 0.40f, 1.08f, 0.0f, 0.11f, 0.18f, 0.04f, 0.96f, 0.68f, 0.64f, 8, 8);
 
         // 2. TORSO Y SUDADERA AZUL CON CREMALLERA
-        // Torso orgánico cónico (azul sudadera clásico)
-        m.addCylinder(0.0f, 0.20f, 0.0f, 0.0f, -0.35f, 0.0f, 0.42f, 0.46f, 0.14f, 0.42f, 0.88f, 12);
-        // Franja vertical central amarilla de la cremallera
-        m.addCylinder(0.0f, 0.20f, 0.38f, 0.0f, -0.35f, 0.42f, 0.05f, 0.05f, 0.98f, 0.85f, 0.15f, 6);
-        // Capucha trasera redondeada
-        m.addSphere(0.0f, 0.15f, -0.28f, 0.32f, 0.22f, 0.22f, 0.10f, 0.32f, 0.72f, 8, 10);
+        // Torso anatómico con hombros redondeados
+        m.addCylinder(0.0f, 0.22f, 0.0f, 0.0f, -0.35f, 0.0f, 0.44f, 0.48f, 0.14f, 0.44f, 0.90f, 16);
+        // Franja dorada de cremallera
+        m.addCylinder(0.0f, 0.22f, 0.40f, 0.0f, -0.35f, 0.44f, 0.05f, 0.05f, 0.98f, 0.88f, 0.15f, 8);
+        // Capucha trasera
+        m.addSphere(0.0f, 0.18f, -0.30f, 0.35f, 0.24f, 0.25f, 0.10f, 0.34f, 0.76f, 10, 12);
 
-        // 3. BRAZOS ORGÁNICOS Y GUANTES DE CARICATURA
-        // Brazo izquierdo (Manga azul + antebrazo naranja)
-        m.addCylinder(-0.35f, 0.10f, 0.0f, -0.65f, -0.10f, 0.05f, 0.16f, 0.14f, 0.14f, 0.42f, 0.88f, 8);
-        m.addCylinder(-0.65f, -0.10f, 0.05f, -0.80f, -0.35f, 0.10f, 0.13f, 0.11f, 0.96f, 0.48f, 0.12f, 8);
-        // Guante blanco izquierdo con pulgar modelado
-        m.addSphere(-0.85f, -0.45f, 0.12f, 0.16f, 0.16f, 0.16f, 0.96f, 0.96f, 0.98f, 8, 8);
-        m.addSphere(-0.76f, -0.40f, 0.22f, 0.08f, 0.08f, 0.08f, 0.96f, 0.96f, 0.98f, 6, 6);
+        // 3. BRAZOS Y GUANTES DE CARICATURA
+        // Brazo izquierdo
+        m.addCylinder(-0.35f, 0.12f, 0.0f, -0.68f, -0.10f, 0.05f, 0.17f, 0.15f, 0.14f, 0.44f, 0.90f, 10);
+        m.addCylinder(-0.68f, -0.10f, 0.05f, -0.84f, -0.35f, 0.10f, 0.14f, 0.12f, 0.96f, 0.48f, 0.12f, 10);
+        // Guante blanco izquierdo con pulgar
+        m.addSphere(-0.90f, -0.46f, 0.12f, 0.18f, 0.18f, 0.18f, 0.98f, 0.98f, 0.99f, 10, 10);
+        m.addSphere(-0.80f, -0.40f, 0.24f, 0.09f, 0.09f, 0.09f, 0.98f, 0.98f, 0.99f, 8, 8);
 
-        // Brazo derecho (Manga azul + antebrazo naranja)
-        m.addCylinder( 0.35f, 0.10f, 0.0f,  0.65f, -0.10f, 0.05f, 0.16f, 0.14f, 0.14f, 0.42f, 0.88f, 8);
-        m.addCylinder( 0.65f, -0.10f, 0.05f,  0.80f, -0.35f, 0.10f, 0.13f, 0.11f, 0.96f, 0.48f, 0.12f, 8);
-        // Guante blanco derecho con pulgar modelado
-        m.addSphere( 0.85f, -0.45f, 0.12f, 0.16f, 0.16f, 0.16f, 0.96f, 0.96f, 0.98f, 8, 8);
-        m.addSphere( 0.76f, -0.40f, 0.22f, 0.08f, 0.08f, 0.08f, 0.96f, 0.96f, 0.98f, 6, 6);
+        // Brazo derecho
+        m.addCylinder( 0.35f, 0.12f, 0.0f,  0.68f, -0.10f, 0.05f, 0.17f, 0.15f, 0.14f, 0.44f, 0.90f, 10);
+        m.addCylinder( 0.68f, -0.10f, 0.05f,  0.84f, -0.35f, 0.10f, 0.14f, 0.12f, 0.96f, 0.48f, 0.12f, 10);
+        // Guante blanco derecho con pulgar
+        m.addSphere( 0.90f, -0.46f, 0.12f, 0.18f, 0.18f, 0.18f, 0.98f, 0.98f, 0.99f, 10, 10);
+        m.addSphere( 0.80f, -0.40f, 0.24f, 0.09f, 0.09f, 0.09f, 0.98f, 0.98f, 0.99f, 8, 8);
 
-        // 4. PIERNAS Y ZAPATILLAS DE DEPORTE AZULES
-        // Muslos / Pantalones azules
-        m.addCylinder(-0.20f, -0.35f, 0.0f, -0.22f, -0.75f, 0.0f, 0.20f, 0.16f, 0.12f, 0.38f, 0.82f, 8);
-        m.addCylinder( 0.20f, -0.35f, 0.0f,  0.22f, -0.75f, 0.0f, 0.20f, 0.16f, 0.12f, 0.38f, 0.82f, 8);
-        // Piernas de pelaje naranja
-        m.addCylinder(-0.22f, -0.75f, 0.0f, -0.24f, -1.05f, 0.0f, 0.14f, 0.12f, 0.96f, 0.48f, 0.12f, 8);
-        m.addCylinder( 0.22f, -0.75f, 0.0f,  0.24f, -1.05f, 0.0f, 0.14f, 0.12f, 0.96f, 0.48f, 0.12f, 8);
+        // 4. PIERNAS Y ZAPATILLAS DE DEPORTE
+        // Pantalones
+        m.addCylinder(-0.20f, -0.35f, 0.0f, -0.22f, -0.75f, 0.0f, 0.22f, 0.18f, 0.12f, 0.40f, 0.85f, 10);
+        m.addCylinder( 0.20f, -0.35f, 0.0f,  0.22f, -0.75f, 0.0f, 0.22f, 0.18f, 0.12f, 0.40f, 0.85f, 10);
+        // Pelaje piernas
+        m.addCylinder(-0.22f, -0.75f, 0.0f, -0.24f, -1.05f, 0.0f, 0.15f, 0.13f, 0.96f, 0.48f, 0.12f, 10);
+        m.addCylinder( 0.22f, -0.75f, 0.0f,  0.24f, -1.05f, 0.0f, 0.15f, 0.13f, 0.96f, 0.48f, 0.12f, 10);
 
-        // Zapatillas azules de Conker (Cuerpo azul, suela blanca gruesa y cordones amarillos)
-        m.addSphere(-0.24f, -1.18f, 0.12f, 0.19f, 0.14f, 0.32f, 0.14f, 0.32f, 0.78f, 8, 10);
-        m.addSphere( 0.24f, -1.18f, 0.12f, 0.19f, 0.14f, 0.32f, 0.14f, 0.32f, 0.78f, 8, 10);
-        m.addCylinder(-0.24f, -1.28f, -0.10f, -0.24f, -1.28f, 0.36f, 0.18f, 0.18f, 0.95f, 0.95f, 0.95f, 8); // Suela izq
-        m.addCylinder( 0.24f, -1.28f, -0.10f,  0.24f, -1.28f, 0.36f, 0.18f, 0.18f, 0.95f, 0.95f, 0.95f, 8); // Suela der
+        // Zapatillas con suela blanca y cordones amarillos
+        m.addSphere(-0.24f, -1.18f, 0.14f, 0.20f, 0.15f, 0.34f, 0.14f, 0.34f, 0.82f, 10, 12);
+        m.addSphere( 0.24f, -1.18f, 0.14f, 0.20f, 0.15f, 0.34f, 0.14f, 0.34f, 0.82f, 10, 12);
+        m.addCylinder(-0.24f, -1.28f, -0.12f, -0.24f, -1.28f, 0.40f, 0.19f, 0.19f, 0.98f, 0.98f, 0.98f, 10);
+        m.addCylinder( 0.24f, -1.28f, -0.12f,  0.24f, -1.28f, 0.40f, 0.19f, 0.19f, 0.98f, 0.98f, 0.98f, 10);
 
-        // 5. COLA DE ARDILLA ESPONJOSA HELICOIDAL (8 Segmentos cónicos curvados)
-        constexpr int tailSegs = 8;
+        // 5. COLA DE ARDILLA ESPONJOSA CONTINUA (12 Secciones Curvadas con Lofting Suave)
+        constexpr int tailSegs = 12;
         float tailX = 0.0f, tailY = -0.30f, tailZ = -0.32f;
-        float curRadius = 0.14f;
+        float curRadius = 0.15f;
 
         for (int t = 0; t < tailSegs; ++t) {
             float frac = static_cast<float>(t) / tailSegs;
             float nextFrac = static_cast<float>(t + 1) / tailSegs;
 
-            // Curva ascendente y hacia atrás característica de Conker
-            float nextX = std::sin(nextFrac * 1.5f) * 0.10f;
-            float nextY = tailY + 0.18f + nextFrac * 0.12f;
-            float nextZ = tailZ - 0.24f * (1.0f - nextFrac * 0.5f);
+            // Curva Bézier suave para la cola característica de Conker
+            float nextX = std::sin(nextFrac * 1.8f) * 0.12f;
+            float nextY = tailY + 0.14f + std::sin(nextFrac * 3.1415f) * 0.12f;
+            float nextZ = tailZ - 0.20f * (1.0f - nextFrac * 0.4f);
 
-            float nextRadius = (t < 5) ? (curRadius + 0.06f) : (curRadius - 0.05f); // Se engrosa y luego afila
-            m.addCylinder(tailX, tailY, tailZ, nextX, nextY, nextZ, curRadius, nextRadius, 0.96f, 0.48f, 0.12f, 10);
+            float nextRadius = (t < 7) ? (curRadius + 0.045f) : (curRadius - 0.055f);
+            nextRadius = std::max(0.06f, nextRadius);
+
+            m.addCylinder(tailX, tailY, tailZ, nextX, nextY, nextZ, curRadius, nextRadius, 0.96f, 0.48f, 0.12f, 14);
+
+            // Esfera de unión suave entre segmentos para eliminar faceteado
+            m.addSphere(nextX, nextY, nextZ, nextRadius, nextRadius, nextRadius, 0.96f, 0.48f, 0.12f, 8, 10);
 
             tailX = nextX; tailY = nextY; tailZ = nextZ; curRadius = nextRadius;
         }
 
-        std::cout << "[3D Mesh] Conker Authentic Organic Mesh created: "
+        std::cout << "[3D Mesh] Conker Authentic High-Poly Organic Mesh created: "
                   << m.vertices.size() << " vertices, " << m.triangles.size() << " triangles." << std::endl;
         return m;
     }

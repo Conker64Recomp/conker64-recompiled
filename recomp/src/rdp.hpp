@@ -71,7 +71,7 @@ public:
         std::cout << "[RDP] Fast3D / F3DEX2 Display List Processor initialized." << std::endl;
 
         activeTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 64, 64);
-        groundTexture = TextureLoader::getInstance().createConkerProceduralTexture(renderer, 32, 32);
+        groundTexture = TextureLoader::getInstance().createWindyGrassTexture(renderer, 256, 256);
 
         conkerMesh = Model3D::createConkerMesh(renderer);
         loadLevelGeometry(renderer);
@@ -397,6 +397,8 @@ private:
         batchScratch.clear();
         batchScratch.reserve(static_cast<size_t>(gridSize) * gridSize * 6);
 
+        constexpr float kUvScale = 1.0f / 4.5f; // Mapeo de textura continuo en espacio de mundo
+
         for (int xi = 0; xi < gridSize; ++xi) {
             for (int zi = 0; zi < gridSize; ++zi) {
                 float x0 = startX + xi * tileSize, x1 = x0 + tileSize;
@@ -409,21 +411,22 @@ private:
 
                 if (p0.z < 0.3f || p1.z < 0.3f || p2.z < 0.3f || p3.z < 0.3f) continue;
 
-                float fog = mathMin(1.0f, p0.z / 18.0f);
-                bool alt = ((xi + zi) % 2 == 0);
-                SDL_Color c = {
-                    alt ? static_cast<uint8_t>(35 + fog * 80) : static_cast<uint8_t>(25 + fog * 80),
-                    alt ? static_cast<uint8_t>(95 + fog * 80) : static_cast<uint8_t>(75 + fog * 80),
-                    alt ? static_cast<uint8_t>(30 + fog * 80) : static_cast<uint8_t>(20 + fog * 80),
-                    255
-                };
+                float fog = mathMin(1.0f, p0.z / 26.0f);
+                uint8_t lightR = static_cast<uint8_t>(mathClamp(200.0f - fog * 90.0f, 60.0f, 255.0f));
+                uint8_t lightG = static_cast<uint8_t>(mathClamp(220.0f - fog * 80.0f, 80.0f, 255.0f));
+                uint8_t lightB = static_cast<uint8_t>(mathClamp(200.0f - fog * 90.0f, 60.0f, 255.0f));
 
-                batchScratch.push_back({{ p0.x, p0.y }, c, {0.0f, 0.0f}});
-                batchScratch.push_back({{ p1.x, p1.y }, c, {1.0f, 0.0f}});
-                batchScratch.push_back({{ p2.x, p2.y }, c, {1.0f, 1.0f}});
-                batchScratch.push_back({{ p0.x, p0.y }, c, {0.0f, 0.0f}});
-                batchScratch.push_back({{ p2.x, p2.y }, c, {1.0f, 1.0f}});
-                batchScratch.push_back({{ p3.x, p3.y }, c, {0.0f, 1.0f}});
+                SDL_Color c = { lightR, lightG, lightB, 255 };
+
+                float u0 = x0 * kUvScale, u1 = x1 * kUvScale;
+                float v0 = z0 * kUvScale, v1 = z1 * kUvScale;
+
+                batchScratch.push_back({{ p0.x, p0.y }, c, {u0, v0}});
+                batchScratch.push_back({{ p1.x, p1.y }, c, {u1, v0}});
+                batchScratch.push_back({{ p2.x, p2.y }, c, {u1, v1}});
+                batchScratch.push_back({{ p0.x, p0.y }, c, {u0, v0}});
+                batchScratch.push_back({{ p2.x, p2.y }, c, {u1, v1}});
+                batchScratch.push_back({{ p3.x, p3.y }, c, {u0, v1}});
             }
         }
 
