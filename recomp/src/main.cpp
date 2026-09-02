@@ -756,6 +756,14 @@ int main(int argc, char** argv) {
         if (!N64::IntroSequence::getInstance().isGameplayActive()) {
             N64::IntroSequence::getInstance().render(renderer, winW, winH);
         } else {
+            // Reproducción automática de música de fondo en gameplay
+            static bool gameplayMusicStarted = false;
+            if (!gameplayMusicStarted) {
+                gameplayMusicStarted = true;
+                std::cout << "[Audio] Starting authentic Windy / Hungover Background Music Stream..." << std::endl;
+                N64::ROMaudioPlayer::getInstance().playTrack(N64::MusicTrack::WINDY_THEME);
+            }
+
             SDL_SetRenderDrawColor(renderer, 70, 130, 200, 255);
             SDL_RenderClear(renderer);
 

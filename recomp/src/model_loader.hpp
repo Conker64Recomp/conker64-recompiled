@@ -305,26 +305,23 @@ public:
         m.addCylinder(-0.24f, -1.28f, -0.12f, -0.24f, -1.28f, 0.40f, 0.19f, 0.19f, 0.98f, 0.98f, 0.98f, 10);
         m.addCylinder( 0.24f, -1.28f, -0.12f,  0.24f, -1.28f, 0.40f, 0.19f, 0.19f, 0.98f, 0.98f, 0.98f, 10);
 
-        // 5. COLA DE ARDILLA ESPONJOSA CONTINUA (12 Secciones Curvadas con Lofting Suave)
-        constexpr int tailSegs = 12;
-        float tailX = 0.0f, tailY = -0.30f, tailZ = -0.32f;
-        float curRadius = 0.15f;
+        // 5. COLA DE ARDILLA AUTÉNTICA COMPACTA Y ESPONJOSA (Curva en 'S' clásica de Conker)
+        constexpr int tailSegs = 8;
+        float tailX = 0.0f, tailY = -0.35f, tailZ = -0.28f;
+        float curRadius = 0.14f;
 
         for (int t = 0; t < tailSegs; ++t) {
-            float frac = static_cast<float>(t) / tailSegs;
             float nextFrac = static_cast<float>(t + 1) / tailSegs;
 
-            // Curva Bézier suave para la cola característica de Conker
-            float nextX = std::sin(nextFrac * 1.8f) * 0.12f;
-            float nextY = tailY + 0.14f + std::sin(nextFrac * 3.1415f) * 0.12f;
-            float nextZ = tailZ - 0.20f * (1.0f - nextFrac * 0.4f);
+            // Curva en 'S' que sube pegada a la espalda hasta la altura de la cabeza
+            float nextX = 0.0f;
+            float nextY = -0.35f + nextFrac * 0.95f; // Sube hasta Y ~ 0.60
+            float nextZ = -0.28f - std::sin(nextFrac * 3.14159f) * 0.32f; // Curva hacia atrás y luego hacia adelante
 
-            float nextRadius = (t < 7) ? (curRadius + 0.045f) : (curRadius - 0.055f);
-            nextRadius = std::max(0.06f, nextRadius);
+            float nextRadius = (t < 4) ? (0.14f + nextFrac * 0.18f) : (0.28f - (nextFrac - 0.5f) * 0.22f);
+            nextRadius = std::max(0.08f, nextRadius);
 
-            m.addCylinder(tailX, tailY, tailZ, nextX, nextY, nextZ, curRadius, nextRadius, 0.96f, 0.48f, 0.12f, 14);
-
-            // Esfera de unión suave entre segmentos para eliminar faceteado
+            m.addCylinder(tailX, tailY, tailZ, nextX, nextY, nextZ, curRadius, nextRadius, 0.96f, 0.48f, 0.12f, 12);
             m.addSphere(nextX, nextY, nextZ, nextRadius, nextRadius, nextRadius, 0.96f, 0.48f, 0.12f, 8, 10);
 
             tailX = nextX; tailY = nextY; tailZ = nextZ; curRadius = nextRadius;

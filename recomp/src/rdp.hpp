@@ -549,14 +549,14 @@ private:
                 ly = shoulderY + dy * std::cos(a) - dz * std::sin(a);
                 lz = shoulderZ + dy * std::sin(a) + dz * std::cos(a);
             }
-            else if (v.z < -0.3f && v.y > -0.8f && v.y < 0.3f) {
+            else if (v.z < -0.24f && v.y > -0.60f) {
+                // Rotación unificada de toda la cola desde la base
+                float tailPivotX = 0.0f, tailPivotY = -0.35f, tailPivotZ = -0.28f;
                 if (player.animState == AnimState::HOVER || player.animState == AnimState::ATTACK) {
-                    float tailPivotY = -0.2f;
-                    float tx = lx, ty = ly - tailPivotY;
-                    lx = tx * std::cos(spinRad) - ty * std::sin(spinRad);
+                    float tx = lx - tailPivotX, ty = ly - tailPivotY;
+                    lx = tailPivotX + tx * std::cos(spinRad) - ty * std::sin(spinRad);
                     ly = tailPivotY + tx * std::sin(spinRad) + ty * std::cos(spinRad);
                 } else {
-                    float tailPivotX = 0.0f, tailPivotZ = -0.35f;
                     float dx = lx - tailPivotX, dz = lz - tailPivotZ;
                     lx = tailPivotX + dx * std::cos(tailRad) - dz * std::sin(tailRad);
                     lz = tailPivotZ + dx * std::sin(tailRad) + dz * std::cos(tailRad);
