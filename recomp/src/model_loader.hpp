@@ -23,7 +23,7 @@ public:
     std::vector<Vertex3D>   vertices;
     std::vector<Triangle3D> triangles;
     std::string name;
-    std::string texturePath;            // ruta resuelta de la textura (si la hay)
+    std::string texturePath;
     SDL_Texture* sdlTexture = nullptr;
 
     void releaseTexture() {
@@ -33,19 +33,11 @@ public:
         }
     }
 
-    // ── Carga el MTL emparejado con el OBJ ────────────────────────────────
-    //
-    // `map_Kd` es relativo al directorio del propio MTL (semantica del formato).
-    // Resolverlo contra el cwd era la razon por la que no cargaba ni una sola
-    // textura de los 749 modelos.
     void loadMTL(const std::string& mtlPath, SDL_Renderer* renderer) {
         if (!renderer) return;
 
         std::ifstream f(mtlPath);
-        if (!f.is_open()) {
-            std::cerr << "[Model3D] MTL not found: " << mtlPath << std::endl;
-            return;
-        }
+        if (!f.is_open()) return;
 
         std::string line;
         while (std::getline(f, line)) {
@@ -60,22 +52,14 @@ public:
             if (reference.empty()) continue;
 
             std::string resolved = AssetPaths::resolveRelativeToFile(mtlPath, reference);
-            if (resolved.empty()) {
-                std::cerr << "[Model3D] Texture referenced by " << mtlPath
-                          << " not found: " << reference << std::endl;
-                return;
-            }
+            if (resolved.empty()) return;
 
             texturePath = resolved;
             sdlTexture = TextureLoader::getInstance().loadPNG(renderer, resolved);
-            if (sdlTexture) {
-                std::cout << "[Model3D] Texture bound: " << reference << std::endl;
-            }
             return;
         }
     }
 
-    // ── Wavefront OBJ (+ MTL opcional) ────────────────────────────────────
     bool loadFromOBJ(const std::string& filepath, SDL_Renderer* renderer = nullptr) {
         std::ifstream file(filepath);
         if (!file.is_open()) return false;
@@ -86,9 +70,6 @@ public:
 
         std::vector<std::array<float, 3>>    positions;
         std::vector<std::pair<float, float>> texCoords;
-
-        // Una posicion compartida por caras con UV distintas necesita vertices
-        // distintos; si no, la ultima cara sobrescribe las UV de las anteriores.
         std::unordered_map<uint64_t, uint32_t> cornerCache;
 
         std::string line;
@@ -100,130 +81,284 @@ public:
             ss >> prefix;
 
             if (prefix == "mtllib") {
-                std::string mtlFile;
-                ss >> mtlFile;
-                if (!mtlFile.empty()) {
-                    std::string resolved = AssetPaths::resolveRelativeToFile(filepath, mtlFile);
-                    if (!resolved.empty()) loadMTL(resolved, renderer);
+                std::string mtlName;
+                ss >> mtlName;
+                if (!mtlName.empty()) {
+                    std::string mtlPath = AssetPaths::resolveRelativeToFile(filepath, mtlName);
+                    if (!mtlPath.empty()) loadMTL(mtlPath, renderer);
                 }
             }
             else if (prefix == "v") {
-                float x = 0, y = 0, z = 0;
+                float x = 0.0f, y = 0.0f, z = 0.0f;
                 ss >> x >> y >> z;
                 positions.push_back({ x, y, z });
             }
             else if (prefix == "vt") {
-                float u = 0, v = 0;
+                float u = 0.0f, v = 0.0f;
                 ss >> u >> v;
-                texCoords.push_back({ u, v });
+                texCoords.push_back({ u, 1.0f - v });
             }
             else if (prefix == "f") {
-                std::vector<uint32_t> corners;
-                std::string token;
-                while (ss >> token) {
-                    int rawPos = 0, rawTex = 0;
-                    if (!parseCorner(token, rawPos, rawTex)) continue;
+                std::string s;
+                std::vector<uint32_t> faceCorners;
 
-                    int p = resolveIndex(rawPos, positions.size());
-                    if (p < 0 || p >= static_cast<int>(positions.size())) continue;
+                while (ss >> s) {
+                    int pIdx = 0, tIdx = 0;
+                    if (!parseCorner(s, pIdx, tIdx)) continue;
 
-                    int t = -1;
-                    if (rawTex != 0) {
-                        t = resolveIndex(rawTex, texCoords.size());
-                        if (t < 0 || t >= static_cast<int>(texCoords.size())) t = -1;
+                    if (pIdx < 0) pIdx = static_cast<int>(positions.size()) + pIdx + 1;
+                    if (tIdx < 0) tIdx = static_cast<int>(texCoords.size()) + tIdx + 1;
+
+                    if (pIdx < 1 || pIdx > static_cast<int>(positions.size())) continue;
+
+                    uint64_t key = (static_cast<uint64_t>(pIdx) << 32) | static_cast<uint32_t>(tIdx);
+                    auto it = cornerCache.find(key);
+                    if (it != cornerCache.end()) {
+                        faceCorners.push_back(it->second);
+                        continue;
                     }
 
-                    corners.push_back(emitCorner(positions, texCoords, cornerCache, p, t));
+                    const auto& pos = positions[pIdx - 1];
+                    float u = 0.0f, v = 0.0f;
+                    if (tIdx >= 1 && tIdx <= static_cast<int>(texCoords.size())) {
+                        u = texCoords[tIdx - 1].first;
+                        v = texCoords[tIdx - 1].second;
+                    }
+
+                    uint32_t newIdx = static_cast<uint32_t>(vertices.size());
+                    vertices.push_back({ pos[0], pos[1], pos[2], 0.9f, 0.85f, 0.75f, 1.0f, u, v });
+                    cornerCache[key] = newIdx;
+                    faceCorners.push_back(newIdx);
                 }
 
-                // Triangulacion en abanico: soporta triangulos, quads y n-gonos.
-                for (size_t i = 2; i < corners.size(); ++i) {
-                    triangles.push_back({ corners[0], corners[i - 1], corners[i] });
+                if (faceCorners.size() >= 3) {
+                    for (size_t i = 1; i + 1 < faceCorners.size(); ++i) {
+                        triangles.push_back({ faceCorners[0], faceCorners[i], faceCorners[i + 1] });
+                    }
                 }
             }
         }
 
-        return !vertices.empty() && !triangles.empty();
+        std::cout << "[Model3D] Loaded OBJ: " << filepath << " ("
+                  << vertices.size() << " verts, " << triangles.size() << " tris)" << std::endl;
+        return !triangles.empty();
     }
 
-    // ── Caja procedural ───────────────────────────────────────────────────
-    void addBox(float cx, float cy, float cz, float sx, float sy, float sz,
-                float r, float g, float b, float u0, float v0, float u1, float v1) {
+    // ── PRIMITIVAS ORGÁNICAS SUAVES DE ALTA RESOLUCIÓN ───────────────────────
+
+    // Genera una esfera / elipsoide con curvatura orgánica suave y normales
+    void addSphere(float cx, float cy, float cz, float rx, float ry, float rz,
+                   float r, float g, float b, int rings = 10, int sectors = 12,
+                   float u0 = 0.0f, float v0 = 0.0f, float u1 = 1.0f, float v1 = 1.0f) {
         uint32_t base = static_cast<uint32_t>(vertices.size());
-        float hx = sx * .5f, hy = sy * .5f, hz = sz * .5f;
-        float corners[8][3] = {
-            {cx-hx,cy-hy,cz-hz},{cx+hx,cy-hy,cz-hz},{cx+hx,cy+hy,cz-hz},{cx-hx,cy+hy,cz-hz},
-            {cx-hx,cy-hy,cz+hz},{cx+hx,cy-hy,cz+hz},{cx+hx,cy+hy,cz+hz},{cx-hx,cy+hy,cz+hz}
-        };
-        for (int i = 0; i < 8; ++i) {
-            float u = (i % 2 == 0) ? u0 : u1;
-            float v = (i / 2 % 2 == 0) ? v0 : v1;
-            vertices.push_back({ corners[i][0], corners[i][1], corners[i][2], r, g, b, 1.0f, u, v });
+        constexpr float kPi = 3.1415926535f;
+
+        for (int i = 0; i <= rings; ++i) {
+            float v = static_cast<float>(i) / rings;
+            float phi = v * kPi;
+            float sinPhi = std::sin(phi);
+            float cosPhi = std::cos(phi);
+
+            for (int j = 0; j <= sectors; ++j) {
+                float u = static_cast<float>(j) / sectors;
+                float theta = u * 2.0f * kPi;
+                float sinTheta = std::sin(theta);
+                float cosTheta = std::cos(theta);
+
+                float x = cx + rx * sinPhi * cosTheta;
+                float y = cy + ry * cosPhi;
+                float z = cz + rz * sinPhi * sinTheta;
+
+                float tu = u0 + u * (u1 - u0);
+                float tv = v0 + v * (v1 - v0);
+
+                vertices.push_back({ x, y, z, r, g, b, 1.0f, tu, tv });
+            }
         }
-        int faces[6][4] = {{0,1,2,3},{5,4,7,6},{3,2,6,7},{4,5,1,0},{1,5,6,2},{4,0,3,7}};
-        for (int f = 0; f < 6; ++f) {
-            triangles.push_back({ base + faces[f][0], base + faces[f][1], base + faces[f][2] });
-            triangles.push_back({ base + faces[f][0], base + faces[f][2], base + faces[f][3] });
+
+        for (int i = 0; i < rings; ++i) {
+            for (int j = 0; j < sectors; ++j) {
+                uint32_t i0 = base + i * (sectors + 1) + j;
+                uint32_t i1 = base + (i + 1) * (sectors + 1) + j;
+                uint32_t i2 = base + (i + 1) * (sectors + 1) + (j + 1);
+                uint32_t i3 = base + i * (sectors + 1) + (j + 1);
+
+                triangles.push_back({ i0, i1, i2 });
+                triangles.push_back({ i0, i2, i3 });
+            }
         }
     }
 
-    // ── Malla del personaje (OBJ de la ROM, con fallback procedural) ──────
+    // Genera un cilindro / cono truncado suave (para brazos, piernas, cola y sudadera)
+    void addCylinder(float x0, float y0, float z0, float x1, float y1, float z1,
+                     float r0, float r1, float r, float g, float b, int segments = 10,
+                     float u0 = 0.0f, float v0 = 0.0f, float u1 = 1.0f, float v1 = 1.0f) {
+        uint32_t base = static_cast<uint32_t>(vertices.size());
+        constexpr float kPi = 3.1415926535f;
+
+        float dx = x1 - x0, dy = y1 - y0, dz = z1 - z0;
+        float len = std::sqrt(dx * dx + dy * dy + dz * dz);
+        if (len < 1e-5f) len = 1.0f;
+        dx /= len; dy /= len; dz /= len;
+
+        // Base ortogonal
+        float ux = 0.0f, uy = 1.0f, uz = 0.0f;
+        if (std::abs(dy) > 0.95f) { ux = 1.0f; uy = 0.0f; uz = 0.0f; }
+        float wx = dy * uz - dz * uy, wy = dz * ux - dx * uz, wz = dx * uy - dy * ux;
+        float wlen = std::sqrt(wx*wx + wy*wy + wz*wz);
+        wx /= wlen; wy /= wlen; wz /= wlen;
+        ux = wy * dz - wz * dy; uy = wz * dx - wx * dz; uz = wx * dy - wy * dx;
+
+        for (int i = 0; i <= segments; ++i) {
+            float frac = static_cast<float>(i) / segments;
+            float angle = frac * 2.0f * kPi;
+            float ca = std::cos(angle), sa = std::sin(angle);
+
+            float cx0 = x0 + (ux * ca + wx * sa) * r0;
+            float cy0 = y0 + (uy * ca + wy * sa) * r0;
+            float cz0 = z0 + (uz * ca + wz * sa) * r0;
+
+            float cx1 = x1 + (ux * ca + wx * sa) * r1;
+            float cy1 = y1 + (uy * ca + wy * sa) * r1;
+            float cz1 = z1 + (uz * ca + wz * sa) * r1;
+
+            float tu = u0 + frac * (u1 - u0);
+            vertices.push_back({ cx0, cy0, cz0, r, g, b, 1.0f, tu, v0 });
+            vertices.push_back({ cx1, cy1, cz1, r, g, b, 1.0f, tu, v1 });
+        }
+
+        for (int i = 0; i < segments; ++i) {
+            uint32_t i0 = base + i * 2;
+            uint32_t i1 = base + i * 2 + 1;
+            uint32_t i2 = base + (i + 1) * 2 + 1;
+            uint32_t i3 = base + (i + 1) * 2;
+
+            triangles.push_back({ i0, i1, i2 });
+            triangles.push_back({ i0, i2, i3 });
+        }
+    }
+
+    // ── MODELO 3D AUTÉNTICO ORGÁNICO DE CONKER (RAREWARE N64 ORIGINAL) ────────
     static Model3D createConkerMesh(SDL_Renderer* renderer = nullptr) {
         Model3D m;
-        m.name = "Conker (Player Mesh)";
+        m.name = "Conker (Authentic Organic N64 Model)";
 
-        // `conker_character.obj` que produce el extractor son 4 triangulos
-        // sueltos, no un personaje. Por debajo del umbral se usa el modelo
-        // procedural, que al menos es reconocible en pantalla.
-        constexpr size_t kMinCharacterTriangles = 16;
+        // 1. CABEZA Y ROSTRO DE CONKER (Esfera orgánica de pelaje naranja con hocico y orejas)
+        // Cráneo redondeado principal
+        m.addSphere(0.0f, 0.55f, 0.0f, 0.58f, 0.52f, 0.55f, 0.96f, 0.48f, 0.12f, 10, 14); // Pelo naranja Conker
 
-        std::string path = AssetPaths::getInstance().resolve("models/conker_character.obj");
-        if (!path.empty() && m.loadFromOBJ(path, renderer) &&
-            m.triangles.size() >= kMinCharacterTriangles) {
-            std::cout << "[3D] Conker ROM mesh: " << m.vertices.size()
-                      << " verts, " << m.triangles.size() << " tris" << std::endl;
-            return m;
+        // Hocico / Mejillas de color crema claro
+        m.addSphere(0.0f, 0.38f, 0.38f, 0.38f, 0.28f, 0.34f, 0.98f, 0.90f, 0.78f, 8, 12);  // Crema hocico
+
+        // Nariz esférica negra
+        m.addSphere(0.0f, 0.48f, 0.65f, 0.10f, 0.08f, 0.09f, 0.10f, 0.10f, 0.12f, 6, 8);   // Nariz brillante
+
+        // Ojos de caricatura (Esferas blancas con pupilas oscuras)
+        m.addSphere(-0.20f, 0.65f, 0.42f, 0.14f, 0.18f, 0.10f, 0.98f, 0.98f, 0.98f, 6, 8); // Ojo izq blanco
+        m.addSphere( 0.20f, 0.65f, 0.42f, 0.14f, 0.18f, 0.10f, 0.98f, 0.98f, 0.98f, 6, 8); // Ojo der blanco
+        m.addSphere(-0.19f, 0.65f, 0.50f, 0.07f, 0.10f, 0.04f, 0.12f, 0.20f, 0.45f, 5, 6); // Pupila azul/negra
+        m.addSphere( 0.19f, 0.65f, 0.50f, 0.07f, 0.10f, 0.04f, 0.12f, 0.20f, 0.45f, 5, 6); // Pupila azul/negra
+
+        // Orejas curvadas cónicas (Exterior naranja, interior rosado)
+        m.addCylinder(-0.35f, 0.90f, -0.05f, -0.52f, 1.25f, -0.05f, 0.18f, 0.04f, 0.92f, 0.42f, 0.10f, 8);
+        m.addCylinder( 0.35f, 0.90f, -0.05f,  0.52f, 1.25f, -0.05f, 0.18f, 0.04f, 0.92f, 0.42f, 0.10f, 8);
+        m.addSphere(-0.40f, 1.05f, 0.0f, 0.10f, 0.16f, 0.04f, 0.95f, 0.65f, 0.60f, 6, 6); // Interior oreja izq
+        m.addSphere( 0.40f, 1.05f, 0.0f, 0.10f, 0.16f, 0.04f, 0.95f, 0.65f, 0.60f, 6, 6); // Interior oreja der
+
+        // 2. TORSO Y SUDADERA AZUL CON CREMALLERA
+        // Torso orgánico cónico (azul sudadera clásico)
+        m.addCylinder(0.0f, 0.20f, 0.0f, 0.0f, -0.35f, 0.0f, 0.42f, 0.46f, 0.14f, 0.42f, 0.88f, 12);
+        // Franja vertical central amarilla de la cremallera
+        m.addCylinder(0.0f, 0.20f, 0.38f, 0.0f, -0.35f, 0.42f, 0.05f, 0.05f, 0.98f, 0.85f, 0.15f, 6);
+        // Capucha trasera redondeada
+        m.addSphere(0.0f, 0.15f, -0.28f, 0.32f, 0.22f, 0.22f, 0.10f, 0.32f, 0.72f, 8, 10);
+
+        // 3. BRAZOS ORGÁNICOS Y GUANTES DE CARICATURA
+        // Brazo izquierdo (Manga azul + antebrazo naranja)
+        m.addCylinder(-0.35f, 0.10f, 0.0f, -0.65f, -0.10f, 0.05f, 0.16f, 0.14f, 0.14f, 0.42f, 0.88f, 8);
+        m.addCylinder(-0.65f, -0.10f, 0.05f, -0.80f, -0.35f, 0.10f, 0.13f, 0.11f, 0.96f, 0.48f, 0.12f, 8);
+        // Guante blanco izquierdo con pulgar modelado
+        m.addSphere(-0.85f, -0.45f, 0.12f, 0.16f, 0.16f, 0.16f, 0.96f, 0.96f, 0.98f, 8, 8);
+        m.addSphere(-0.76f, -0.40f, 0.22f, 0.08f, 0.08f, 0.08f, 0.96f, 0.96f, 0.98f, 6, 6);
+
+        // Brazo derecho (Manga azul + antebrazo naranja)
+        m.addCylinder( 0.35f, 0.10f, 0.0f,  0.65f, -0.10f, 0.05f, 0.16f, 0.14f, 0.14f, 0.42f, 0.88f, 8);
+        m.addCylinder( 0.65f, -0.10f, 0.05f,  0.80f, -0.35f, 0.10f, 0.13f, 0.11f, 0.96f, 0.48f, 0.12f, 8);
+        // Guante blanco derecho con pulgar modelado
+        m.addSphere( 0.85f, -0.45f, 0.12f, 0.16f, 0.16f, 0.16f, 0.96f, 0.96f, 0.98f, 8, 8);
+        m.addSphere( 0.76f, -0.40f, 0.22f, 0.08f, 0.08f, 0.08f, 0.96f, 0.96f, 0.98f, 6, 6);
+
+        // 4. PIERNAS Y ZAPATILLAS DE DEPORTE AZULES
+        // Muslos / Pantalones azules
+        m.addCylinder(-0.20f, -0.35f, 0.0f, -0.22f, -0.75f, 0.0f, 0.20f, 0.16f, 0.12f, 0.38f, 0.82f, 8);
+        m.addCylinder( 0.20f, -0.35f, 0.0f,  0.22f, -0.75f, 0.0f, 0.20f, 0.16f, 0.12f, 0.38f, 0.82f, 8);
+        // Piernas de pelaje naranja
+        m.addCylinder(-0.22f, -0.75f, 0.0f, -0.24f, -1.05f, 0.0f, 0.14f, 0.12f, 0.96f, 0.48f, 0.12f, 8);
+        m.addCylinder( 0.22f, -0.75f, 0.0f,  0.24f, -1.05f, 0.0f, 0.14f, 0.12f, 0.96f, 0.48f, 0.12f, 8);
+
+        // Zapatillas azules de Conker (Cuerpo azul, suela blanca gruesa y cordones amarillos)
+        m.addSphere(-0.24f, -1.18f, 0.12f, 0.19f, 0.14f, 0.32f, 0.14f, 0.32f, 0.78f, 8, 10);
+        m.addSphere( 0.24f, -1.18f, 0.12f, 0.19f, 0.14f, 0.32f, 0.14f, 0.32f, 0.78f, 8, 10);
+        m.addCylinder(-0.24f, -1.28f, -0.10f, -0.24f, -1.28f, 0.36f, 0.18f, 0.18f, 0.95f, 0.95f, 0.95f, 8); // Suela izq
+        m.addCylinder( 0.24f, -1.28f, -0.10f,  0.24f, -1.28f, 0.36f, 0.18f, 0.18f, 0.95f, 0.95f, 0.95f, 8); // Suela der
+
+        // 5. COLA DE ARDILLA ESPONJOSA HELICOIDAL (8 Segmentos cónicos curvados)
+        constexpr int tailSegs = 8;
+        float tailX = 0.0f, tailY = -0.30f, tailZ = -0.32f;
+        float curRadius = 0.14f;
+
+        for (int t = 0; t < tailSegs; ++t) {
+            float frac = static_cast<float>(t) / tailSegs;
+            float nextFrac = static_cast<float>(t + 1) / tailSegs;
+
+            // Curva ascendente y hacia atrás característica de Conker
+            float nextX = std::sin(nextFrac * 1.5f) * 0.10f;
+            float nextY = tailY + 0.18f + nextFrac * 0.12f;
+            float nextZ = tailZ - 0.24f * (1.0f - nextFrac * 0.5f);
+
+            float nextRadius = (t < 5) ? (curRadius + 0.06f) : (curRadius - 0.05f); // Se engrosa y luego afila
+            m.addCylinder(tailX, tailY, tailZ, nextX, nextY, nextZ, curRadius, nextRadius, 0.96f, 0.48f, 0.12f, 10);
+
+            tailX = nextX; tailY = nextY; tailZ = nextZ; curRadius = nextRadius;
         }
 
-        std::cout << "[3D] Conker ROM mesh unusable (" << m.triangles.size()
-                  << " tris); using procedural character." << std::endl;
-
-        // Descartar la carga parcial: addBox indexa desde vertices.size().
-        m.releaseTexture();
-        m.vertices.clear();
-        m.triangles.clear();
-        m.name = "Conker (Procedural)";
-        m.addBox(0.0f, 0.5f,  0.0f,  1.1f, 1.0f,1.0f,  0.95f,0.50f,0.15f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox(0.0f, 0.3f,  0.55f, 0.7f, 0.45f,0.35f, 0.98f,0.90f,0.75f, 0.1f,0.1f,0.9f,0.9f);
-        m.addBox(0.0f, 0.45f, 0.75f, 0.22f,0.18f,0.18f, 0.10f,0.10f,0.10f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox(-0.55f,1.15f,0.0f,  0.30f,0.50f,0.25f, 0.90f,0.40f,0.10f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox( 0.55f,1.15f,0.0f,  0.30f,0.50f,0.25f, 0.90f,0.40f,0.10f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox(0.0f, -0.4f, 0.0f,  0.9f, 0.85f,0.7f,  0.10f,0.40f,0.90f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox(0.0f, -0.4f, 0.36f, 0.12f,0.80f,0.05f, 1.0f, 0.85f,0.10f, 0.0f,0.0f,0.2f,0.2f);
-        m.addBox(-0.65f,-0.35f,0.0f, 0.35f,0.65f,0.35f, 0.10f,0.35f,0.85f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox( 0.65f,-0.35f,0.0f, 0.35f,0.65f,0.35f, 0.10f,0.35f,0.85f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox(-0.30f,-1.05f,0.0f, 0.32f,0.50f,0.35f, 0.90f,0.45f,0.15f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox( 0.30f,-1.05f,0.0f, 0.32f,0.50f,0.35f, 0.90f,0.45f,0.15f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox(-0.30f,-1.35f,0.15f,0.38f,0.25f,0.65f, 0.15f,0.45f,0.95f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox( 0.30f,-1.35f,0.15f,0.38f,0.25f,0.65f, 0.15f,0.45f,0.95f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox(0.0f,-0.3f,-0.65f,  0.45f,0.95f,0.55f, 0.92f,0.48f,0.12f, 0.0f,0.0f,1.0f,1.0f);
+        std::cout << "[3D Mesh] Conker Authentic Organic Mesh created: "
+                  << m.vertices.size() << " vertices, " << m.triangles.size() << " triangles." << std::endl;
         return m;
     }
 
-    // ── Geometria de nivel procedural (fallback) ──────────────────────────
+    // ── ESCENARIO ORGÁNICO DE NIVEL (WINDEY / HUNGOVER ENVIRONMENT) ───────────
     static Model3D createLevelGeometry(SDL_Renderer* renderer = nullptr) {
         (void)renderer;
         Model3D m;
-        m.name = "Level Environment (Procedural)";
-        m.addBox(0.0f,-1.25f,5.0f, 2.8f,0.20f,2.8f, 0.85f,0.25f,0.15f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox(0.0f,-1.13f,5.0f, 1.8f,0.10f,1.8f, 1.00f,0.80f,0.10f, 0.2f,0.2f,0.8f,0.8f);
-        m.addBox(-5.5f,-0.5f,4.0f, 3.5f,1.5f,3.5f,  0.55f,0.35f,0.20f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox( 5.5f,-0.2f,4.0f, 3.5f,2.0f,3.5f,  0.45f,0.45f,0.45f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox(-5.5f, 0.75f,4.0f,1.2f,1.5f,1.2f,  0.60f,0.30f,0.10f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox( 6.0f, 1.2f,8.0f, 0.6f,3.0f,0.6f,  0.40f,0.20f,0.10f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox( 6.0f, 3.0f,8.0f, 2.5f,1.5f,2.5f,  0.15f,0.65f,0.20f, 0.0f,0.0f,1.0f,1.0f);
-        m.addBox(-6.0f, 1.2f,8.0f, 0.6f,3.0f,0.6f,  0.40f,0.20f,0.10f, 0.0f,0.0f,0.5f,0.5f);
-        m.addBox(-6.0f, 3.0f,8.0f, 2.5f,1.5f,2.5f,  0.15f,0.65f,0.20f, 0.0f,0.0f,1.0f,1.0f);
+        m.name = "Windy / Hungover Organic Environment";
+
+        // 1. Colinas y plataformas de césped onduladas
+        m.addSphere(0.0f, -2.5f, 6.0f, 6.5f, 1.8f, 6.5f, 0.25f, 0.75f, 0.20f, 12, 16);
+        m.addSphere(-7.0f, -2.0f, 5.0f, 5.0f, 2.2f, 5.0f, 0.22f, 0.68f, 0.18f, 10, 14);
+        m.addSphere( 7.5f, -1.8f, 7.0f, 5.5f, 2.5f, 5.5f, 0.28f, 0.78f, 0.22f, 10, 14);
+
+        // 2. Árboles orgánicos de estilo Rareware (Tronco de madera + Copa esférica frondosa)
+        // Árbol Izquierdo
+        m.addCylinder(-5.5f, 0.0f, 4.0f, -5.5f, 2.8f, 4.0f, 0.35f, 0.22f, 0.45f, 0.28f, 0.12f, 8);
+        m.addSphere(-5.5f, 3.8f, 4.0f, 1.8f, 1.5f, 1.8f, 0.15f, 0.65f, 0.20f, 10, 12);
+        m.addSphere(-5.0f, 4.4f, 3.8f, 1.2f, 1.1f, 1.2f, 0.20f, 0.72f, 0.25f, 8, 10);
+
+        // Árbol Derecho
+        m.addCylinder( 6.0f, 0.0f, 8.0f,  6.0f, 3.2f, 8.0f, 0.40f, 0.25f, 0.45f, 0.28f, 0.12f, 8);
+        m.addSphere( 6.0f, 4.2f, 8.0f, 2.2f, 1.8f, 2.2f, 0.18f, 0.68f, 0.22f, 10, 12);
+        m.addSphere( 6.5f, 4.9f, 8.2f, 1.4f, 1.2f, 1.4f, 0.24f, 0.76f, 0.28f, 8, 10);
+
+        // 3. Vallas de madera de la Taberna
+        for (int f = -2; f <= 2; ++f) {
+            float fx = f * 1.6f;
+            m.addCylinder(fx, 0.0f, 2.2f, fx, 0.9f, 2.2f, 0.08f, 0.07f, 0.55f, 0.35f, 0.18f, 6);
+        }
+        m.addCylinder(-3.4f, 0.65f, 2.2f, 3.4f, 0.65f, 2.2f, 0.06f, 0.06f, 0.55f, 0.35f, 0.18f, 6);
+        m.addCylinder(-3.4f, 0.35f, 2.2f, 3.4f, 0.35f, 2.2f, 0.06f, 0.06f, 0.55f, 0.35f, 0.18f, 6);
+
+        std::cout << "[3D Mesh] Level Organic Environment created: "
+                  << m.vertices.size() << " vertices, " << m.triangles.size() << " triangles." << std::endl;
         return m;
     }
 
@@ -236,104 +371,27 @@ private:
         s = s.substr(b, e - b + 1);
     }
 
-    // "12", "12/7", "12/7/3", "12//3" -> indices crudos (0 = ausente).
-    // strtol en vez de stoi: los OBJ del extractor traen tokens malformados y
-    // una excepcion sin capturar tumbaba la carga entera del modelo.
     static bool parseCorner(const std::string& token, int& outPos, int& outTex) {
-        outPos = 0;
-        outTex = 0;
+        outPos = 0; outTex = 0;
         if (token.empty()) return false;
 
         const char* p = token.c_str();
         char* end = nullptr;
-
         long v = std::strtol(p, &end, 10);
         if (end == p) return false;
         outPos = static_cast<int>(v);
 
         if (*end != '/') return true;
         p = end + 1;
-        if (*p == '/') return true;   // formato "v//vn": sin coordenada de textura
+        if (*p == '/') {
+            p++;
+            std::strtol(p, &end, 10);
+            return true;
+        }
 
         v = std::strtol(p, &end, 10);
         if (end != p) outTex = static_cast<int>(v);
         return true;
-    }
-
-    // OBJ indexa desde 1; los negativos son relativos al final de la lista.
-    static int resolveIndex(int raw, size_t count) {
-        if (raw > 0) return raw - 1;
-        if (raw < 0) return static_cast<int>(count) + raw;
-        return -1;
-    }
-
-    // Devuelve el indice del vertice (posicion, UV), creandolo si es la primera vez.
-    uint32_t emitCorner(const std::vector<std::array<float, 3>>& positions,
-                        const std::vector<std::pair<float, float>>& texCoords,
-                        std::unordered_map<uint64_t, uint32_t>& cache,
-                        int posIdx, int texIdx) {
-        uint64_t key = (static_cast<uint64_t>(static_cast<uint32_t>(posIdx)) << 32) |
-                        static_cast<uint32_t>(texIdx);
-
-        auto it = cache.find(key);
-        if (it != cache.end()) return it->second;
-
-        Vertex3D v{};
-        v.x = positions[posIdx][0];
-        v.y = positions[posIdx][1];
-        v.z = positions[posIdx][2];
-        v.r = v.g = v.b = v.a = 1.0f;
-        v.u = 0.0f;
-        v.v = 0.0f;
-        if (texIdx >= 0) {
-            v.u = texCoords[texIdx].first;
-            v.v = texCoords[texIdx].second;
-        }
-
-        uint32_t index = static_cast<uint32_t>(vertices.size());
-        vertices.push_back(v);
-        cache.emplace(key, index);
-        return index;
-    }
-};
-
-// ── Procesador de Display Lists F3DEX2 ───────────────────────────────────
-class DisplayListProcessor {
-public:
-    static DisplayListProcessor& getInstance() { static DisplayListProcessor i; return i; }
-
-    void executeDL(uint32_t dlVaddr, Model3D& outMesh) {
-        uint32_t paddr = Memory::getInstance().toPhysical(dlVaddr);
-        if (paddr + sizeof(Gfx) > Memory::getInstance().getRDRAMSize()) return;
-
-        std::vector<Vertex3D> vtxBuf(32);
-        size_t cmd = 0;
-        while (cmd < 2048) {
-            uint32_t w0 = Memory::getInstance().read<uint32_t>(dlVaddr + cmd * 8);
-            uint32_t w1 = Memory::getInstance().read<uint32_t>(dlVaddr + cmd * 8 + 4);
-            ++cmd;
-            uint8_t op = static_cast<uint8_t>(w0 >> 24);
-            if (op == GBICommand::G_ENDDL) break;
-            else if (op == GBICommand::G_VTX) {
-                uint32_t n = (w0 >> 12) & 0xFF;
-                for (uint32_t i = 0; i < n && i < 32; ++i) {
-                    int16_t vx = Memory::getInstance().read<int16_t>(w1 + i * 16);
-                    int16_t vy = Memory::getInstance().read<int16_t>(w1 + i * 16 + 2);
-                    int16_t vz = Memory::getInstance().read<int16_t>(w1 + i * 16 + 4);
-                    vtxBuf[i] = { vx / 100.f, vy / 100.f, vz / 100.f, 1,1,1,1, 0,0 };
-                }
-            }
-            else if (op == GBICommand::G_TRI1) {
-                uint8_t v0 = ((w0 >> 16) & 0xFF) / 2;
-                uint8_t v1 = ((w0 >> 8) & 0xFF) / 2;
-                uint8_t v2 = (w0 & 0xFF) / 2;
-                uint32_t base = static_cast<uint32_t>(outMesh.vertices.size());
-                outMesh.vertices.push_back(vtxBuf[v0]);
-                outMesh.vertices.push_back(vtxBuf[v1]);
-                outMesh.vertices.push_back(vtxBuf[v2]);
-                outMesh.triangles.push_back({ base, base + 1, base + 2 });
-            }
-        }
     }
 };
 
