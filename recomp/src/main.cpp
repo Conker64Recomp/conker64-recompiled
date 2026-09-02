@@ -349,15 +349,13 @@ int main(int argc, char** argv) {
 
     // 2. Búsqueda automática en rutas locales si no se cargó por CLI
     if (!romLoaded) {
+        // Solo busca en el directorio actual para que la distribucion precompilada
+        // sea 100% limpia e independiente y no lea carpetas padre de desarrollo.
         std::vector<std::string> searchPaths = {
-            "baserom.us.z64", "../baserom.us.z64", "../../baserom.us.z64",
-            "baserom.us.n64", "../baserom.us.n64", "../../baserom.us.n64",
-            "Conker's Bad Fur Day (USA).z64",
-            "../Conker's Bad Fur Day (USA).z64",
-            "../../Conker's Bad Fur Day (USA).z64",
-            "Conker's Bad Fur Day (USA).n64",
-            "../Conker's Bad Fur Day (USA).n64",
-            "../../Conker's Bad Fur Day (USA).n64"
+            "baserom.us.z64", "baserom.us.n64", "baserom.us.v64",
+            "baserom.z64", "conker.z64", "conker.n64", "conker.v64",
+            "Conker's Bad Fur Day (USA).z64", "Conker's Bad Fur Day (USA).n64",
+            "Conker's Bad Fur Day.z64"
         };
 
         for (const auto& path : searchPaths) {
